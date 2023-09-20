@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "334766772235",
+    "firebase_url": "https://smartrac-b.firebaseio.com",
+    "project_id": "smartrac-b",
+    "storage_bucket": "smartrac-b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334766772235:android:8bfe0758d4f44696bab70e",
+        "android_client_info": {
+          "package_name": "com.experis.smartrac.b"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334766772235-77mk5fem453pc11fsdepjf1ib6h054na.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.experis.smartrac.b",
+            "certificate_hash": "601a96594a3342998ff3c1f37966978b249b881c"
+          }
+        },
+        {
+          "client_id": "334766772235-1ldgabc72734cpanfoha5kuccpselo3f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDl8S8lVYzjhdKeOHKwdtZyzqyZXBQPtps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334766772235-1ldgabc72734cpanfoha5kuccpselo3f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

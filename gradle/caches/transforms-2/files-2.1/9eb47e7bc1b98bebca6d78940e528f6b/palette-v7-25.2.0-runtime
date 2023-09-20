@@ -1,0 +1,13 @@
+android.support.v7.graphics.ColorCutQuantizer
+android.support.v7.graphics.ColorCutQuantizer$1
+android.support.v7.graphics.ColorCutQuantizer$Vbox
+android.support.v7.graphics.Palette
+android.support.v7.graphics.Palette$1
+android.support.v7.graphics.Palette$Builder
+android.support.v7.graphics.Palette$Builder$1
+android.support.v7.graphics.Palette$Filter
+android.support.v7.graphics.Palette$PaletteAsyncListener
+android.support.v7.graphics.Palette$Swatch
+android.support.v7.graphics.Target
+android.support.v7.graphics.Target$Builder
+android.support.v7.palette.BuildConfig
