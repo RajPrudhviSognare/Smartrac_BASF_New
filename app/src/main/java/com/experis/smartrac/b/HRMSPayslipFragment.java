@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+
 import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,8 +64,8 @@ public class HRMSPayslipFragment extends Fragment {
     private TextView hrmsPayslipDownloadLinkTagTextViewID;
     private ImageView hrmsPayslipPagePaySlipLinkPDF_DownloadImageViewID;
 
-    private String MONTH[] = {"Select Month","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
-    String[] YEAR = { "2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026","2027"};
+    private String MONTH[] = {"Select Month", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    String[] YEAR = {"2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027"};
     String[] YEAR1 = new String[3];
 
     private String yearSelected = "";
@@ -100,16 +102,16 @@ public class HRMSPayslipFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.hrms_payslip_fragment, container, false);
 
-        hrmsPayslipMonthSelectionSpinnerID = (Spinner)view.findViewById(R.id.hrmsPayslipMonthSelectionSpinnerID);
-        hrmsPayslipYearSelectionSpinnerID = (Spinner)view.findViewById(R.id.hrmsPayslipYearSelectionSpinnerID);
-        hrmsPayslipYearSelectionAutoCompleteTextViewID = (AutoCompleteTextView)view.findViewById(R.id.hrmsPayslipYearSelectionAutoCompleteTextViewID);
-        hrmsPayslipPagePaySlipLinkTextViewID = (TextView)view.findViewById(R.id.hrmsPayslipPagePaySlipLinkTextViewID);
-        hrmsPayslipBtnID = (Button)view.findViewById(R.id.hrmsPayslipBtnID);
+        hrmsPayslipMonthSelectionSpinnerID = (Spinner) view.findViewById(R.id.hrmsPayslipMonthSelectionSpinnerID);
+        hrmsPayslipYearSelectionSpinnerID = (Spinner) view.findViewById(R.id.hrmsPayslipYearSelectionSpinnerID);
+        hrmsPayslipYearSelectionAutoCompleteTextViewID = (AutoCompleteTextView) view.findViewById(R.id.hrmsPayslipYearSelectionAutoCompleteTextViewID);
+        hrmsPayslipPagePaySlipLinkTextViewID = (TextView) view.findViewById(R.id.hrmsPayslipPagePaySlipLinkTextViewID);
+        hrmsPayslipBtnID = (Button) view.findViewById(R.id.hrmsPayslipBtnID);
 
-        hrmsPayslipDownloadLinkLayoutID = (LinearLayout)view.findViewById(R.id.hrmsPayslipDownloadLinkLayoutID);
-        hrmsPayslipDownloadLinkTagTextViewID = (TextView)view.findViewById(R.id.hrmsPayslipDownloadLinkTagTextViewID);
-        hrmsPayslipOpenMessageTagTextViewID = (TextView)view.findViewById(R.id.hrmsPayslipOpenMessageTagTextViewID);
-        hrmsPayslipPagePaySlipLinkPDF_DownloadImageViewID = (ImageView)view.findViewById(R.id.hrmsPayslipPagePaySlipLinkPDF_DownloadImageViewID);
+        hrmsPayslipDownloadLinkLayoutID = (LinearLayout) view.findViewById(R.id.hrmsPayslipDownloadLinkLayoutID);
+        hrmsPayslipDownloadLinkTagTextViewID = (TextView) view.findViewById(R.id.hrmsPayslipDownloadLinkTagTextViewID);
+        hrmsPayslipOpenMessageTagTextViewID = (TextView) view.findViewById(R.id.hrmsPayslipOpenMessageTagTextViewID);
+        hrmsPayslipPagePaySlipLinkPDF_DownloadImageViewID = (ImageView) view.findViewById(R.id.hrmsPayslipPagePaySlipLinkPDF_DownloadImageViewID);
 
         return view;
     }
@@ -119,17 +121,17 @@ public class HRMSPayslipFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         YEAR1[0] = String.valueOf(calendar.get(Calendar.YEAR));
-        System.out.println("YEAR1[0]: "+ YEAR1[0]);
-        YEAR1[1] = String.valueOf(calendar.get(Calendar.YEAR)-1);
-        System.out.println("YEAR1[1]: "+ YEAR1[1]);
-        YEAR1[2] = String.valueOf(calendar.get(Calendar.YEAR)-2);
-        System.out.println("YEAR1[2]: "+ YEAR1[2]);
+        System.out.println("YEAR1[0]: " + YEAR1[0]);
+        YEAR1[1] = String.valueOf(calendar.get(Calendar.YEAR) - 1);
+        System.out.println("YEAR1[1]: " + YEAR1[1]);
+        YEAR1[2] = String.valueOf(calendar.get(Calendar.YEAR) - 2);
+        System.out.println("YEAR1[2]: " + YEAR1[2]);
 
         yearSelected = YEAR1[0];
         validYear = true;
 
-        CURRENT_MONTH = calendar.get(Calendar.MONTH)+1;
-        System.out.println("CURRENT_MONTH: "+ CURRENT_MONTH);
+        CURRENT_MONTH = calendar.get(Calendar.MONTH) + 1;
+        System.out.println("CURRENT_MONTH: " + CURRENT_MONTH);
 
         /*ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.select_dialog_item,YEAR1);
         hrmsPayslipYearSelectionAutoCompleteTextViewID.setThreshold(1);
@@ -145,82 +147,80 @@ public class HRMSPayslipFragment extends Fragment {
         hrmsPayslipYearSelectionSpinnerID.setAdapter(dataAdapter2);
 
         //Month
-        hrmsPayslipMonthSelectionSpinnerID.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+        hrmsPayslipMonthSelectionSpinnerID.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 monthSelected = parent.getItemAtPosition(position).toString();
-                System.out.println("Payslip monthSelected: "+ monthSelected);
-                if(position==0){
+                System.out.println("Payslip monthSelected: " + monthSelected);
+                if (position == 0) {
                     validMonth = false;
-                }
-                else{
-                      if(yearSelected.equalsIgnoreCase(String.valueOf(calendar.get(Calendar.YEAR)))){
-                          if(position<CURRENT_MONTH){
-                              validMonth = true;
-                          }
-                          else{
-                              Toast.makeText(getActivity(),"Please Select a Valid Month!",Toast.LENGTH_LONG).show();
-                              hrmsPayslipMonthSelectionSpinnerID.setSelection(0);
-                              validMonth = false;
-                          }
-                      }
-                      else{
-                          validMonth = true;
-                      }
+                } else {
+                    if (yearSelected.equalsIgnoreCase(String.valueOf(calendar.get(Calendar.YEAR)))) {
+                        if (position < CURRENT_MONTH) {
+                            validMonth = true;
+                        } else {
+                            Toast.makeText(getActivity(), "Please Select a Valid Month!", Toast.LENGTH_LONG).show();
+                            hrmsPayslipMonthSelectionSpinnerID.setSelection(0);
+                            validMonth = false;
+                        }
+                    } else {
+                        validMonth = true;
+                    }
 
                 }
-                System.out.println("Payslip validMonth: "+ validMonth);
+                System.out.println("Payslip validMonth: " + validMonth);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
         //Year
-        hrmsPayslipYearSelectionSpinnerID.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+        hrmsPayslipYearSelectionSpinnerID.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 yearSelected = parent.getItemAtPosition(position).toString();
-                System.out.println("Payslip yearSelected: "+ yearSelected);
+                System.out.println("Payslip yearSelected: " + yearSelected);
                 validYear = true;
-                System.out.println("Payslip validYear: "+ validYear);
+                System.out.println("Payslip validYear: " + validYear);
 
-                if(yearSelected.equalsIgnoreCase(String.valueOf(calendar.get(Calendar.YEAR)))){
+                if (yearSelected.equalsIgnoreCase(String.valueOf(calendar.get(Calendar.YEAR)))) {
                     validMonth = false;
                     hrmsPayslipMonthSelectionSpinnerID.setSelection(0);
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
-        hrmsPayslipBtnID.setOnClickListener(new Button.OnClickListener(){
+        hrmsPayslipBtnID.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //yearSelected = hrmsPayslipYearSelectionAutoCompleteTextViewID.getText().toString();
-                if (yearSelected.equalsIgnoreCase("")){
+                if (yearSelected.equalsIgnoreCase("")) {
                     validYear = false;
-                    Toast.makeText(getActivity(),"Please select a valid Year",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please select a valid Year", Toast.LENGTH_SHORT).show();
                 }
-                if(!yearSelected.equalsIgnoreCase("")){
+                if (!yearSelected.equalsIgnoreCase("")) {
                     validYear = true;
                 }
-                System.out.println("Payslip validYear: "+ validYear);
-                System.out.println("Payslip validMonth: "+ validMonth);
+                System.out.println("Payslip validYear: " + validYear);
+                System.out.println("Payslip validMonth: " + validMonth);
 
-                if(validYear&&validMonth){
-                      validYear = false;
-                      validMonth = false;
-                      hrmsPayslipMonthSelectionSpinnerID.setSelection(0);
-                      hrmsPayslipYearSelectionSpinnerID.setSelection(0);
+                if (validYear && validMonth) {
+                    validYear = false;
+                    validMonth = false;
+                    hrmsPayslipMonthSelectionSpinnerID.setSelection(0);
+                    hrmsPayslipYearSelectionSpinnerID.setSelection(0);
 
-                      getPaySlipLink();
-                }
-                else{
-                    Toast.makeText(getActivity(),"Please Select a valid Year/Month",Toast.LENGTH_SHORT).show();
+                    getPaySlipLink();
+                } else {
+                    Toast.makeText(getActivity(), "Please Select a valid Year/Month", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -241,47 +241,46 @@ public class HRMSPayslipFragment extends Fragment {
         });*/
 
         //PDF Icon Click
-        hrmsPayslipPagePaySlipLinkPDF_DownloadImageViewID.setOnClickListener(new TextView.OnClickListener(){
+        hrmsPayslipPagePaySlipLinkPDF_DownloadImageViewID.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(PayslipResult.toString().startsWith("http")){
+                if (PayslipResult.toString().startsWith("http")) {
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(PayslipResult.toString()));
                     getActivity().startActivity(i);
-                }
-                else{
-                    Toast.makeText(getActivity(),"Invalid Download Link!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Download Link!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
     }
 
-    private void getPaySlipLink(){
+    private void getPaySlipLink() {
         progressDialog.setMessage("Requesting... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        String EmpID = prefs.getString("USERISDCODE","");
-        System.out.println("EmpID: "+EmpID);
+        String EmpID = prefs.getString("USERISDCODE", "");
+        System.out.println("EmpID: " + EmpID);
 
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:Payslip>"
+                + "<soapenv:Body>"
+                + "<tem:Payslip>"
                 //+"<tem:emp_code>"+100172254+"</tem:emp_code>"
-                +"<tem:emp_code>"+EmpID+"</tem:emp_code>"
-                +"<tem:month_name>"+monthSelected+"</tem:month_name>"
-                +"<tem:year>"+yearSelected+"</tem:year>"
-                +"</tem:Payslip>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "<tem:emp_code>" + EmpID + "</tem:emp_code>"
+                + "<tem:month_name>" + monthSelected + "</tem:month_name>"
+                + "<tem:year>" + yearSelected + "</tem:year>"
+                + "</tem:Payslip>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -305,18 +304,17 @@ public class HRMSPayslipFragment extends Fragment {
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.println("Server Response = "+Response);
+                    System.out.println("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
-                    System.out.println("Server status code = "+status.getStatusCode());
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + status.getStatusCode());
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForPaySlip(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -329,7 +327,7 @@ public class HRMSPayslipFragment extends Fragment {
     }
 
     //getParsingElementsForPaySlip(xpp);
-    public void getParsingElementsForPaySlip(XmlPullParser xpp){
+    public void getParsingElementsForPaySlip(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -341,15 +339,15 @@ public class HRMSPayslipFragment extends Fragment {
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
 
-                        if(tagname.equalsIgnoreCase(TAG_PayslipResult)){
+                        if (tagname.equalsIgnoreCase(TAG_PayslipResult)) {
                             PayslipResult = text;
                             text = "";
-                            System.out.println("PayslipResult: "+PayslipResult);
+                            System.out.println("PayslipResult: " + PayslipResult);
                         }
                         break;
 
@@ -371,14 +369,14 @@ public class HRMSPayslipFragment extends Fragment {
 
     }//getParsingElementsForLogin(xpp);
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
@@ -386,10 +384,11 @@ public class HRMSPayslipFragment extends Fragment {
         }//handleMessage(Message msg)
 
     };
-    private void setPaySlipLink(){
+
+    private void setPaySlipLink() {
         hrmsPayslipDownloadLinkLayoutID.setVisibility(View.VISIBLE);
         hrmsPayslipPagePaySlipLinkTextViewID.setText("");
-        if(PayslipResult.startsWith("http")){
+        if (PayslipResult.startsWith("http")) {
             //hrmsPayslipDownloadLinkTagTextViewID.setVisibility(View.VISIBLE); //Used Earlier with Textview link
             //hrmsPayslipPagePaySlipLinkTextViewID.setPaintFlags(hrmsPayslipPagePaySlipLinkTextViewID.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);//Adds Underline;//Used Earlier with Textview link
             //hrmsPayslipPagePaySlipLinkTextViewID.setText(PayslipResult);//Used Earlier with Textview link
@@ -400,32 +399,30 @@ public class HRMSPayslipFragment extends Fragment {
             hrmsPayslipPagePaySlipLinkTextViewID.setClickable(false);
             hrmsPayslipPagePaySlipLinkPDF_DownloadImageViewID.setVisibility(View.VISIBLE);
             hrmsPayslipOpenMessageTagTextViewID.setText("");
-            hrmsPayslipOpenMessageTagTextViewID.setText("Note: "+prefs.getString("PAYSLIP_MESSAGE","Please Use Your Employee Code to Open The Payslip"));
+            hrmsPayslipOpenMessageTagTextViewID.setText("Note: " + prefs.getString("PAYSLIP_MESSAGE", "Please Use Your Employee Code to Open The Payslip"));
             showPayslipStatusDialog("Payslip is available!");
-        }
-        else{
-             hrmsPayslipPagePaySlipLinkPDF_DownloadImageViewID.setVisibility(View.GONE);//Added later for PDF Icon Click
-             hrmsPayslipDownloadLinkTagTextViewID.setVisibility(View.GONE);
-             hrmsPayslipPagePaySlipLinkTextViewID.setPaintFlags(hrmsPayslipPagePaySlipLinkTextViewID.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));//Removes Underline
-             if(!PayslipResult.equalsIgnoreCase("")){
-                 hrmsPayslipPagePaySlipLinkTextViewID.setText(PayslipResult);
-                 hrmsPayslipOpenMessageTagTextViewID.setText("");
-                 showPayslipStatusDialog(PayslipResult);
-             }
-            else{
-                 hrmsPayslipPagePaySlipLinkTextViewID.setText("Payslip is not available, try again!");
-                 hrmsPayslipOpenMessageTagTextViewID.setText("");
-                 showPayslipStatusDialog("Payslip is not available!");
-             }
-             hrmsPayslipPagePaySlipLinkTextViewID.setTextColor(Color.RED);
-             hrmsPayslipPagePaySlipLinkTextViewID.setClickable(false);
+        } else {
+            hrmsPayslipPagePaySlipLinkPDF_DownloadImageViewID.setVisibility(View.GONE);//Added later for PDF Icon Click
+            hrmsPayslipDownloadLinkTagTextViewID.setVisibility(View.GONE);
+            hrmsPayslipPagePaySlipLinkTextViewID.setPaintFlags(hrmsPayslipPagePaySlipLinkTextViewID.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));//Removes Underline
+            if (!PayslipResult.equalsIgnoreCase("")) {
+                hrmsPayslipPagePaySlipLinkTextViewID.setText(PayslipResult);
+                hrmsPayslipOpenMessageTagTextViewID.setText("");
+                showPayslipStatusDialog(PayslipResult);
+            } else {
+                hrmsPayslipPagePaySlipLinkTextViewID.setText("Payslip is not available, try again!");
+                hrmsPayslipOpenMessageTagTextViewID.setText("");
+                showPayslipStatusDialog("Payslip is not available!");
+            }
+            hrmsPayslipPagePaySlipLinkTextViewID.setTextColor(Color.RED);
+            hrmsPayslipPagePaySlipLinkTextViewID.setClickable(false);
         }
 
     }
 
-    private void initAllViews(){
+    private void initAllViews() {
         //shared preference
-        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME,getActivity().MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME, getActivity().MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         //Progress Dialog
@@ -435,7 +432,7 @@ public class HRMSPayslipFragment extends Fragment {
     }
 
     //Show Payslip Status Dialog
-    private void showPayslipStatusDialog(String msg){
+    private void showPayslipStatusDialog(String msg) {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(getActivity());
         aldb.setMessage(msg);
@@ -446,10 +443,10 @@ public class HRMSPayslipFragment extends Fragment {
     @Override
     public void onDestroy() {
         try {
-            if((progressDialog != null) && progressDialog.isShowing() ){
+            if ((progressDialog != null) && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-        }catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         } finally {
             progressDialog = null;

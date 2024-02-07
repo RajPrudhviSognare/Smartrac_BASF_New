@@ -9,7 +9,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -41,34 +43,33 @@ public class SplashActivity extends AppCompatActivity {
 
         initAllViews();
 
-        str = prefs.getString("LOGGEDIN","");
-        System.out.println("LOGGEDIN in Splash: "+ str);
+        str = prefs.getString("LOGGEDIN", "");
+        System.out.println("LOGGEDIN in Splash: " + str);
 
-     //   if(str.equalsIgnoreCase("yes")){
-     //       str="";
-     //   }
+        //   if(str.equalsIgnoreCase("yes")){
+        //       str="";
+        //   }
 
         // check for Internet status
-        if (CommonUtils.isInternelAvailable(getApplicationContext())||!CommonUtils.isInternelAvailable(getApplicationContext())) {
+        if (CommonUtils.isInternelAvailable(getApplicationContext()) || !CommonUtils.isInternelAvailable(getApplicationContext())) {
             // Internet Connection is Present
             new Handler().postDelayed(new Runnable() {
 
-            /*
-             * Showing splash screen with a timer. This will be useful when you
-             * want to show case your app logo / company
-             */
+                /*
+                 * Showing splash screen with a timer. This will be useful when you
+                 * want to show case your app logo / company
+                 */
 
                 @Override
                 public void run() {
                     // This method will be executed once when the timer is over
-                    if(str.equalsIgnoreCase("yes")){
-                        Intent intent = new Intent(SplashActivity.this,DashBoardActivity.class);
+                    if (str.equalsIgnoreCase("yes")) {
+                        Intent intent = new Intent(SplashActivity.this, DashBoardActivity.class);
                         SplashActivity.this.finish();
                         startActivity(intent);
                         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-                        Toast.makeText(getApplicationContext(),"Already Loggedin",Toast.LENGTH_SHORT).show();
-                    }
-                    else{
+                        Toast.makeText(getApplicationContext(), "Already Loggedin", Toast.LENGTH_SHORT).show();
+                    } else {
                         Intent i = new Intent(SplashActivity.this, LoginActivity.class);
                         SplashActivity.this.finish();
                         startActivity(i);
@@ -86,19 +87,20 @@ public class SplashActivity extends AppCompatActivity {
         }
     }//onCreate()
 
-    private void initAllViews(){
+    private void initAllViews() {
         //shared preference
-        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME,MODE_PRIVATE);
+        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME, MODE_PRIVATE);
         prefsEditor = prefs.edit();
     }
 
     /**
      * Function to display simple Alert Dialog
+     *
      * @param context - application context
-     * @param title - alert dialog title
+     * @param title   - alert dialog title
      * @param message - alert message
-     * @param status - success/failure (used to set icon)
-     * */
+     * @param status  - success/failure (used to set icon)
+     */
     public void showAlertDialog(Context context, String title, String message, Boolean status) {
         final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         // Setting Dialog Title

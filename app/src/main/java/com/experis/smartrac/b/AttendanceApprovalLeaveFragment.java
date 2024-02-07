@@ -8,8 +8,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AlertDialog;
+
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -61,7 +63,7 @@ public class AttendanceApprovalLeaveFragment extends Fragment {
     private Button attendanceapprovalIntimeGetDetailsBtnID;
     private LinearLayout attendanceapprovalIntimeLayoutID;
 
-    private  AutoCompleteTextView InOutTimetextTAGViewID199copy;
+    private AutoCompleteTextView InOutTimetextTAGViewID199copy;
     private ImageView search;
 
     private View headerView = null;
@@ -95,7 +97,7 @@ public class AttendanceApprovalLeaveFragment extends Fragment {
     private String TAG_JOBJECT_DATA = "data";
     private String TAG_JARRAY_PENDINGDATELIST = "pending_date";
     private String TAG_JARRAY_ATTENDANCEDATALIST = "attendance_data";
-private String TAG_MESSAGE_VALUE="";
+    private String TAG_MESSAGE_VALUE = "";
     private String TAG_ATTENDANCE_DATE = "attendance_date";
     private String TAG_DATE_SELECTED = "selected";
 
@@ -141,8 +143,8 @@ private String TAG_MESSAGE_VALUE="";
     private TextView attendanceApprovalNoDataTextViewID;
 
     private View view = null;
-    private ArrayList<String> Employeelist=new ArrayList<String>();
-    private  ArrayList<String> Employeelistid=new ArrayList<String>();
+    private ArrayList<String> Employeelist = new ArrayList<String>();
+    private ArrayList<String> Employeelistid = new ArrayList<String>();
     private String baseURL;
     private String SOAPRequestXML;
     private HttpResponse httpResponse = null;
@@ -189,26 +191,26 @@ private String TAG_MESSAGE_VALUE="";
         //Toast.makeText(getActivity(),"In Time Fragment",Toast.LENGTH_LONG).show();
         // Inflate the layout for this fragment
 
-        if(view==null){
+        if (view == null) {
 
             view = inflater.inflate(R.layout.attendance_approval_leave_fragment, container, false);
 
-           // attendanceapprovalIntimeSpinner = (Spinner)view.findViewById(R.id.attendanceapprovalIntimeSpinner2);
-            attendanceApprovalDetailsListViewID = (ListView)view.findViewById(R.id.attendanceApprovalDetailsListViewID2);
+            // attendanceapprovalIntimeSpinner = (Spinner)view.findViewById(R.id.attendanceapprovalIntimeSpinner2);
+            attendanceApprovalDetailsListViewID = (ListView) view.findViewById(R.id.attendanceApprovalDetailsListViewID2);
 
-            approveattendance_checkBox_header = (CheckBox)view.findViewById(R.id.approveattendance_checkBox_header2);
-            approveattendance_headerApproveImageViewID = (ImageView)view.findViewById(R.id.approveattendance_headerApproveImageViewID2);
-            rejectattendance_headerRejectImageViewID = (ImageView)view.findViewById(R.id.rejectattendance_headerRejectImageViewID2);
+            approveattendance_checkBox_header = (CheckBox) view.findViewById(R.id.approveattendance_checkBox_header2);
+            approveattendance_headerApproveImageViewID = (ImageView) view.findViewById(R.id.approveattendance_headerApproveImageViewID2);
+            rejectattendance_headerRejectImageViewID = (ImageView) view.findViewById(R.id.rejectattendance_headerRejectImageViewID2);
 
-            attendanceApprovalNoDataTextViewID = (TextView)view.findViewById(R.id.attendanceApprovalNoDataTextViewID2);
+            attendanceApprovalNoDataTextViewID = (TextView) view.findViewById(R.id.attendanceApprovalNoDataTextViewID2);
 
-            attendanceapprovalIntimeGetDetailsBtnID = (Button)view.findViewById(R.id.attendanceapprovalIntimeGetDetailsBtnID2);
+            attendanceapprovalIntimeGetDetailsBtnID = (Button) view.findViewById(R.id.attendanceapprovalIntimeGetDetailsBtnID2);
             attendanceapprovalIntimeLayoutID = (LinearLayout) view.findViewById(R.id.attendanceapprovalIntimeLayoutID2);
-            InOutTimetextTAGViewID199copy=(AutoCompleteTextView)view.findViewById(R.id.InOutTimetextTAGViewID199copy);
-            search=(ImageView)view.findViewById(R.id.search);
+            InOutTimetextTAGViewID199copy = (AutoCompleteTextView) view.findViewById(R.id.InOutTimetextTAGViewID199copy);
+            search = (ImageView) view.findViewById(R.id.search);
 
         }//if(view==null)
-        else{
+        else {
             //((ViewGroup) view.getParent()).removeView(view);
         }
 
@@ -225,10 +227,10 @@ private String TAG_MESSAGE_VALUE="";
 
     }
 
-    private void initAllViews(){
+    private void initAllViews() {
 
         //shared preference
-        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME,getActivity().MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME, getActivity().MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         attendance_dateList = new ArrayList<String>(0);
@@ -254,16 +256,14 @@ private String TAG_MESSAGE_VALUE="";
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState){
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
 
-
-        if(CommonUtils.isInternelAvailable(getActivity())){
+        if (CommonUtils.isInternelAvailable(getActivity())) {
             System.out.println("requestEmployeeList() called inside onActivityCreated()of AttendanceApprovalLeaveFragment");
             requestEmployeeList();
-        }
-        else{
+        } else {
             Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_SHORT).show();
         }
 
@@ -295,12 +295,11 @@ private String TAG_MESSAGE_VALUE="";
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(CommonUtils.isInternelAvailable(getActivity())){
+                if (CommonUtils.isInternelAvailable(getActivity())) {
                     //  requestAttendanceList(Employeelistid.get(position));
 
                     getLeaveDetails(InOutTimetextTAGViewID199copy.getText().toString().trim());
-                }
-                else{
+                } else {
                     Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -344,69 +343,68 @@ private String TAG_MESSAGE_VALUE="";
         });*/
 
 
+        approveattendance_checkBox_header.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-            approveattendance_checkBox_header.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                    if (isChecked) {
-                        for (int i = 0; i < attendanceidList.size(); i++) {
-                            checkedItems[i] = true;
-                        }
-                        selectionSet.clear();
-                        isAllChecked = true;
-                        attendanceApprovalDetailsListViewID.setAdapter(null);
-                        attendanceApprovalDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(getActivity()));
-
-                        for (int j = 0; j < attendanceidList.size(); j++) {
-                            selectionSet.add(attendanceidList.get(j));
-                        }
-                        System.out.println("Selection ID list: " + selectionSet.toString());
-                        System.out.println("Selection ID list size: " + selectionSet.size());
+                if (isChecked) {
+                    for (int i = 0; i < attendanceidList.size(); i++) {
+                        checkedItems[i] = true;
                     }
-                    if (!isChecked) {
-                        selectionSet.clear();
-                        isAllChecked = false;
-                        System.out.println("Selection ID list: " + selectionSet.toString());
-                        System.out.println("Selection ID list size: " + selectionSet.size());
-                        attendanceApprovalDetailsListViewID.setAdapter(null);
-                        attendanceApprovalDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(getActivity()));
-                    }
+                    selectionSet.clear();
+                    isAllChecked = true;
+                    attendanceApprovalDetailsListViewID.setAdapter(null);
+                    attendanceApprovalDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(getActivity()));
 
+                    for (int j = 0; j < attendanceidList.size(); j++) {
+                        selectionSet.add(attendanceidList.get(j));
+                    }
+                    System.out.println("Selection ID list: " + selectionSet.toString());
+                    System.out.println("Selection ID list size: " + selectionSet.size());
                 }
-            });
+                if (!isChecked) {
+                    selectionSet.clear();
+                    isAllChecked = false;
+                    System.out.println("Selection ID list: " + selectionSet.toString());
+                    System.out.println("Selection ID list size: " + selectionSet.size());
+                    attendanceApprovalDetailsListViewID.setAdapter(null);
+                    attendanceApprovalDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(getActivity()));
+                }
+
+            }
+        });
 
 
         //Approve Button Click
-        approveattendance_headerApproveImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        approveattendance_headerApproveImageViewID.setOnClickListener(new ImageView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if(selectionSet.size()==0){
+                if (selectionSet.size() == 0) {
                     Toast.makeText(getActivity(), "No Associate is selected!", Toast.LENGTH_SHORT).show();
                 }//if(selectionSet.size()==0)
 
-                if(selectionSet.size()!=0){
+                if (selectionSet.size() != 0) {
                     String value1[] = selectionSet.toArray(new String[selectionSet.size()]);
                     int size1 = value1.length;
-                    if(size1!=0){
-                        for(int i=0;i<value1.length;i++){
-                            System.out.println("Set to String: "+value1[i]);
+                    if (size1 != 0) {
+                        for (int i = 0; i < value1.length; i++) {
+                            System.out.println("Set to String: " + value1[i]);
                         }
-                        System.out.println("Set to String: "+value1);
+                        System.out.println("Set to String: " + value1);
 
                     }//if(size1!=0)
-                    if(value1.length!=0){
+                    if (value1.length != 0) {
                         JSONArray jsonArrayFriends = new JSONArray();
-                        for(int i=0;i<value1.length;i++){
+                        for (int i = 0; i < value1.length; i++) {
                             jsonArrayFriends.put(Integer.valueOf(value1[i]));
                         }
 
-                        System.out.println("jsonArrayFriends: "+jsonArrayFriends);
-                        System.out.println("jsonArrayFriendsToString: "+jsonArrayFriends.toString());
+                        System.out.println("jsonArrayFriends: " + jsonArrayFriends);
+                        System.out.println("jsonArrayFriendsToString: " + jsonArrayFriends.toString());
 
-                     //   SendRequestForApproveOrReject(jsonArrayFriends,"Approved",selectedDateFromSpinner);
+                        //   SendRequestForApproveOrReject(jsonArrayFriends,"Approved",selectedDateFromSpinner);
                         //sendApproveForLeave(jsonArrayFriends,"Approved",selectedDateFromSpinner);
 
                     }//if(value1.length!=0)
@@ -417,35 +415,35 @@ private String TAG_MESSAGE_VALUE="";
         });
 
         //Reject Button Click
-        rejectattendance_headerRejectImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        rejectattendance_headerRejectImageViewID.setOnClickListener(new ImageView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if(selectionSet.size()==0){
+                if (selectionSet.size() == 0) {
                     Toast.makeText(getActivity(), "No Associate is selected!", Toast.LENGTH_SHORT).show();
                 }//if(selectionSet.size()==0)
 
-                if(selectionSet.size()!=0){
+                if (selectionSet.size() != 0) {
                     String value1[] = selectionSet.toArray(new String[selectionSet.size()]);
                     int size1 = value1.length;
-                    if(size1!=0){
-                        for(int i=0;i<value1.length;i++){
-                            System.out.println("Set to String: "+value1[i]);
+                    if (size1 != 0) {
+                        for (int i = 0; i < value1.length; i++) {
+                            System.out.println("Set to String: " + value1[i]);
                         }
-                        System.out.println("Set to String: "+value1);
+                        System.out.println("Set to String: " + value1);
 
                     }//if(size1!=0)
-                    if(value1.length!=0){
+                    if (value1.length != 0) {
                         JSONArray jsonArrayFriends = new JSONArray();
-                        for(int i=0;i<value1.length;i++){
+                        for (int i = 0; i < value1.length; i++) {
                             jsonArrayFriends.put(Integer.valueOf(value1[i]));
                         }
 
-                        System.out.println("jsonArrayFriends: "+jsonArrayFriends);
-                        System.out.println("jsonArrayFriendsToString: "+jsonArrayFriends.toString());
+                        System.out.println("jsonArrayFriends: " + jsonArrayFriends);
+                        System.out.println("jsonArrayFriendsToString: " + jsonArrayFriends.toString());
 
-                        SendRequestForApproveOrReject(jsonArrayFriends,"Rejected",selectedDateFromSpinner);
+                        SendRequestForApproveOrReject(jsonArrayFriends, "Rejected", selectedDateFromSpinner);
 
                     }//if(value1.length!=0)
 
@@ -455,36 +453,35 @@ private String TAG_MESSAGE_VALUE="";
         });
 
 
-
     }//onActivityCreated(Bundle savedInstanceState)
 
-    private void SendRequestForApproveOrReject(JSONArray jsonArrayFriends,String actionType,String selectedDateFromSpinner){
+    private void SendRequestForApproveOrReject(JSONArray jsonArrayFriends, String actionType, String selectedDateFromSpinner) {
 
         actionType1 = actionType;
         JSONObject jObj = null;
         jObj = new JSONObject();
         try {
-            jObj.put("ids",jsonArrayFriends);
+            jObj.put("ids", jsonArrayFriends);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         System.out.println("jObj: " + jObj);
-        if(actionType.equalsIgnoreCase("Approved")){
+        if (actionType.equalsIgnoreCase("Approved")) {
             //progressDialog.setTitle("Leave Attendance Approval");
         }
-        if(actionType.equalsIgnoreCase("Rejected")){
+        if (actionType.equalsIgnoreCase("Rejected")) {
             //progressDialog.setTitle("Leave Attendance Reject");
         }
         progressDialog.setMessage("Processing... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        client = new RestFullClient(Constants.BASE_URL+Constants.ATTENDANCE_APPROVALREJECTION_RELATIVE_URI);
+        client = new RestFullClient(Constants.BASE_URL + Constants.ATTENDANCE_APPROVALREJECTION_RELATIVE_URI);
         //client.AddParam("m_date", selectedDateFromSpinner);
         //client.AddParam("tl_id", prefs.getString("USERID",""));
         client.AddParam("action", actionType);
         //client.AddParam("type", TAG_ATTENDANCE_TYPE);
         client.AddParam("attendance_ids", jObj.toString());
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
@@ -503,7 +500,8 @@ private String TAG_MESSAGE_VALUE="";
 
         }).start();
     }
-    private void receiveDataForServerResponse1(JSONObject jobj){
+
+    private void receiveDataForServerResponse1(JSONObject jobj) {
 
         try {
 
@@ -530,17 +528,18 @@ private String TAG_MESSAGE_VALUE="";
         }
 
     }
-    Handler handler1 = new Handler(){
 
-        public void handleMessage(Message msg){
+    Handler handler1 = new Handler() {
+
+        public void handleMessage(Message msg) {
 
             progressDialog.dismiss();
 
             //Success
-            if(client.responseCode==200){
+            if (client.responseCode == 200) {
 
                 //Success
-                if(STATUS.equalsIgnoreCase("true")){
+                if (STATUS.equalsIgnoreCase("true")) {
                     showSuccessDialog();
                     selectionSet.clear();
                     approveattendance_checkBox_header.setChecked(false);
@@ -548,13 +547,13 @@ private String TAG_MESSAGE_VALUE="";
 
                 }
                 //Failed
-                if(STATUS.equalsIgnoreCase("false")){
+                if (STATUS.equalsIgnoreCase("false")) {
                     //showRetryDialog();
                     showFailureDialog();
                 }
             }
             //Failed
-            if(client.responseCode!=200){
+            if (client.responseCode != 200) {
                 //Toast.makeText(getActivity(), MESSAGE, Toast.LENGTH_SHORT).show();
                 //showRetryDialog();
                 showFailureDialog();
@@ -563,16 +562,17 @@ private String TAG_MESSAGE_VALUE="";
         }//handleMessage(Message msg)
 
     };
+
     //Show Success Dialog
-    private void showSuccessDialog(){
+    private void showSuccessDialog() {
         //Alert Dialog Builder
         android.app.AlertDialog.Builder aldb = new android.app.AlertDialog.Builder(getActivity());
         aldb.setTitle("Success!");
         aldb.setCancelable(false);
-        if(actionType1.equalsIgnoreCase("Approved")){
+        if (actionType1.equalsIgnoreCase("Approved")) {
             aldb.setMessage("You Have Successfully Approved Selected Associates' Leave. \n\nThank You");
         }
-        if(actionType1.equalsIgnoreCase("Rejected")){
+        if (actionType1.equalsIgnoreCase("Rejected")) {
             aldb.setMessage("You Have Successfully Rejected Selected Associates' Leave. \n\nThank You");
         }
         aldb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -606,7 +606,7 @@ private String TAG_MESSAGE_VALUE="";
     }
 
 
-    private void requestAttendanceList(String empid){
+    private void requestAttendanceList(String empid) {
 
         attendanceApprovalNoDataTextViewID.setVisibility(View.GONE);
         attendance_dateList.clear();
@@ -628,17 +628,16 @@ private String TAG_MESSAGE_VALUE="";
         progressDialog.setMessage("Loading... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        client = new RestFullClient(Constants.BASE_URL+Constants.ATTENDANCE_APPROVAL_RELATIVE_URI);
-        if(selectedDateFromSpinner!=null){
+        client = new RestFullClient(Constants.BASE_URL + Constants.ATTENDANCE_APPROVAL_RELATIVE_URI);
+        if (selectedDateFromSpinner != null) {
             client.AddParam("m_date", selectedDateFromSpinner);
-        }
-        else{
+        } else {
             client.AddParam("m_date", "");
         }
         client.AddParam("type", TAG_ATTENDANCE_TYPE);
-        client.AddParam("tl_id", prefs.getString("USERID",""));
+        client.AddParam("tl_id", prefs.getString("USERID", ""));
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
@@ -658,19 +657,20 @@ private String TAG_MESSAGE_VALUE="";
         }).start();
 
     }
-    private void receiveDataForServerResponse(JSONObject jobj){
 
-        try{
+    private void receiveDataForServerResponse(JSONObject jobj) {
 
-            if(client.responseCode==200){
+        try {
 
-                STATUS =  jobj.getString(TAG_STATUS);
-                MESSAGE =  jobj.getString(TAG_MESSAGE);
+            if (client.responseCode == 200) {
 
-                System.out.println("STATUS: responseCode==200: "+ STATUS);
-                System.out.println("MESSAGE: responseCode==200: "+ MESSAGE);
+                STATUS = jobj.getString(TAG_STATUS);
+                MESSAGE = jobj.getString(TAG_MESSAGE);
 
-                if(STATUS.equalsIgnoreCase("true")) {
+                System.out.println("STATUS: responseCode==200: " + STATUS);
+                System.out.println("MESSAGE: responseCode==200: " + MESSAGE);
+
+                if (STATUS.equalsIgnoreCase("true")) {
 
                     JOBJECT_DATA = jobj.getJSONObject(TAG_JOBJECT_DATA);
                     System.out.println("JOBJECT_DATA: " + JOBJECT_DATA.toString());
@@ -682,7 +682,7 @@ private String TAG_MESSAGE_VALUE="";
                         System.out.println("Total Pending Date List: " + pendingDateArray.length());
 
                         PARTICULAR_DATE = JOBJECT_DATA.getString(TAG_PARTICULAR_DATE);
-                        System.out.println("PARTICULAR_DATE: "+ PARTICULAR_DATE);
+                        System.out.println("PARTICULAR_DATE: " + PARTICULAR_DATE);
 
                         JSONArray attendanceDataArray = JOBJECT_DATA.getJSONArray(TAG_JARRAY_ATTENDANCEDATALIST);
                         System.out.println("Attendance Data List: " + attendanceDataArray.toString());
@@ -711,13 +711,13 @@ private String TAG_MESSAGE_VALUE="";
                         attendance_dateList.clear();
                         selectedList.clear();
 
-                        if(pendingDateArray.length()==0){
+                        if (pendingDateArray.length() == 0) {
                             //attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE);
-                            System.out.println("Inside 'if(pendingDateArray.length()==0)': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): "+attendanceApprovalNoDataTextViewID.getVisibility());
+                            System.out.println("Inside 'if(pendingDateArray.length()==0)': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): " + attendanceApprovalNoDataTextViewID.getVisibility());
                         }
-                        if(pendingDateArray.length()!=0){
+                        if (pendingDateArray.length() != 0) {
 
-                            for(int i = 0; i < pendingDateArray.length(); i++) {
+                            for (int i = 0; i < pendingDateArray.length(); i++) {
 
                                 try {
                                     c = pendingDateArray.getJSONObject(i);
@@ -731,7 +731,7 @@ private String TAG_MESSAGE_VALUE="";
                                         selectedList.add(selected);
                                         //selectedList.add(String.valueOf(selected));
 
-                                        if(Integer.parseInt(selected)==1){
+                                        if (Integer.parseInt(selected) == 1) {
                                             //if(selected==1){
                                             attendanceSelectedDatePosition = i;
                                         }
@@ -763,11 +763,11 @@ private String TAG_MESSAGE_VALUE="";
                         attendance_leavetypeList.clear();
                         associate_isdList.clear();
 
-                        if(attendanceDataArray.length()==0){
+                        if (attendanceDataArray.length() == 0) {
                             //attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE);
-                            System.out.println("Inside 'if(pendingDateArray.length()==0)': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): "+attendanceApprovalNoDataTextViewID.getVisibility());
+                            System.out.println("Inside 'if(pendingDateArray.length()==0)': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): " + attendanceApprovalNoDataTextViewID.getVisibility());
                         }
-                        if(attendanceDataArray.length()!=0){
+                        if (attendanceDataArray.length() != 0) {
 
                             for (int i = 0; i < attendanceDataArray.length(); i++) {
 
@@ -793,7 +793,7 @@ private String TAG_MESSAGE_VALUE="";
                                         first_nameList.add(first_name);
                                         last_nameList.add(last_name);
                                         attendance_timeList.add(attendance_time);
-                                        attendance_imageList.add(Constants.BASE_URL_ATTENDANCE_LOGO+attendance_image);
+                                        attendance_imageList.add(Constants.BASE_URL_ATTENDANCE_LOGO + attendance_image);
                                         attendance_leavedateList.add(attendance_leavedate);
                                         attendance_leavereasonList.add(attendance_leavereason);
                                         attendance_leavetypeList.add(attendance_leavetype);
@@ -820,56 +820,56 @@ private String TAG_MESSAGE_VALUE="";
                         System.out.println("##########End Of All Attendance Data List details###################");
 
 
-
                     }//if (JOBJECT_DATA != null)
-                    else{
+                    else {
                         System.out.println("JOBJECT_DATA is Null");
                     }
 
                 }//if(STATUS.equalsIgnoreCase("true")
 
             }//if(client.responseCode==200)
-            if(client.responseCode!=200){
+            if (client.responseCode != 200) {
 
-                STATUS =  jobj.getString(TAG_STATUS);
-                MESSAGE =  jobj.getString(TAG_MESSAGE);
+                STATUS = jobj.getString(TAG_STATUS);
+                MESSAGE = jobj.getString(TAG_MESSAGE);
 
-                System.out.println("STATUS: responseCode!=200: "+ STATUS);
-                System.out.println("MESSAGE: responseCode!=200: "+ MESSAGE);
+                System.out.println("STATUS: responseCode!=200: " + STATUS);
+                System.out.println("MESSAGE: responseCode!=200: " + MESSAGE);
 
             }//if(client.responseCode!=200)
 
+        } catch (Exception e) {
         }
-        catch(Exception e){}
 
     }
-    Handler handler = new Handler(){
 
-        public void handleMessage(Message msg){
+    Handler handler = new Handler() {
+
+        public void handleMessage(Message msg) {
 
             progressDialog.dismiss();
 
             //Success
-            if(client.responseCode==200){
+            if (client.responseCode == 200) {
 
                 //Toast.makeText(SignupActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
 
                 //Login success
-                if(STATUS.equalsIgnoreCase("true")){
+                if (STATUS.equalsIgnoreCase("true")) {
                     //showSuccessDialog();
                     //Toast.makeText(getActivity(), MESSAGE, Toast.LENGTH_SHORT).show();
                     showAttendanceDetails();
                 }
 
                 //Login failed
-                if(STATUS.equalsIgnoreCase("false")){
+                if (STATUS.equalsIgnoreCase("false")) {
                     showFailureDialog();
                 }
 
             }
 
             //Login failed
-            if(client.responseCode!=200){
+            if (client.responseCode != 200) {
                 //Toast.makeText(getActivity(), MESSAGE, Toast.LENGTH_SHORT).show();
                 showFailureDialog();
             }
@@ -877,48 +877,50 @@ private String TAG_MESSAGE_VALUE="";
         }//handleMessage(Message msg)
 
     };
+
     //Show failure Dialog
-    private void showFailureDialog(){
+    private void showFailureDialog() {
         //Alert Dialog Builder
         AlertDialog.Builder aldb = new AlertDialog.Builder(getActivity());
         aldb.setTitle("Failed!");
-        aldb.setMessage("\nReason: "+MESSAGE);
+        aldb.setMessage("\nReason: " + MESSAGE);
         aldb.setPositiveButton("OK", null);
         aldb.show();
     }
 
-    private void showAttendanceDetails(){
+    private void showAttendanceDetails() {
 
-      /*  SetDropDownItems();*/
+        /*  SetDropDownItems();*/
         setAttendanceListView();
     }
-    private void SetDropDownItems(){
-        if(attendance_dateList.size()!=0){
-            ArrayAdapter dataAdapter = new ArrayAdapter (getActivity(), android.R.layout.simple_spinner_item, attendance_dateList);
+
+    private void SetDropDownItems() {
+        if (attendance_dateList.size() != 0) {
+            ArrayAdapter dataAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, attendance_dateList);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             attendanceapprovalIntimeSpinner.setAdapter(dataAdapter);
-            System.out.println("Selected Spinner Item Position: "+ attendanceSelectedDatePosition);
+            System.out.println("Selected Spinner Item Position: " + attendanceSelectedDatePosition);
             attendanceapprovalIntimeSpinner.setSelection(attendanceSelectedDatePosition);
-        }
-        else{
+        } else {
             attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE);
-            System.out.println("Inside 'SetDropDownItems()': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): "+attendanceApprovalNoDataTextViewID.getVisibility());
+            System.out.println("Inside 'SetDropDownItems()': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): " + attendanceApprovalNoDataTextViewID.getVisibility());
         }
     }
-    private void setAttendanceListView(){
+
+    private void setAttendanceListView() {
 
         checkedItems = new boolean[attendanceidList.size()];
         attendanceApprovalDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(getActivity()));
     }
 
     /*
-    * CustomAdapterForAttendanceDetails
-    */
+     * CustomAdapterForAttendanceDetails
+     */
     public class CustomAdapterForAttendanceDetails extends BaseAdapter {
 
         public Context cntx;
 
-        public CustomAdapterForAttendanceDetails(Context context){
+        public CustomAdapterForAttendanceDetails(Context context) {
             cntx = context;
         }
 
@@ -953,6 +955,7 @@ private String TAG_MESSAGE_VALUE="";
             //return 1;
             return 2;
         }
+
         @Override
         public int getItemViewType(int position) {
             // TODO Auto-generated method stub
@@ -967,12 +970,11 @@ private String TAG_MESSAGE_VALUE="";
             View view;
             ViewHolder viewHolder = new ViewHolder();
 
-            if(convertView==null){
+            if (convertView == null) {
 
-                LayoutInflater inflater = (LayoutInflater)cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.custom_layout_for_attendance_approval_allleavetypes1, null);
-            }
-            else{
+            } else {
 
                 view = convertView;
             }
@@ -980,27 +982,27 @@ private String TAG_MESSAGE_VALUE="";
             view.setTag(viewHolder);
             final int pos1 = position;
 
-            final TextView nameTextView = (TextView)view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_NameTextViewID);
-            final TextView idTextView = (TextView)view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_IDTextViewID);
+            final TextView nameTextView = (TextView) view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_NameTextViewID);
+            final TextView idTextView = (TextView) view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_IDTextViewID);
             //final ImageView selfieImage = (ImageView)view.findViewById(R.id.custom_approveattendance_SelfieImageViewID);
             //final TextView timeTextView = (TextView)view.findViewById(R.id.custom_approveattendance_TimeTextViewID);
-            final TextView dateTextView = (TextView)view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_DateTextViewID);
-            final TextView reasonTextView = (TextView)view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_ReasonTextViewID);
-            final TextView leaveTypeTextView = (TextView)view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_TypeTextViewID);
+            final TextView dateTextView = (TextView) view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_DateTextViewID);
+            final TextView reasonTextView = (TextView) view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_ReasonTextViewID);
+            final TextView leaveTypeTextView = (TextView) view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_TypeTextViewID);
             leaveTypeTextView.setVisibility(View.VISIBLE);
 
-            viewHolder.checkbox = (CheckBox)view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_checkBoxID);
-            final  Button approve=(Button)view.findViewById(R.id.approve);
-            final  Button reject=(Button)view.findViewById(R.id.reject);
+            viewHolder.checkbox = (CheckBox) view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_checkBoxID);
+            final Button approve = (Button) view.findViewById(R.id.approve);
+            final Button reject = (Button) view.findViewById(R.id.reject);
             //viewHolder.selfieImage = (ImageView)view.findViewById(R.id.custom_approveattendance_SelfieImageViewID);
 
-            final ViewHolder holder = (ViewHolder)view.getTag();
+            final ViewHolder holder = (ViewHolder) view.getTag();
 
             nameTextView.setText(first_nameList.get(position));
-            idTextView.setText("ISD: "+associate_idList.get(position));
-            dateTextView.setText("Date: "+attendance_leavedateList.get(position));
-            leaveTypeTextView.setText("Type: "+attendance_leavetypeList.get(position));
-            reasonTextView.setText("Reason: "+attendance_leavereasonList.get(position));
+            idTextView.setText("ISD: " + associate_idList.get(position));
+            dateTextView.setText("Date: " + attendance_leavedateList.get(position));
+            leaveTypeTextView.setText("Type: " + attendance_leavetypeList.get(position));
+            reasonTextView.setText("Reason: " + attendance_leavereasonList.get(position));
             //timeTextView.setText(attendance_timeList.get(position));
             //imageLoader.DisplayImage(attendance_imageList.get(position), holder.selfieImage);
 
@@ -1012,37 +1014,37 @@ private String TAG_MESSAGE_VALUE="";
             approve.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    sendApproveForLeave(attendanceidList.get(pos1),"Approved",selectedDateFromSpinner);
+                    sendApproveForLeave(attendanceidList.get(pos1), "Approved", selectedDateFromSpinner);
                 }
             });
 
             reject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    sendApproveForLeave(attendanceidList.get(pos1),"Rejected",selectedDateFromSpinner);
+                    sendApproveForLeave(attendanceidList.get(pos1), "Rejected", selectedDateFromSpinner);
                 }
             });
 
-            if(isAllChecked){
+            if (isAllChecked) {
                 holder.checkbox.setChecked(checkedItems[position]);
             }
 
-           // if(selectionSet.size()<1) {
-                //Checkbox is checked
-                holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            // if(selectionSet.size()<1) {
+            //Checkbox is checked
+            holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        // TODO Auto-generated method stub
-
-
-                       // isAllChecked = false;
-                       // attendanceApprovalDetailsListViewID.setAdapter(null);
-                       // attendanceApprovalDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(getActivity()));
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    // TODO Auto-generated method stub
 
 
-                       // holder.checkbox.setChecked(checkedItems[position]);
-                        if (isChecked) {
+                    // isAllChecked = false;
+                    // attendanceApprovalDetailsListViewID.setAdapter(null);
+                    // attendanceApprovalDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(getActivity()));
+
+
+                    // holder.checkbox.setChecked(checkedItems[position]);
+                    if (isChecked) {
 
                            /* selectionSet.clear();
                             for (int i = 0; i < attendanceidList.size(); i++) {
@@ -1055,24 +1057,24 @@ private String TAG_MESSAGE_VALUE="";
                             holder.checkbox.setChecked(checkedItems[position]);
 */
 
-                            //Toast.makeText(getActivity(), "Checked at "+String.valueOf(pos1), Toast.LENGTH_SHORT).show();
-                            selectionSet.add(attendanceidList.get(pos1));
-                            System.out.println("Selection ID list: " + selectionSet.toString());
-                            System.out.println("Total Set size(After Add): " + selectionSet.size());
-                        }
-                        if (!isChecked) {
-
-
-                            //Toast.makeText(getActivity(), "UnChecked at "+String.valueOf(pos1), Toast.LENGTH_SHORT).show();
-                            selectionSet.remove(attendanceidList.get(pos1));
-                            System.out.println("Selection ID list: " + selectionSet.toString());
-                            System.out.println("Total Set size(After Remove): " + selectionSet.size());
-
-                        }//if
-
+                        //Toast.makeText(getActivity(), "Checked at "+String.valueOf(pos1), Toast.LENGTH_SHORT).show();
+                        selectionSet.add(attendanceidList.get(pos1));
+                        System.out.println("Selection ID list: " + selectionSet.toString());
+                        System.out.println("Total Set size(After Add): " + selectionSet.size());
                     }
+                    if (!isChecked) {
 
-                });
+
+                        //Toast.makeText(getActivity(), "UnChecked at "+String.valueOf(pos1), Toast.LENGTH_SHORT).show();
+                        selectionSet.remove(attendanceidList.get(pos1));
+                        System.out.println("Selection ID list: " + selectionSet.toString());
+                        System.out.println("Total Set size(After Remove): " + selectionSet.size());
+
+                    }//if
+
+                }
+
+            });
          /*   }
             else{
                 holder.checkbox.setClickable(false);
@@ -1093,17 +1095,17 @@ private String TAG_MESSAGE_VALUE="";
 
         }
 
-        class ViewHolder{
+        class ViewHolder {
             CheckBox checkbox;
             //ImageView selfieImage;
         }
 
     }//CustomAdapterForAttendanceDetails Class
 
-    private void displayLargeSelfie(String imageURL){
+    private void displayLargeSelfie(String imageURL) {
         final String url = imageURL;
         Intent i = new Intent(getActivity(), LargerSelfieImageDisplayActivity.class);
-        i.putExtra("IMAGEPATH",url);
+        i.putExtra("IMAGEPATH", url);
         getActivity().startActivity(i);
     }
 
@@ -1112,12 +1114,14 @@ private String TAG_MESSAGE_VALUE="";
     public void onAttach(Context context) {
         super.onAttach(context);
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
        /* if(CommonUtils.isInternelAvailable(getActivity())){
             System.out.println("requestAttendanceList() called inside onResume()");
@@ -1127,42 +1131,43 @@ private String TAG_MESSAGE_VALUE="";
             Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_SHORT).show();
         }*/
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
 
     @Override
-    public void onDestroyView(){
+    public void onDestroyView() {
         super.onDestroyView();
     }
 
 
-    private void requestEmployeeList(){
-        Employeelist=new ArrayList<String>();
-        Employeelistid=new ArrayList<String>();
+    private void requestEmployeeList() {
+        Employeelist = new ArrayList<String>();
+        Employeelistid = new ArrayList<String>();
         progressDialog.setMessage("Requesting... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        String clientid = prefs.getString("USERISDCODE","");
+        String clientid = prefs.getString("USERISDCODE", "");
 
 
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:EmployeeImplantMapping>"
+                + "<soapenv:Body>"
+                + "<tem:EmployeeImplantMapping>"
                 //+"<tem:emp_code>"+100172254+"</tem:emp_code>"
-                +"<tem:implant_userid>"+clientid+"</tem:implant_userid>"
-                +"</tem:EmployeeImplantMapping>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "<tem:implant_userid>" + clientid + "</tem:implant_userid>"
+                + "</tem:EmployeeImplantMapping>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -1186,18 +1191,17 @@ private String TAG_MESSAGE_VALUE="";
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.println("Server Response = "+Response);
+                    System.out.println("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
-                    System.out.println("Server status code = "+status.getStatusCode());
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + status.getStatusCode());
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForLeaveDetails(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -1211,7 +1215,7 @@ private String TAG_MESSAGE_VALUE="";
     }
 
     //getParsingElementsForEmployeeDetails(xpp);
-    public void getParsingElementsForLeaveDetails(XmlPullParser xpp){
+    public void getParsingElementsForLeaveDetails(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -1223,23 +1227,23 @@ private String TAG_MESSAGE_VALUE="";
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
 
-                        if(tagname.equalsIgnoreCase("EmpCode")){
+                        if (tagname.equalsIgnoreCase("EmpCode")) {
                             empcode = text;
                             text = "";
-                            System.out.println("empcode: "+empcode);
+                            System.out.println("empcode: " + empcode);
                             Employeelistid.add(empcode);
                         }
-                        if(tagname.equalsIgnoreCase("EmpName")){
+                        if (tagname.equalsIgnoreCase("EmpName")) {
 
                             empname = text;
 
                             text = "";
-                            System.out.println("empname: "+empname);
+                            System.out.println("empname: " + empname);
                             Employeelist.add(empname);
                         }
                         break;
@@ -1262,14 +1266,14 @@ private String TAG_MESSAGE_VALUE="";
 
     }//getParsingElementsForLogin(xpp);
 
-    Handler handler2 = new Handler(){
+    Handler handler2 = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
@@ -1281,7 +1285,7 @@ private String TAG_MESSAGE_VALUE="";
     private void setEmployeelist() {
         if (Employeelist != null) {
 
-           // SetDropDownItems();
+            // SetDropDownItems();
            /* if(prefs.getString("USERGENDER","").equalsIgnoreCase("Male")){
                 Employeelist.remove(3);
                 Employeelistid.remove(3);
@@ -1294,33 +1298,28 @@ private String TAG_MESSAGE_VALUE="";
             }*/
 
 
-
-            if(Employeelist.size()!=0){
-                ArrayAdapter dataAdapter = new ArrayAdapter (getActivity(), android.R.layout.simple_spinner_item, Employeelistid);
-               /* dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
+            if (Employeelist.size() != 0) {
+                ArrayAdapter dataAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, Employeelistid);
+                /* dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
                 dataAdapter.setDropDownViewResource(R.layout.spinner_item);
                 InOutTimetextTAGViewID199copy.setAdapter(dataAdapter);
                /* attendanceapprovalIntimeSpinner.setAdapter(dataAdapter);
                 //System.out.println("Selected Spinner Item Position: "+ attendanceSelectedDatePosition);
                 attendanceapprovalIntimeSpinner.setSelection(attendanceSelectedDatePosition);*/
-            }
-            else{
+            } else {
                 attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE);
-                System.out.println("Inside 'SetDropDownItems()': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): "+attendanceApprovalNoDataTextViewID.getVisibility());
+                System.out.println("Inside 'SetDropDownItems()': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): " + attendanceApprovalNoDataTextViewID.getVisibility());
             }
-
-
-
 
 
         }
 
 
-       // getLeaveDetails();
+        // getLeaveDetails();
     }
 
 
-    private void getLeaveDetails(String EmpID){
+    private void getLeaveDetails(String EmpID) {
 
 
         attendanceidList.clear();
@@ -1339,24 +1338,24 @@ private String TAG_MESSAGE_VALUE="";
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-       // String EmpID = prefs.getString("USERISDCODE","");
-        System.out.println("EmpID: "+EmpID);
+        // String EmpID = prefs.getString("USERISDCODE","");
+        System.out.println("EmpID: " + EmpID);
 
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:ApprovalPendingRequest >"
+                + "<soapenv:Body>"
+                + "<tem:ApprovalPendingRequest >"
                 //+"<tem:emp_code>"+100172254+"</tem:emp_code>"
-                +"<tem:emp_code>"+EmpID+"</tem:emp_code>"
-                +"</tem:ApprovalPendingRequest >"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "<tem:emp_code>" + EmpID + "</tem:emp_code>"
+                + "</tem:ApprovalPendingRequest >"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -1380,18 +1379,17 @@ private String TAG_MESSAGE_VALUE="";
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.println("Server Response = "+Response);
+                    System.out.println("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
-                    System.out.println("Server status code = "+status.getStatusCode());
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + status.getStatusCode());
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForEmployeeDetails(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -1405,7 +1403,7 @@ private String TAG_MESSAGE_VALUE="";
     }
 
     //getParsingElementsForEmployeeDetails(xpp);
-    public void getParsingElementsForEmployeeDetails(XmlPullParser xpp){
+    public void getParsingElementsForEmployeeDetails(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -1417,46 +1415,46 @@ private String TAG_MESSAGE_VALUE="";
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
 
 
-                        if(tagname.equalsIgnoreCase("EmpCode")){
+                        if (tagname.equalsIgnoreCase("EmpCode")) {
                             associate_id = text;
                             text = "";
-                            System.out.println("OpeningLeaveBalance: "+associate_id);
+                            System.out.println("OpeningLeaveBalance: " + associate_id);
                             associate_idList.add(associate_id);
                         }
-                        if(tagname.equalsIgnoreCase("EmpName")){
+                        if (tagname.equalsIgnoreCase("EmpName")) {
                             first_name = text;
                             text = "";
-                            System.out.println("OpeningLeaveBalance: "+first_name);
+                            System.out.println("OpeningLeaveBalance: " + first_name);
                             first_nameList.add(first_name);
                         }
-                        if(tagname.equalsIgnoreCase("RequestID")){
+                        if (tagname.equalsIgnoreCase("RequestID")) {
                             attendanceid = text;
                             text = "";
-                            System.out.println("OpeningLeaveBalance: "+attendanceid);
+                            System.out.println("OpeningLeaveBalance: " + attendanceid);
                             attendanceidList.add(attendanceid);
                         }
-                        if(tagname.equalsIgnoreCase("LeaveType")){
+                        if (tagname.equalsIgnoreCase("LeaveType")) {
                             attendance_leavetype = text;
                             text = "";
-                            System.out.println("OpeningLeaveBalance: "+attendance_leavetype);
+                            System.out.println("OpeningLeaveBalance: " + attendance_leavetype);
                             attendance_leavetypeList.add(attendance_leavetype);
                         }
-                        if(tagname.equalsIgnoreCase("Start_x0020_Date")){
+                        if (tagname.equalsIgnoreCase("Start_x0020_Date")) {
                             attendance_leavedate = text;
                             text = "";
-                            System.out.println("OpeningLeaveBalance: "+attendance_leavedate);
+                            System.out.println("OpeningLeaveBalance: " + attendance_leavedate);
                             attendance_leavedateList.add(attendance_leavedate);
                         }
-                        if(tagname.equalsIgnoreCase("End_x0020_Date")){
+                        if (tagname.equalsIgnoreCase("End_x0020_Date")) {
                             attendance_time = text;
                             text = "";
-                            System.out.println("OpeningLeaveBalance: "+attendance_time);
+                            System.out.println("OpeningLeaveBalance: " + attendance_time);
                             attendance_timeList.add(attendance_time);
                         }
                        /* if(tagname.equalsIgnoreCase("TotalDays")){
@@ -1465,10 +1463,10 @@ private String TAG_MESSAGE_VALUE="";
                             System.out.println("OpeningLeaveBalance: "+associate_id);
                             associate_idList.add(associate_id);
                         }*/
-                        if(tagname.equalsIgnoreCase("RequestStatus")){
+                        if (tagname.equalsIgnoreCase("RequestStatus")) {
                             attendance_leavereason = text;
                             text = "";
-                            System.out.println("OpeningLeaveBalance: "+attendance_leavereason);
+                            System.out.println("OpeningLeaveBalance: " + attendance_leavereason);
                             attendance_leavereasonList.add(attendance_leavereason);
                         }
 
@@ -1492,23 +1490,23 @@ private String TAG_MESSAGE_VALUE="";
 
     }//getParsingElementsForLogin(xpp);
 
-    Handler handler11 = new Handler(){
+    Handler handler11 = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
             showAttendanceDetails();
-           // setLeaveDetails();
+            // setLeaveDetails();
         }//handleMessage(Message msg)
 
     };
 
-    private void sendApproveForLeave(String jsonArrayFriends,String actionType,String selectedDateFromSpinner){
+    private void sendApproveForLeave(String jsonArrayFriends, String actionType, String selectedDateFromSpinner) {
 
 
         actionType1 = actionType;
@@ -1525,24 +1523,24 @@ private String TAG_MESSAGE_VALUE="";
 
 
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:LeaveApproval>"
-                +"<tem:emp_code>"+selectedDateFromSpinner+"</tem:emp_code>"
-                +"<tem:taskid>"+jsonArrayFriends+"</tem:taskid>"
-                +"<tem:action_status>"+actionType+"</tem:action_status>"
+                + "<soapenv:Body>"
+                + "<tem:LeaveApproval>"
+                + "<tem:emp_code>" + selectedDateFromSpinner + "</tem:emp_code>"
+                + "<tem:taskid>" + jsonArrayFriends + "</tem:taskid>"
+                + "<tem:action_status>" + actionType + "</tem:action_status>"
 
-                +"<tem:approver_remarks>"+""+"</tem:approver_remarks>"
-                +"<tem:contact_no>"+""+"</tem:contact_no>"
-                +"</tem:LeaveApproval>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "<tem:approver_remarks>" + "" + "</tem:approver_remarks>"
+                + "<tem:contact_no>" + "" + "</tem:contact_no>"
+                + "</tem:LeaveApproval>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -1565,19 +1563,18 @@ private String TAG_MESSAGE_VALUE="";
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.print("Server Response = "+Response);
+                    System.out.print("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
                     STATUS_CODE = status.getStatusCode();
-                    System.out.println("Server status code = "+STATUS_CODE);
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + STATUS_CODE);
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForLoginDetails(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -1591,7 +1588,7 @@ private String TAG_MESSAGE_VALUE="";
     }
 
     //getParsingElementsForLoginDetails(xpp);
-    public void getParsingElementsForLoginDetails(XmlPullParser xpp){
+    public void getParsingElementsForLoginDetails(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -1603,15 +1600,15 @@ private String TAG_MESSAGE_VALUE="";
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
 
-                        if(tagname.equalsIgnoreCase("LeaveApprovalResult")){
+                        if (tagname.equalsIgnoreCase("LeaveApprovalResult")) {
                             STATUS = text;
                             text = "";
-                            System.out.println("STATUS: "+STATUS);
+                            System.out.println("STATUS: " + STATUS);
                         }
                        /* if(tagname.equalsIgnoreCase(TAG_MESSAGE_ID)){
                             TAG_MESSAGE_VALUE = text;
@@ -1721,30 +1718,28 @@ private String TAG_MESSAGE_VALUE="";
     }//getParsingElementsForLogin(xpp);
 
 
-    Handler handler20 = new Handler(){
+    Handler handler20 = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
 
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
             //Success
-            if(STATUS_CODE==200){
+            if (STATUS_CODE == 200) {
                 //Login success
-                if(STATUS.equalsIgnoreCase("1")){
+                if (STATUS.equalsIgnoreCase("1")) {
                     //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
 
-                    TAG_MESSAGE_VALUE="Leave approval successfull";
+                    TAG_MESSAGE_VALUE = "Leave approval successfull";
                     showSuccessDialog();
-                }
-
-                else{
-                    TAG_MESSAGE_VALUE="Leave approval failed";
+                } else {
+                    TAG_MESSAGE_VALUE = "Leave approval failed";
                     showFailureDialog();
                 }
 
@@ -1755,7 +1750,7 @@ private String TAG_MESSAGE_VALUE="";
             }
 
             //Login failed
-            if(STATUS_CODE!=200){
+            if (STATUS_CODE != 200) {
                 //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
                 showFailureDialog();
 
@@ -1764,7 +1759,6 @@ private String TAG_MESSAGE_VALUE="";
         }//handleMessage(Message msg)
 
     };
-
 
 
 }

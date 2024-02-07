@@ -787,8 +787,8 @@ public class ViewAttendanceActivity extends AppCompatActivity {
 
     */
 /*
-    * CustomAdapterForAttendanceDetails
-    *//*
+ * CustomAdapterForAttendanceDetails
+ *//*
 
     public class CustomAdapterForAttendanceDetails extends BaseAdapter {
 
@@ -928,8 +928,10 @@ package com.experis.smartrac.b;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -943,6 +945,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 ;
+
 /**
  * Class Name: AssociateReportsAttendanceFragment
  * Created by Rana Krishna Paul
@@ -1041,10 +1044,10 @@ public class LeavepolicyActivity extends AppCompatActivity {
         initAllViews();
     }
 
-    private void initAllViews(){
+    private void initAllViews() {
 
         //shared preference
-        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME,MODE_PRIVATE);
+        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME, MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         //attendance_dateList = new ArrayList<String>(0);
@@ -1055,7 +1058,6 @@ public class LeavepolicyActivity extends AppCompatActivity {
 
 
     }
-
 
 
     @Override

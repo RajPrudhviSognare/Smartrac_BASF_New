@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -64,10 +66,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private String baseURL;
     private String SOAPRequestXML;
     private HttpResponse httpResponse = null;
-    private String TAG_MESSAGE_ID="MessageID";
-    private String TAG_MESSAGE_VALUE="";
-    private String TAG_DESCRIPTION_ID="Description";
-    private String TAG_DESCRIPTION_VALUE="";
+    private String TAG_MESSAGE_ID = "MessageID";
+    private String TAG_MESSAGE_VALUE = "";
+    private String TAG_DESCRIPTION_ID = "Description";
+    private String TAG_DESCRIPTION_VALUE = "";
     private String TAG_ChangepasswordResult = "GetPasswordResult";
 
 
@@ -86,7 +88,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         initAllViews();
 
         //Back Button
-        forgotPasswordtopbarbackImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        forgotPasswordtopbarbackImageViewID.setOnClickListener(new ImageView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -100,11 +102,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 try {
-                    if(CommonUtils.isInternelAvailable(ForgotPasswordActivity.this)){
+                    if (CommonUtils.isInternelAvailable(ForgotPasswordActivity.this)) {
 
                         validateData();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(ForgotPasswordActivity.this, "No internet connection!", Toast.LENGTH_SHORT).show();
                     }
 
@@ -117,16 +118,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     }//onCreate()
 
-    private void initAllViews(){
+    private void initAllViews() {
         //shared preference
-        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME,MODE_PRIVATE);
+        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME, MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
-        forgotPasswordPageISDEditTextID = (EditText)findViewById(R.id.forgotPasswordPageISDEditTextID);
-        forgotPasswordPageEmailEditTextID = (EditText)findViewById(R.id.forgotPasswordPageEmailEditTextID);
-        forgotPasswordSubmitBtnID = (Button)findViewById(R.id.forgotPasswordSubmitBtnID);
+        forgotPasswordPageISDEditTextID = (EditText) findViewById(R.id.forgotPasswordPageISDEditTextID);
+        forgotPasswordPageEmailEditTextID = (EditText) findViewById(R.id.forgotPasswordPageEmailEditTextID);
+        forgotPasswordSubmitBtnID = (Button) findViewById(R.id.forgotPasswordSubmitBtnID);
 
-        forgotPasswordtopbarbackImageViewID = (ImageView)findViewById(R.id.forgotPasswordtopbarbackImageViewID);
+        forgotPasswordtopbarbackImageViewID = (ImageView) findViewById(R.id.forgotPasswordtopbarbackImageViewID);
 
         //Progress Dialog
         progressDialog = new ProgressDialog(ForgotPasswordActivity.this);
@@ -138,24 +139,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if(TextUtils.isEmpty(forgotPasswordPageISDEditTextID.getText().toString()))
-        {
+        if (TextUtils.isEmpty(forgotPasswordPageISDEditTextID.getText().toString())) {
             forgotPasswordPageISDEditTextID.setError("Required field!");
             focusView = forgotPasswordPageISDEditTextID;
             cancel = true;
-        }
-        else if(TextUtils.isEmpty(forgotPasswordPageEmailEditTextID.getText().toString())){
+        } else if (TextUtils.isEmpty(forgotPasswordPageEmailEditTextID.getText().toString())) {
             forgotPasswordPageEmailEditTextID.setError("Required field!");
             focusView = forgotPasswordPageEmailEditTextID;
             cancel = true;
         }
 
-        if(cancel){
+        if (cancel) {
 
             focusView.requestFocus();
-        }
-        else
-        {
+        } else {
             getTextValues();
 
         }
@@ -168,40 +165,39 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         ISD_CODE = forgotPasswordPageISDEditTextID.getText().toString();
         EMAILID = forgotPasswordPageEmailEditTextID.getText().toString();
 
-        if(!ISD_CODE.equalsIgnoreCase("")&&!EMAILID.equalsIgnoreCase("")){
+        if (!ISD_CODE.equalsIgnoreCase("") && !EMAILID.equalsIgnoreCase("")) {
             sendDataToRetrievePassword();
-        }
-        else{
+        } else {
             Toast.makeText(this, "Both the fields are mandatory!", Toast.LENGTH_SHORT).show();
         }
     }
+
     //For Retrieving Password
-    private void sendDataToRetrievePassword(){
+    private void sendDataToRetrievePassword() {
 
         progressDialog.setMessage("Resendind your password... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
 
-
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:GetPassword>"
-                +"<tem:login_id>"+ISD_CODE+"</tem:login_id>"
+                + "<soapenv:Body>"
+                + "<tem:GetPassword>"
+                + "<tem:login_id>" + ISD_CODE + "</tem:login_id>"
                 //+"<tem:password>"+CommonUtils.md5(passwd)+"</tem:password>"
-                +"<tem:email_id>"+EMAILID+"</tem:email_id>"
+                + "<tem:email_id>" + EMAILID + "</tem:email_id>"
 
 
-                +"</tem:GetPassword>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "</tem:GetPassword>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -224,19 +220,18 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.print("Server Response = "+Response);
+                    System.out.print("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
                     STATUS_CODE = status.getStatusCode();
-                    System.out.println("Server status code = "+STATUS_CODE);
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + STATUS_CODE);
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForLoginDetails(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -248,8 +243,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         }).start();
 
     }
+
     //getParsingElementsForLoginDetails(xpp);
-    public void getParsingElementsForLoginDetails(XmlPullParser xpp){
+    public void getParsingElementsForLoginDetails(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -261,26 +257,26 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
 
-                        if(tagname.equalsIgnoreCase(TAG_ChangepasswordResult)){
+                        if (tagname.equalsIgnoreCase(TAG_ChangepasswordResult)) {
                             STATUS = text;
                             text = "";
-                            System.out.println("STATUS: "+STATUS);
+                            System.out.println("STATUS: " + STATUS);
                         }
-                        if(tagname.equalsIgnoreCase(TAG_MESSAGE_ID)){
+                        if (tagname.equalsIgnoreCase(TAG_MESSAGE_ID)) {
                             TAG_MESSAGE_VALUE = text;
                             text = "";
-                            System.out.println("STATUS: "+TAG_MESSAGE_VALUE);
+                            System.out.println("STATUS: " + TAG_MESSAGE_VALUE);
                             // Toast.makeText(LoginActivity.this,"Successful",Toast.LENGTH_SHORT).show();
                         }
-                        if(tagname.equalsIgnoreCase(TAG_DESCRIPTION_ID)){
+                        if (tagname.equalsIgnoreCase(TAG_DESCRIPTION_ID)) {
                             TAG_DESCRIPTION_VALUE = text;
                             text = "";
-                            System.out.println("STATUS: "+TAG_MESSAGE_VALUE);
+                            System.out.println("STATUS: " + TAG_MESSAGE_VALUE);
                             // Toast.makeText(LoginActivity.this,"Successful",Toast.LENGTH_SHORT).show();
                         }
 
@@ -379,28 +375,27 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }//getParsingElementsForLogin(xpp);
 
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
 
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
             //Success
-            if(STATUS_CODE==200){
+            if (STATUS_CODE == 200) {
                 //Login success
-                if(STATUS.equalsIgnoreCase("1")){
+                if (STATUS.equalsIgnoreCase("1")) {
                     //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
-                    MESSAGE="Check your email";
+                    MESSAGE = "Check your email";
                     showSuccessDialog();
-                }
-                else{
-                    MESSAGE="Please provide correct ISD Code/Email Id";
+                } else {
+                    MESSAGE = "Please provide correct ISD Code/Email Id";
                     showFailureDialog();
                 }
 
@@ -411,9 +406,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             }
 
             //Login failed
-            if(STATUS_CODE!=200){
+            if (STATUS_CODE != 200) {
                 //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
-                MESSAGE="Please provide correct ISD Code/Email Id";
+                MESSAGE = "Please provide correct ISD Code/Email Id";
                 showFailureDialog();
 
             }
@@ -423,7 +418,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     };
 
     //Show Success Dialog
-    private void showSuccessDialog(){
+    private void showSuccessDialog() {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(ForgotPasswordActivity.this);
         aldb.setTitle("Success!");
@@ -445,19 +440,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         aldb.show();
 
     }
+
     //Show failure Dialog
-    private void showFailureDialog(){
+    private void showFailureDialog() {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(ForgotPasswordActivity.this);
         aldb.setTitle("Failed!");
-        aldb.setMessage("\nReason: "+MESSAGE);
+        aldb.setMessage("\nReason: " + MESSAGE);
         aldb.setPositiveButton("OK", null);
         aldb.show();
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         //Intent i = new Intent(ForgotPasswordActivity.this,LoginActivity.class);
         ForgotPasswordActivity.this.finish();
         //startActivity(i);
@@ -467,10 +462,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         try {
-            if((progressDialog != null) && progressDialog.isShowing() ){
+            if ((progressDialog != null) && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-        }catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         } finally {
             progressDialog = null;

@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PowerManager;
+
 import com.google.android.material.tabs.TabLayout;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.ImageView;
 
@@ -54,7 +57,7 @@ public class HRMSTabbedActivity extends AppCompatActivity {
 
         viewPager.setOffscreenPageLimit(0);
 
-        employeeinfotopbarbackImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        employeeinfotopbarbackImageViewID.setOnClickListener(new ImageView.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -62,11 +65,11 @@ public class HRMSTabbedActivity extends AppCompatActivity {
         });
 
         //User Icon Click Event
-        employeeinfotopbarusericonImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        employeeinfotopbarusericonImageViewID.setOnClickListener(new ImageView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(HRMSTabbedActivity.this,ChangePasswordActivity.class);
+                Intent i = new Intent(HRMSTabbedActivity.this, ChangePasswordActivity.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             }
@@ -74,9 +77,9 @@ public class HRMSTabbedActivity extends AppCompatActivity {
 
     }
 
-    private void initAllViews(){
+    private void initAllViews() {
         //shared preference
-        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME,MODE_PRIVATE);
+        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME, MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         employeeinfotopbarbackImageViewID = (ImageView) findViewById(R.id.employeeinfotopbarbackImageViewID);
@@ -91,7 +94,7 @@ public class HRMSTabbedActivity extends AppCompatActivity {
         adapter.addFragment(new HRMSEmpDetailsFragment(), "Information");
         adapter.addFragment(new HRMSEmpLeaveBalanceFragment(), "Leave Balance");
         adapter.addFragment(new HRMSPayslipFragment(), "Payslip");
-        adapter.addFragment(new LetterFragment(),"Letter");
+        adapter.addFragment(new LetterFragment(), "Letter");
         viewPager.setAdapter(adapter);
     }
 
@@ -125,14 +128,13 @@ public class HRMSTabbedActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         HRMSTabbedActivity.this.finish();
         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
     }
 

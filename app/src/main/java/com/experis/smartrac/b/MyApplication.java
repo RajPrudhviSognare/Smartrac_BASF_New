@@ -1,6 +1,7 @@
 package com.experis.smartrac.b;
 
 import android.content.Context;
+
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
@@ -17,10 +18,11 @@ public class MyApplication extends MultiDexApplication {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        try{
+        try {
             MultiDex.install(MyApplication.this);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (Exception e){e.printStackTrace();}
     }
 
     @Override

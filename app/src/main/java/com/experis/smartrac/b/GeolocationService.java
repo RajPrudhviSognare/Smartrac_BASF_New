@@ -1,8 +1,8 @@
 package com.experis.smartrac.b;
 
 /**
- Class Name: GeolocationService
- Created by Rana Krishna Paul
+ * Class Name: GeolocationService
+ * Created by Rana Krishna Paul
  */
 
 import android.app.Service;
@@ -12,7 +12,9 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+
 import androidx.core.content.ContextCompat;
+
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -26,12 +28,12 @@ import com.google.android.gms.location.LocationSettingsRequest;
  * This is a Service class which handles(finds) current Lat & Long of the Device
  */
 public class GeolocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener{
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     public GeolocationService() {
     }
 
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10*1000;
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10 * 1000;
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
     protected GoogleApiClient mGoogleApiClient;
     protected LocationRequest mLocationRequest;
@@ -39,14 +41,14 @@ public class GeolocationService extends Service implements GoogleApiClient.Conne
     private String TAG = "GeolocationService";
 
     @Override
-    public void onCreate(){
+    public void onCreate() {
         super.onCreate();
         System.out.println("GeolocationService: onCreate()");
     }
 
     @Override
     public void onStart(Intent intent, int startId) {
-        super.onStart(intent,startId);
+        super.onStart(intent, startId);
         System.out.println("GeolocationService Started");
         buildGoogleApiClient();
         mGoogleApiClient.connect();
@@ -68,25 +70,25 @@ public class GeolocationService extends Service implements GoogleApiClient.Conne
                 stopLocationUpdates();
                 mGoogleApiClient.disconnect();
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         super.onDestroy();
     }
 
     protected void startLocationUpdates() {
-        try{
-            if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP &&
-                    ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ||
-                    ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        try {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP &&
+                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 System.out.println("You have denied ACCESS_FINE_LOCATION/ACCESS_COARSE_LOCATION permissions, so this app can't fetch the current location");
-                return  ;
+                return;
             }
             if (mGoogleApiClient.isConnected()) {
                 LocationServices.FusedLocationApi.requestLocationUpdates(
                         mGoogleApiClient, mLocationRequest, this);
             }
-        }
-        catch(Exception e ){
-           e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -109,8 +111,8 @@ public class GeolocationService extends Service implements GoogleApiClient.Conne
                         + location.getAccuracy());
         Constants.UNIV_LAT = String.valueOf(location.getLatitude());
         Constants.UNIV_LONG = String.valueOf(location.getLongitude());
-        System.out.println("Constants.UNIV_LAT: "+Constants.UNIV_LAT);
-        System.out.println("Constants.UNIV_LONG: "+Constants.UNIV_LONG);
+        System.out.println("Constants.UNIV_LAT: " + Constants.UNIV_LAT);
+        System.out.println("Constants.UNIV_LONG: " + Constants.UNIV_LONG);
     }
 
     @Override

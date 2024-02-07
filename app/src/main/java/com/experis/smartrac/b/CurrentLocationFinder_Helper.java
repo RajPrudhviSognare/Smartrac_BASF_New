@@ -7,7 +7,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.core.content.ContextCompat;
+
 import android.util.Log;
 
 public class CurrentLocationFinder_Helper {
@@ -20,26 +22,25 @@ public class CurrentLocationFinder_Helper {
     private double longitude = 0.0d; // longitude
 
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 1 meter
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1/2; // 1/2 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1 / 2; // 1/2 minute
     private LocationManager locationManager;
 
     private Context context;
 
 
     public CurrentLocationFinder_Helper(Context context) {
-       this.context = context;
+        this.context = context;
     }
 
-    public void getCurrentLatAndLong(){
+    public void getCurrentLatAndLong() {
 
-        locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        System.out.println("isGPSEnabled: "+isGPSEnabled);
-        System.out.println("isNetworkEnabled: "+isNetworkEnabled);
+        System.out.println("isGPSEnabled: " + isGPSEnabled);
+        System.out.println("isNetworkEnabled: " + isNetworkEnabled);
         if (!isGPSEnabled && !isNetworkEnabled) {
-        }
-        else{
+        } else {
 
             this.canGetLocation = true;
             if (isNetworkEnabled) {
@@ -52,8 +53,8 @@ public class CurrentLocationFinder_Helper {
                         Constants.UNIV_LAT1 = String.valueOf(latitude);
                         Constants.UNIV_LONG1 = String.valueOf(longitude);
 
-                        System.out.println("Constants.UNIV_LAT1: "+Constants.UNIV_LAT1);
-                        System.out.println("Constants.UNIV_LONG1: "+Constants.UNIV_LONG1);
+                        System.out.println("Constants.UNIV_LAT1: " + Constants.UNIV_LAT1);
+                        System.out.println("Constants.UNIV_LONG1: " + Constants.UNIV_LONG1);
                     }
 
                     @Override
@@ -74,16 +75,16 @@ public class CurrentLocationFinder_Helper {
 
                 Log.v("Network Provider ", "Network Provider");
                 if (locationManager != null) {
-                    try{
-                        if(Build.VERSION.SDK_INT >= 23 &&
-                                ContextCompat.checkSelfPermission( context, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
-                                ContextCompat.checkSelfPermission( context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    try {
+                        if (Build.VERSION.SDK_INT >= 23 &&
+                                ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                                ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                            return  ;
+                            return;
                         }
                         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    } catch (Exception e) {
                     }
-                    catch(Exception e){}
                 }
                 if (location != null) {
                     latitude = location.getLatitude();
@@ -92,8 +93,8 @@ public class CurrentLocationFinder_Helper {
                     Constants.UNIV_LAT1 = String.valueOf(latitude);
                     Constants.UNIV_LONG1 = String.valueOf(longitude);
 
-                    System.out.println("Constants.UNIV_LAT1: "+Constants.UNIV_LAT1);
-                    System.out.println("Constants.UNIV_LONG1: "+Constants.UNIV_LONG1);
+                    System.out.println("Constants.UNIV_LAT1: " + Constants.UNIV_LAT1);
+                    System.out.println("Constants.UNIV_LONG1: " + Constants.UNIV_LONG1);
                 }
             }//if (isNetworkEnabled)
 
@@ -109,8 +110,8 @@ public class CurrentLocationFinder_Helper {
                             Constants.UNIV_LAT1 = String.valueOf(latitude);
                             Constants.UNIV_LONG1 = String.valueOf(longitude);
 
-                            System.out.println("Constants.UNIV_LAT1: "+Constants.UNIV_LAT1);
-                            System.out.println("Constants.UNIV_LONG1: "+Constants.UNIV_LONG1);
+                            System.out.println("Constants.UNIV_LAT1: " + Constants.UNIV_LAT1);
+                            System.out.println("Constants.UNIV_LONG1: " + Constants.UNIV_LONG1);
                         }
 
                         @Override
@@ -131,17 +132,17 @@ public class CurrentLocationFinder_Helper {
 
                     Log.v("GPS Enabled", "GPS Enabled");
                     if (locationManager != null) {
-                        try{
-                            if(Build.VERSION.SDK_INT >= 23 &&
-                                    ContextCompat.checkSelfPermission( context, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
-                                    ContextCompat.checkSelfPermission( context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        try {
+                            if (Build.VERSION.SDK_INT >= 23 &&
+                                    ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                                    ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                                return  ;
+                                return;
                             }
 
                             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        } catch (Exception e) {
                         }
-                        catch(Exception e){}
                     }
                     if (location != null) {
                         latitude = location.getLatitude();
@@ -150,8 +151,8 @@ public class CurrentLocationFinder_Helper {
                         Constants.UNIV_LAT1 = String.valueOf(latitude);
                         Constants.UNIV_LONG1 = String.valueOf(longitude);
 
-                        System.out.println("Constants.UNIV_LAT1: "+Constants.UNIV_LAT1);
-                        System.out.println("Constants.UNIV_LONG1: "+Constants.UNIV_LONG1);
+                        System.out.println("Constants.UNIV_LAT1: " + Constants.UNIV_LAT1);
+                        System.out.println("Constants.UNIV_LONG1: " + Constants.UNIV_LONG1);
                     }
                 }
 

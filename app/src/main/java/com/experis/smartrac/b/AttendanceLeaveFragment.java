@@ -10,7 +10,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.fragment.app.Fragment;
+
 import android.text.TextUtils;
 
 import android.util.Log;
@@ -50,20 +52,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class AttendanceLeaveFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
+public class AttendanceLeaveFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
 
-    private ArrayList<String> leavetype=new ArrayList<String>();
-    private  ArrayList<String> leavetypeid=new ArrayList<String>();
+    private ArrayList<String> leavetype = new ArrayList<String>();
+    private ArrayList<String> leavetypeid = new ArrayList<String>();
     private String TAG_ATTENDANCE_TYPE = "leave"; //"Leave"
-    private String date = null,todate=null;
+    private String date = null, todate = null;
     private String reason = null;
 
-    private EditText attendancepagetodateEditTextID1,attendancepagefromdateEditTextID1;
-    private EditText attendancepagereasonEditTextID1,attendancepagetodateEditTextID_birthday;
+    private EditText attendancepagetodateEditTextID1, attendancepagefromdateEditTextID1;
+    private EditText attendancepagereasonEditTextID1, attendancepagetodateEditTextID_birthday;
     private ImageView attendancePageSubmitImageViewID3;
     private Spinner spinner;
-    private LinearLayout birthdayleave,normalleave;
+    private LinearLayout birthdayleave, normalleave;
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEditor;
@@ -80,10 +82,10 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
 
     private Calendar calendar;
     private int year, month, day;
-    private String flag="";
+    private String flag = "";
 
     private String LEAVE_TYPE1 = "", LEAVE_TYPE_NAME = ""; //casual, sick
-    private Date date1,date2;
+    private Date date1, date2;
     private String baseURL;
     private String SOAPRequestXML;
     private HttpResponse httpResponse = null;
@@ -93,24 +95,25 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
     private String OpeningLeaveBalance = "0";
     private String OpeningLeaveBalance1 = "0";
     private String OpeningLeaveBalance7 = "0";
-    private String OpeningLeaveBalance3="0";
-    private String OpeningLeaveBalance4="0";
-    private String OpeningLeaveBalance5="0";
-    private String OpeningLeaveBalance6="5";
+    private String OpeningLeaveBalance3 = "0";
+    private String OpeningLeaveBalance4 = "0";
+    private String OpeningLeaveBalance5 = "0";
+    private String OpeningLeaveBalance6 = "5";
 
     private String OpeningLeaveBalancetype = "";
-    private String flag_check="1";
+    private String flag_check = "1";
 
-    private String TAG_MESSAGE_ID="MessageID";
-    private String TAG_MESSAGE_VALUE="";
-    private String TAG_DESCRIPTION_ID="Description";
-    private String TAG_DESCRIPTION_VALUE="";
+    private String TAG_MESSAGE_ID = "MessageID";
+    private String TAG_MESSAGE_VALUE = "";
+    private String TAG_DESCRIPTION_ID = "Description";
+    private String TAG_DESCRIPTION_VALUE = "";
     private int STATUS_CODE = 0;
-    double totaldays=0;
-    double numofday=0.0;
-    String mDateTime = null,mDateTime1 = null;
+    double totaldays = 0;
+    double numofday = 0.0;
+    String mDateTime = null, mDateTime1 = null;
 
     private String TAG_LoginAuthenticateResult = "Submit_LeaveRequestResult";
+
     public AttendanceLeaveFragment() {
         // Required empty public constructor
     }
@@ -126,61 +129,60 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
                              Bundle savedInstanceState) {
         //Toast.makeText(getActivity(),"Out Time Fragment",Toast.LENGTH_LONG).show();
         // Inflate the layout for this fragment
-         View view = inflater.inflate(R.layout.attendance_leave_fragment, container, false);
+        View view = inflater.inflate(R.layout.attendance_leave_fragment, container, false);
 
-        attendancepagetodateEditTextID1 = (EditText)view.findViewById(R.id.attendancepagetodateEditTextID1);
-        attendancepagefromdateEditTextID1=(EditText)view.findViewById(R.id.attendancepagefromdateEditTextID1);
-        attendancepagereasonEditTextID1 = (EditText)view.findViewById(R.id.attendancepagereasonEditTextID1);
-        attendancePageSubmitImageViewID3 = (ImageView)view.findViewById(R.id.attendancePageSubmitImageViewID3);
-        attendancepagetodateEditTextID_birthday=(EditText)view.findViewById(R.id.attendancepagetodateEditTextID_birthday);
-        normalleave=(LinearLayout)view.findViewById(R.id.normalleave);
-        birthdayleave=(LinearLayout)view.findViewById(R.id.birthdayleave);
-        spinner = (Spinner)view.findViewById(R.id.spinner);
+        attendancepagetodateEditTextID1 = (EditText) view.findViewById(R.id.attendancepagetodateEditTextID1);
+        attendancepagefromdateEditTextID1 = (EditText) view.findViewById(R.id.attendancepagefromdateEditTextID1);
+        attendancepagereasonEditTextID1 = (EditText) view.findViewById(R.id.attendancepagereasonEditTextID1);
+        attendancePageSubmitImageViewID3 = (ImageView) view.findViewById(R.id.attendancePageSubmitImageViewID3);
+        attendancepagetodateEditTextID_birthday = (EditText) view.findViewById(R.id.attendancepagetodateEditTextID_birthday);
+        normalleave = (LinearLayout) view.findViewById(R.id.normalleave);
+        birthdayleave = (LinearLayout) view.findViewById(R.id.birthdayleave);
+        spinner = (Spinner) view.findViewById(R.id.spinner);
 
         return view;
     }
 
     private void validateleavebalance() {
-        double annualleave=0;
-        if(!OpeningLeaveBalance7.equalsIgnoreCase("0")) {
+        double annualleave = 0;
+        if (!OpeningLeaveBalance7.equalsIgnoreCase("0")) {
             annualleave = Double.valueOf(OpeningLeaveBalance7);
         }
-        double casualleave=0;
-        if(!OpeningLeaveBalance1.equalsIgnoreCase("0")) {
+        double casualleave = 0;
+        if (!OpeningLeaveBalance1.equalsIgnoreCase("0")) {
             casualleave = Double.valueOf(OpeningLeaveBalance1);
         }
         /*double sickleave=0;
         if(!OpeningLeaveBalance2.equalsIgnoreCase("0")) {
             sickleave = Double.valueOf(OpeningLeaveBalance2);
         }*/
-        double maternityleave=0;
-        if(!OpeningLeaveBalance3.equalsIgnoreCase("0")) {
+        double maternityleave = 0;
+        if (!OpeningLeaveBalance3.equalsIgnoreCase("0")) {
             maternityleave = Double.valueOf(OpeningLeaveBalance3);
         }
-        double optionalleave=0;
-        if(!OpeningLeaveBalance4.equalsIgnoreCase("0")) {
+        double optionalleave = 0;
+        if (!OpeningLeaveBalance4.equalsIgnoreCase("0")) {
             optionalleave = Double.valueOf(OpeningLeaveBalance4);
         }
-        double birthdayleave=0;
-        if(!OpeningLeaveBalance5.equalsIgnoreCase("0")) {
+        double birthdayleave = 0;
+        if (!OpeningLeaveBalance5.equalsIgnoreCase("0")) {
             birthdayleave = Double.valueOf(OpeningLeaveBalance5);
         }
-        double paternityleave=0;
-        if(!OpeningLeaveBalance6.equalsIgnoreCase("0")) {
+        double paternityleave = 0;
+        if (!OpeningLeaveBalance6.equalsIgnoreCase("0")) {
             paternityleave = Double.valueOf(OpeningLeaveBalance6);
         }
 
 
-        int numberofdays=getCountOfDays(date,todate);
-        numofday=Double.valueOf(numberofdays);
-        if(flag_check.equalsIgnoreCase("1")){
-            totaldays=numofday;
-        }
-        else{
-            totaldays=numofday/2;
+        int numberofdays = getCountOfDays(date, todate);
+        numofday = Double.valueOf(numberofdays);
+        if (flag_check.equalsIgnoreCase("1")) {
+            totaldays = numofday;
+        } else {
+            totaldays = numofday / 2;
         }
 
-        if(LEAVE_TYPE1.equalsIgnoreCase("1")){
+        if (LEAVE_TYPE1.equalsIgnoreCase("1")) {
 
             sendDataForLeave();
             /*if(annualleave>totaldays ){
@@ -191,8 +193,7 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
                 showdateDialog("You don't have enough paid leave balance");
             }*/
 
-        }
-        else if(LEAVE_TYPE1.equalsIgnoreCase("10")){
+        } else if (LEAVE_TYPE1.equalsIgnoreCase("10")) {
             sendDataForLeave();
            /* if(casualleave>totaldays){
                  //showdateDialog("You have enough leave balance");
@@ -201,7 +202,7 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
             else{
                 showdateDialog("You don't have enough casual &amp; sick leave balance");
             }*/
-/*1 earned, 2 casual 3 sick */
+            /*1 earned, 2 casual 3 sick */
         }
         /*else if(LEAVE_TYPE1.equalsIgnoreCase("3")){
             // showdateDialog("You have enough leave balance");
@@ -216,95 +217,81 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
 
         }*/
 
-        else if(LEAVE_TYPE1.equalsIgnoreCase("4")){
+        else if (LEAVE_TYPE1.equalsIgnoreCase("4")) {
             // showdateDialog("You have enough leave balance");
             //sendDataForLeave();
 
-               // showdateDialog("You have enough leave balance");
-                sendDataForLeave();
+            // showdateDialog("You have enough leave balance");
+            sendDataForLeave();
 
            /* else{
                 showdateDialog("You don't have enough maternity leave balance");
             }*/
 
-        }
-
-        else if(LEAVE_TYPE1.equalsIgnoreCase("6")){
+        } else if (LEAVE_TYPE1.equalsIgnoreCase("6")) {
             // showdateDialog("You have enough leave balance");
             //sendDataForLeave();
-            if(optionalleave>totaldays){
+            if (optionalleave > totaldays) {
                 //showdateDialog("You have enough leave balance");
                 sendDataForLeave();
-            }
-            else{
+            } else {
                 showdateDialog("You don't have enough optional leave balance");
             }
 
-        }
-
-        else if(LEAVE_TYPE1.equalsIgnoreCase("7")){
+        } else if (LEAVE_TYPE1.equalsIgnoreCase("7")) {
             // showdateDialog("You have enough leave balance");
             //sendDataForLeave();
-            String dob=prefs.getString("USERDOB","");
-            String day="",month="",daynew="",monthnew="",dayneww="",monthneww="";
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-           Date dobfromdatabase = null,applieddob = null;
+            String dob = prefs.getString("USERDOB", "");
+            String day = "", month = "", daynew = "", monthnew = "", dayneww = "", monthneww = "";
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date dobfromdatabase = null, applieddob = null;
             try {
-                dobfromdatabase=sdf.parse(dob);
-                String [] dateParts = dob.split("-");
-                 day = dateParts[2];
-                 month = dateParts[1];
+                dobfromdatabase = sdf.parse(dob);
+                String[] dateParts = dob.split("-");
+                day = dateParts[2];
+                month = dateParts[1];
                 //String year = dateParts[2];
 
-                applieddob=sdf.parse(attendancepagetodateEditTextID_birthday.getText().toString());
+                applieddob = sdf.parse(attendancepagetodateEditTextID_birthday.getText().toString());
 
-                String [] datePartsnew = attendancepagetodateEditTextID_birthday.getText().toString().split("-");
+                String[] datePartsnew = attendancepagetodateEditTextID_birthday.getText().toString().split("-");
 
                 dayneww = datePartsnew[2];
                 monthneww = datePartsnew[1];
                /* if(dayneww.length()==1)
                     daynew="0"+dayneww;
                 else*/
-                    daynew=dayneww;
+                daynew = dayneww;
 
-                if(monthneww.length()==1)
-                    monthnew="0"+monthneww;
+                if (monthneww.length() == 1)
+                    monthnew = "0" + monthneww;
                 else
-                    monthnew=monthneww;
+                    monthnew = monthneww;
             } catch (ParseException e) {
                 showdateDialog("You are applied for wrong birthday date");
                 e.printStackTrace();
             }
 
 
-
-
-            if(day.equals(daynew) || month.equals(monthnew)){
+            if (day.equals(daynew) || month.equals(monthnew)) {
                 //showdateDialog("You have enough leave balance");
                 sendDataForLeave();
-            }
-            else{
+            } else {
                 showdateDialog("You are applied for wrong birthday date");
             }
 
 
-
-
-        }
-
-        else if(LEAVE_TYPE1.equalsIgnoreCase("8")){
+        } else if (LEAVE_TYPE1.equalsIgnoreCase("8")) {
             // showdateDialog("You have enough leave balance");
             //sendDataForLeave();
-            if(paternityleave>totaldays){
+            if (paternityleave > totaldays) {
                 //showdateDialog("You have enough leave balance");
-                if(paternityleave<=5){
+                if (paternityleave <= 5) {
                     //showdateDialog("You have enough leave balance");
                     sendDataForLeave();
                 }
-               // sendDataForLeave();
-            }
-
-            else{
+                // sendDataForLeave();
+            } else {
                 showdateDialog("You don't have enough paternity leave balance");
             }
 
@@ -339,13 +326,13 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
         float dayCount = (float) diff / (24 * 60 * 60 * 1000);
 
 
-        return (int) (dayCount+1);
+        return (int) (dayCount + 1);
     }
 
-    private void initAllViews(){
+    private void initAllViews() {
 
         //shared preference
-        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME,getActivity().MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME, getActivity().MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         calendar = Calendar.getInstance();
@@ -362,19 +349,19 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME,getActivity().MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME, getActivity().MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         getLeavetype();
         /*getLeaveDetails();*/
         attendancepagetodateEditTextID1.setText(new StringBuilder().append(year).append("-")
-                .append(month+1).append("-").append(day));
+                .append(month + 1).append("-").append(day));
 
         attendancepagetodateEditTextID1.setOnClickListener(new EditText.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //getActivity().showDialog(DATE_DIALOG_ID);
-                flag="fromdate";
+                flag = "fromdate";
                 DatePickerDialog dialog = new DatePickerDialog(getActivity(), AttendanceLeaveFragment.this, year, month, day);
                 dialog.show();
             }
@@ -383,7 +370,7 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 //getActivity().showDialog(DATE_DIALOG_ID);
-                flag="fromdate";
+                flag = "fromdate";
                 DatePickerDialog dialog = new DatePickerDialog(getActivity(), AttendanceLeaveFragment.this, year, month, day);
                 dialog.show();
             }
@@ -391,7 +378,7 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
 
 
         attendancepagefromdateEditTextID1.setText(new StringBuilder().append(year).append("-")
-                .append(month+1).append("-").append(day));
+                .append(month + 1).append("-").append(day));
 
         attendancepagefromdateEditTextID1.setOnClickListener(new EditText.OnClickListener() {
             @Override
@@ -399,7 +386,7 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
                 //getActivity().showDialog(DATE_DIALOG_ID);
 
 
-                flag="todate";
+                flag = "todate";
                 DatePickerDialog dialog = new DatePickerDialog(getActivity(), AttendanceLeaveFragment.this, year, month, day);
                 dialog.show();
             }
@@ -408,16 +395,15 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 //getActivity().showDialog(DATE_DIALOG_ID);
-                flag="todate";
+                flag = "todate";
                 DatePickerDialog dialog = new DatePickerDialog(getActivity(), AttendanceLeaveFragment.this, year, month, day);
                 dialog.show();
             }
         });
 
 
-
         attendancepagetodateEditTextID_birthday.setText(new StringBuilder().append(year).append("-")
-                .append(month+1).append("-").append(day));
+                .append(month + 1).append("-").append(day));
 
         attendancepagetodateEditTextID_birthday.setOnClickListener(new EditText.OnClickListener() {
             @Override
@@ -425,7 +411,7 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
                 //getActivity().showDialog(DATE_DIALOG_ID);
 
 
-                flag="birthdate";
+                flag = "birthdate";
                 DatePickerDialog dialog = new DatePickerDialog(getActivity(), AttendanceLeaveFragment.this, year, month, day);
                 dialog.show();
             }
@@ -434,26 +420,24 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 //getActivity().showDialog(DATE_DIALOG_ID);
-                flag="birthdate";
+                flag = "birthdate";
                 DatePickerDialog dialog = new DatePickerDialog(getActivity(), AttendanceLeaveFragment.this, year, month, day);
                 dialog.show();
             }
         });
 
 
-
         attendancePageSubmitImageViewID3.setOnClickListener(new ImageView.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    if(CommonUtils.isInternelAvailable(getActivity())){
+                    if (CommonUtils.isInternelAvailable(getActivity())) {
 
-                        if(LEAVE_TYPE1.equalsIgnoreCase("7"))
+                        if (LEAVE_TYPE1.equalsIgnoreCase("7"))
                             validateData1();
                         else
-                        validateData();
-                    }
-                    else{
+                            validateData();
+                    } else {
                         Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_SHORT).show();
                     }
 
@@ -464,19 +448,18 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
         });
 
 
-
     }//onActivityCreated(Bundle savedInstanceState)
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         // this.editText.setText();
 
-        if(flag.equalsIgnoreCase("todate")) {
+        if (flag.equalsIgnoreCase("todate")) {
 
-          try{
+            try {
 
-              attendancepagefromdateEditTextID1.setText(new StringBuilder().append(year).append("-")
-                      .append(monthOfYear + 1).append("-").append(dayOfMonth));
+                attendancepagefromdateEditTextID1.setText(new StringBuilder().append(year).append("-")
+                        .append(monthOfYear + 1).append("-").append(dayOfMonth));
 
               /*Date date2=sdf.parse(String.valueOf(new StringBuilder().append(year).append("-")
                       .append(monthOfYear + 1).append("-").append(dayOfMonth)));*/
@@ -496,20 +479,15 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
                   showdateDialog("To Date can not be before From Date");
               }*/
 
-          }
-          catch(Exception e){
+            } catch (Exception e) {
 
             }
 
 
+        } else if (flag.equalsIgnoreCase("fromdate")) {
 
 
-
-        }
-        else if(flag.equalsIgnoreCase("fromdate")){
-
-
-            try{
+            try {
 
                 attendancepagetodateEditTextID1.setText(new StringBuilder().append(year).append("-")
                         .append(monthOfYear + 1).append("-").append(dayOfMonth));
@@ -530,19 +508,15 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
                     showdateDialog("From Date can not be after To Date");
                 }*/
 
-            }
-            catch(Exception e){
+            } catch (Exception e) {
 
             }
 
 
-
-        }
-
-        else if(flag.equalsIgnoreCase("birthdate")){
+        } else if (flag.equalsIgnoreCase("birthdate")) {
 
 
-            try{
+            try {
 
                 attendancepagetodateEditTextID_birthday.setText(new StringBuilder().append(year).append("-")
                         .append(monthOfYear + 1).append("-").append(dayOfMonth));
@@ -564,11 +538,9 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
                     showdateDialog("From Date can not be after To Date");
                 }*/
 
-            }
-            catch(Exception e){
+            } catch (Exception e) {
 
             }
-
 
 
         }
@@ -581,30 +553,25 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
         boolean cancel = false;
         View focusView = null;
 
-        if(TextUtils.isEmpty(attendancepagetodateEditTextID1.getText().toString()))
-        {
+        if (TextUtils.isEmpty(attendancepagetodateEditTextID1.getText().toString())) {
             attendancepagetodateEditTextID1.setError("Required field!");
             focusView = attendancepagetodateEditTextID1;
             cancel = true;
         }
-        if(TextUtils.isEmpty(attendancepagefromdateEditTextID1.getText().toString()))
-        {
+        if (TextUtils.isEmpty(attendancepagefromdateEditTextID1.getText().toString())) {
             attendancepagefromdateEditTextID1.setError("Required field!");
             focusView = attendancepagefromdateEditTextID1;
             cancel = true;
         }
-        if(TextUtils.isEmpty(attendancepagereasonEditTextID1.getText().toString()))
-        {
+        if (TextUtils.isEmpty(attendancepagereasonEditTextID1.getText().toString())) {
             attendancepagereasonEditTextID1.setError("Required field!");
             focusView = attendancepagereasonEditTextID1;
             cancel = true;
         }
 
-        if(cancel){
+        if (cancel) {
             focusView.requestFocus();
-        }
-        else
-        {
+        } else {
             getTextValues();
         }
 
@@ -616,45 +583,40 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
         boolean cancel = false;
         View focusView = null;
 
-        if(TextUtils.isEmpty(attendancepagetodateEditTextID_birthday.getText().toString()))
-        {
+        if (TextUtils.isEmpty(attendancepagetodateEditTextID_birthday.getText().toString())) {
             attendancepagetodateEditTextID_birthday.setError("Required field!");
             focusView = attendancepagetodateEditTextID1;
             cancel = true;
         }
 
-        if(TextUtils.isEmpty(attendancepagereasonEditTextID1.getText().toString()))
-        {
+        if (TextUtils.isEmpty(attendancepagereasonEditTextID1.getText().toString())) {
             attendancepagereasonEditTextID1.setError("Required field!");
             focusView = attendancepagereasonEditTextID1;
             cancel = true;
         }
 
-        if(cancel){
+        if (cancel) {
             focusView.requestFocus();
-        }
-        else
-        {
+        } else {
             getTextValues();
         }
 
     }//validateData
 
-   // GetLeaveType
+    // GetLeaveType
 
     //Get the values from EditText
     private void getTextValues() {
 
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-         String DATE_INPUT_FORMAT = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String DATE_INPUT_FORMAT = "yyyy-MM-dd";
 
         String DATE_OUTPUT_FORMAT = "dd/MMM/yyyy";
 
-        if(LEAVE_TYPE1.equalsIgnoreCase("7")){
+        if (LEAVE_TYPE1.equalsIgnoreCase("7")) {
             date = attendancepagetodateEditTextID_birthday.getText().toString();
             todate = attendancepagetodateEditTextID_birthday.getText().toString();
-        }
-        else{
+        } else {
             date = attendancepagetodateEditTextID1.getText().toString();
             todate = attendancepagefromdateEditTextID1.getText().toString();
         }
@@ -668,17 +630,16 @@ public class AttendanceLeaveFragment extends Fragment implements DatePickerDialo
         reason = attendancepagereasonEditTextID1.getText().toString();
 
         try {
-            date1=sdf.parse(attendancepagefromdateEditTextID1.getText().toString());
-            date2=sdf.parse(attendancepagetodateEditTextID1.getText().toString());
+            date1 = sdf.parse(attendancepagefromdateEditTextID1.getText().toString());
+            date2 = sdf.parse(attendancepagetodateEditTextID1.getText().toString());
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
 
-        if(LEAVE_TYPE1.equalsIgnoreCase("7")){
+        if (LEAVE_TYPE1.equalsIgnoreCase("7")) {
             validateleavebalance();
-        }
-else {
+        } else {
             if (!date.equalsIgnoreCase("") && !reason.equalsIgnoreCase("") && !todate.equalsIgnoreCase("")) {
 
                 if (date1.equals(date2)) {
@@ -707,57 +668,55 @@ else {
 
     }
 
-    public static int getDaysDifference(Date fromDate,Date toDate)
-    {
-        if(fromDate==null||toDate==null)
+    public static int getDaysDifference(Date fromDate, Date toDate) {
+        if (fromDate == null || toDate == null)
             return 0;
 
-        return (int)( (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
+        return (int) ((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
     }
 
 
-    private void sendDataForLeave(){
+    private void sendDataForLeave() {
 
-        Constants.ASSOCIATE_ID = prefs.getString("USERISDCODE","");
+        Constants.ASSOCIATE_ID = prefs.getString("USERISDCODE", "");
         Constants.TL_ID = prefs.getString("TLID", "");
         Constants.ATTENDANCE_TYPE = TAG_ATTENDANCE_TYPE;
         Constants.ATTENDANCE_DATE = mDateTime;
-        Constants.ATTENDANCE_TO_DATE=mDateTime1;
+        Constants.ATTENDANCE_TO_DATE = mDateTime1;
         Constants.CURRENT_LAT = Constants.UNIV_LAT;
         Constants.CURRENT_LONG = Constants.UNIV_LONG;
         Constants.REASON = reason;
         Constants.REMARKS = "";
         Constants.LEAVE_TYPE = LEAVE_TYPE1;
-        String employeename=prefs.getString("USERNAME","");
+        String employeename = prefs.getString("USERNAME", "");
 
         progressDialog.setMessage("Submitting Your Leave... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
 
-
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:Submit_LeaveRequest>"
-                +"<tem:emp_code>"+Constants.ASSOCIATE_ID+"</tem:emp_code>"
-                +"<tem:emp_name>"+employeename+"</tem:emp_name>"
-                +"<tem:leave_type_id>"+Constants.LEAVE_TYPE+"</tem:leave_type_id>"
-                +"<tem:leave_type>"+LEAVE_TYPE_NAME+"</tem:leave_type>"
-                +"<tem:from_date>"+Constants.ATTENDANCE_DATE+"</tem:from_date>"
-                +"<tem:to_date>"+Constants.ATTENDANCE_TO_DATE+"</tem:to_date>"
-                +"<tem:days>"+numofday+"</tem:days>"
-                +"<tem:reason>"+Constants.REASON+"</tem:reason>"
-                +"<tem:contact_no>"+""+"</tem:contact_no>"
-                +"</tem:Submit_LeaveRequest>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "<soapenv:Body>"
+                + "<tem:Submit_LeaveRequest>"
+                + "<tem:emp_code>" + Constants.ASSOCIATE_ID + "</tem:emp_code>"
+                + "<tem:emp_name>" + employeename + "</tem:emp_name>"
+                + "<tem:leave_type_id>" + Constants.LEAVE_TYPE + "</tem:leave_type_id>"
+                + "<tem:leave_type>" + LEAVE_TYPE_NAME + "</tem:leave_type>"
+                + "<tem:from_date>" + Constants.ATTENDANCE_DATE + "</tem:from_date>"
+                + "<tem:to_date>" + Constants.ATTENDANCE_TO_DATE + "</tem:to_date>"
+                + "<tem:days>" + numofday + "</tem:days>"
+                + "<tem:reason>" + Constants.REASON + "</tem:reason>"
+                + "<tem:contact_no>" + "" + "</tem:contact_no>"
+                + "</tem:Submit_LeaveRequest>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -780,19 +739,18 @@ else {
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.print("Server Response = "+Response);
+                    System.out.print("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
                     STATUS_CODE = status.getStatusCode();
-                    System.out.println("Server status code = "+STATUS_CODE);
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + STATUS_CODE);
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForLoginDetails(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -806,7 +764,7 @@ else {
     }
 
     //getParsingElementsForLoginDetails(xpp);
-    public void getParsingElementsForLoginDetails(XmlPullParser xpp){
+    public void getParsingElementsForLoginDetails(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -815,8 +773,8 @@ else {
                 switch (eventType) {
                     case XmlPullParser.START_TAG:
 
-                        tagname=xpp.getName();
-                        if(tagname.equalsIgnoreCase(TAG_LoginAuthenticateResult)) {
+                        tagname = xpp.getName();
+                        if (tagname.equalsIgnoreCase(TAG_LoginAuthenticateResult)) {
 
            /*to handle nested tags.
            "xpp.nextTag()" goes to the next starting tag  immediately following "ItemArray",
@@ -844,7 +802,7 @@ else {
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
@@ -962,25 +920,25 @@ else {
     }//getParsingElementsForLogin(xpp);
 
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
 
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
             //Success
-            if(STATUS_CODE==200){
+            if (STATUS_CODE == 200) {
                 //Login success
-                if(!STATUS.equalsIgnoreCase("")){
+                if (!STATUS.equalsIgnoreCase("")) {
                     //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
 
-                    if(STATUS.equalsIgnoreCase("NA")){
+                    if (STATUS.equalsIgnoreCase("NA")) {
                         Constants.ASSOCIATE_ID = "";
                         Constants.TL_ID = "";
                         Constants.OUTLET_ID = "";
@@ -992,7 +950,7 @@ else {
                         Constants.REASON = "";
                         Constants.LEAVE_TYPE = "";
                         Constants.DISTANCE = "0";
-                       // TAG_MESSAGE_VALUE = "Please check leave dates (holiday / Sun)";
+                        // TAG_MESSAGE_VALUE = "Please check leave dates (holiday / Sun)";
                         showFailureDialog();
                     }
                   /*  else  if(STATUS.equalsIgnoreCase("3")){
@@ -1023,7 +981,7 @@ else {
                         Constants.REASON = "";
                         Constants.LEAVE_TYPE = "";
                         Constants.DISTANCE = "0";
-                       // TAG_MESSAGE_VALUE = "Leave applied successfully";
+                        // TAG_MESSAGE_VALUE = "Leave applied successfully";
                         showSuccessDialog();
                     }
                 }
@@ -1040,7 +998,7 @@ else {
             }
 
             //Login failed
-            if(STATUS_CODE!=200){
+            if (STATUS_CODE != 200) {
                 //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
                 showFailureDialog();
 
@@ -1225,11 +1183,11 @@ else {
     };*/
 
     //Show Success Dialog
-    private void showSuccessDialog(){
+    private void showSuccessDialog() {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(getActivity());
         aldb.setTitle("Success!");
-        aldb.setMessage("\n"+TAG_MESSAGE_VALUE);
+        aldb.setMessage("\n" + TAG_MESSAGE_VALUE);
         aldb.setCancelable(false);
         aldb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -1262,11 +1220,11 @@ else {
     }
 
     //Show Failure Dialog
-    private void showFailureDialog(){
+    private void showFailureDialog() {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(getActivity());
         aldb.setTitle("Failed!");
-        aldb.setMessage("\n"+TAG_MESSAGE_VALUE);
+        aldb.setMessage("\n" + TAG_MESSAGE_VALUE);
         aldb.setPositiveButton("OK", null);
         aldb.show();
         /*final Dialog dialog = new Dialog(getContext());
@@ -1290,26 +1248,27 @@ else {
         dialog.show();*/
 
     }
+
     //Show Failure Dialog
-    private void showdateDialog(String msg){
+    private void showdateDialog(String msg) {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(getActivity());
         aldb.setTitle("Failed!");
-        aldb.setMessage("\n"+msg);
+        aldb.setMessage("\n" + msg);
         aldb.setPositiveButton("OK", null);
         aldb.show();
     }
 
-    private void clearData(){
+    private void clearData() {
 
         attendancepagetodateEditTextID1.setText("");
         attendancepagetodateEditTextID1.setText(new StringBuilder().append(year).append("-")
-                .append(month+1).append("-").append(day));
+                .append(month + 1).append("-").append(day));
 
         attendancepagereasonEditTextID1.setText("");
         attendancepagefromdateEditTextID1.setText("");
         attendancepagefromdateEditTextID1.setText(new StringBuilder().append(year).append("-")
-                .append(month+1).append("-").append(day));
+                .append(month + 1).append("-").append(day));
 
         ////Added Later
         spinner.setSelection(0);
@@ -1330,10 +1289,10 @@ else {
     @Override
     public void onDestroy() {
         try {
-            if((progressDialog != null) && progressDialog.isShowing() ){
+            if ((progressDialog != null) && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-        }catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         } finally {
             progressDialog = null;
@@ -1343,29 +1302,29 @@ else {
 
     }
 
-    private void getLeaveDetails(){
+    private void getLeaveDetails() {
         progressDialog.setMessage("Requesting... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        String EmpID = prefs.getString("USERISDCODE","");
-        System.out.println("EmpID: "+EmpID);
+        String EmpID = prefs.getString("USERISDCODE", "");
+        System.out.println("EmpID: " + EmpID);
 
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:GetMyLeaveBalance>"
+                + "<soapenv:Body>"
+                + "<tem:GetMyLeaveBalance>"
                 //+"<tem:emp_code>"+100172254+"</tem:emp_code>"
-                +"<tem:emp_code>"+EmpID+"</tem:emp_code>"
-                +"</tem:GetMyLeaveBalance>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "<tem:emp_code>" + EmpID + "</tem:emp_code>"
+                + "</tem:GetMyLeaveBalance>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -1389,18 +1348,17 @@ else {
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.println("Server Response = "+Response);
+                    System.out.println("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
-                    System.out.println("Server status code = "+status.getStatusCode());
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + status.getStatusCode());
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForEmployeeDetails(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -1414,7 +1372,7 @@ else {
     }
 
     //getParsingElementsForEmployeeDetails(xpp);
-    public void getParsingElementsForEmployeeDetails(XmlPullParser xpp){
+    public void getParsingElementsForEmployeeDetails(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -1426,21 +1384,21 @@ else {
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
 
 
-                        if(tagname.equalsIgnoreCase("PLAvailed")){
+                        if (tagname.equalsIgnoreCase("PLAvailed")) {
                             OpeningLeaveBalance7 = text;
                             text = "";
-                            System.out.println("OpeningLeaveBalance: "+OpeningLeaveBalance7);
+                            System.out.println("OpeningLeaveBalance: " + OpeningLeaveBalance7);
                         }
-                        if(tagname.equalsIgnoreCase("PLClosing")){
+                        if (tagname.equalsIgnoreCase("PLClosing")) {
                             OpeningLeaveBalance1 = text;
                             text = "";
-                            System.out.println("OpeningLeaveBalance: "+OpeningLeaveBalance1);
+                            System.out.println("OpeningLeaveBalance: " + OpeningLeaveBalance1);
                         }
 
                        /* if(tagname.equalsIgnoreCase(TAG_OpeningLeaveBalanceType)){
@@ -1487,14 +1445,14 @@ else {
 
     }//getParsingElementsForLogin(xpp);
 
-    Handler handler1 = new Handler(){
+    Handler handler1 = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
@@ -1509,10 +1467,8 @@ else {
     }
 
 
-
-
-    private void getLeavetype(){
-        leavetype=new ArrayList<String>();
+    private void getLeavetype() {
+        leavetype = new ArrayList<String>();
         progressDialog.setMessage("Requesting... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -1521,20 +1477,20 @@ else {
 
 
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:GetLeaveType>"
+                + "<soapenv:Body>"
+                + "<tem:GetLeaveType>"
                 //+"<tem:emp_code>"+100172254+"</tem:emp_code>"
-                +"<tem:client_id>"+clientid+"</tem:client_id>"
-                +"</tem:GetLeaveType>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "<tem:client_id>" + clientid + "</tem:client_id>"
+                + "</tem:GetLeaveType>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -1558,18 +1514,17 @@ else {
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.println("Server Response = "+Response);
+                    System.out.println("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
-                    System.out.println("Server status code = "+status.getStatusCode());
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + status.getStatusCode());
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForLeaveDetails(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -1583,7 +1538,7 @@ else {
     }
 
     //getParsingElementsForEmployeeDetails(xpp);
-    public void getParsingElementsForLeaveDetails(XmlPullParser xpp){
+    public void getParsingElementsForLeaveDetails(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -1595,26 +1550,26 @@ else {
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
 
-                        if(tagname.equalsIgnoreCase("LeaveTypeID")){
+                        if (tagname.equalsIgnoreCase("LeaveTypeID")) {
                             OpeningLeaveBalancetype = text;
                             text = "";
-                            System.out.println("OpeningLeaveBalance: "+OpeningLeaveBalancetype);
-                            if(!OpeningLeaveBalancetype.equalsIgnoreCase("10"))
-                            leavetypeid.add(OpeningLeaveBalancetype);
+                            System.out.println("OpeningLeaveBalance: " + OpeningLeaveBalancetype);
+                            if (!OpeningLeaveBalancetype.equalsIgnoreCase("10"))
+                                leavetypeid.add(OpeningLeaveBalancetype);
                         }
-                        if(tagname.equalsIgnoreCase("LeaveType")){
+                        if (tagname.equalsIgnoreCase("LeaveType")) {
 
-                                OpeningLeaveBalance = text;
+                            OpeningLeaveBalance = text;
 
                             text = "";
-                            System.out.println("OpeningLeaveBalance: "+OpeningLeaveBalance);
-                            if(!OpeningLeaveBalance.equalsIgnoreCase("On Duty"))
-                            leavetype.add(OpeningLeaveBalance);
+                            System.out.println("OpeningLeaveBalance: " + OpeningLeaveBalance);
+                            if (!OpeningLeaveBalance.equalsIgnoreCase("On Duty"))
+                                leavetype.add(OpeningLeaveBalance);
                         }
                         break;
 
@@ -1636,14 +1591,14 @@ else {
 
     }//getParsingElementsForLogin(xpp);
 
-    Handler handler2 = new Handler(){
+    Handler handler2 = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
@@ -1674,27 +1629,26 @@ else {
             spinner.setSelection(0);
             ////
 
-            spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+            spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
 
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                    LEAVE_TYPE1=leavetypeid.get(position);
-                    if(parent!=null){
+                    LEAVE_TYPE1 = leavetypeid.get(position);
+                    if (parent != null) {
                         //((TextView) view).setTextColor(Color.parseColor("#e1e1e1"));
                         View v = spinner.getSelectedView();
-                        if(v!=null){
-                            ((TextView)v).setTextColor(Color.parseColor("#e1e1e1"));
+                        if (v != null) {
+                            ((TextView) v).setTextColor(Color.parseColor("#e1e1e1"));
                         }
 
-                        LEAVE_TYPE_NAME=parent.getSelectedItem().toString();
+                        LEAVE_TYPE_NAME = parent.getSelectedItem().toString();
                     }
 
-                    if(LEAVE_TYPE1.equalsIgnoreCase("7")){
+                    if (LEAVE_TYPE1.equalsIgnoreCase("7")) {
                         birthdayleave.setVisibility(View.VISIBLE);
                         normalleave.setVisibility(View.GONE);
-                    }
-                    else{
+                    } else {
                         birthdayleave.setVisibility(View.GONE);
                         normalleave.setVisibility(View.VISIBLE);
                     }

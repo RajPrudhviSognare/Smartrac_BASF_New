@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SmartracBASF.iml" filepath="$PROJECT_DIR$/.idea/modules/SmartracBASF.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SmartracBASF.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SmartracBASF.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SmartracBASF.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SmartracBASF.app.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SmartracBASF.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SmartracBASF.app.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SmartracBASF.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SmartracBASF.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Smartrac_BASF_New.iml" filepath="$PROJECT_DIR$/.idea/modules/Smartrac_BASF_New.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Smartrac_BASF_New.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Smartrac_BASF_New.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Smartrac_BASF_New.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Smartrac_BASF_New.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Smartrac_BASF_New.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Smartrac_BASF_New.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Smartrac_BASF_New.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Smartrac_BASF_New.app.unitTest.iml" />
     </modules>
   </component>
 </project>

@@ -12,7 +12,9 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
+
 import com.google.android.material.tabs.TabLayout;
+
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -21,9 +23,9 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.ImageView;
-
 
 
 import java.util.ArrayList;
@@ -67,7 +69,7 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
 
         viewPager.setOffscreenPageLimit(0);
 
-        attendancetopbarbackImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        attendancetopbarbackImageViewID.setOnClickListener(new ImageView.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -75,7 +77,7 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
         });
 
         //User Icon Click Event
-        attendancetopbarusericonImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        attendancetopbarusericonImageViewID.setOnClickListener(new ImageView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -89,26 +91,24 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
         startGeolocationService(getApplicationContext());
 
         //Added Later//////////////////
-        if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             System.out.println("Inside GiveAttendanceTabbedActivity Page checkAllPermissions() is called Above Lallipop: ");
-            try{
+            try {
                 checkAllPermissions();
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         //End Of Added Later//////////
 
-        if(CommonUtils.locationServicesEnabled(GiveAttendanceTabbedActivity.this)){
-        }
-        else{
-             //Toast.makeText(GiveAttendanceTabbedActivity.this, "Please TURN ON Your Mobile's 'GPS' (Location Settings)", Toast.LENGTH_LONG).show();
-            final AlertDialog.Builder aldb =  new AlertDialog.Builder(GiveAttendanceTabbedActivity.this);
+        if (CommonUtils.locationServicesEnabled(GiveAttendanceTabbedActivity.this)) {
+        } else {
+            //Toast.makeText(GiveAttendanceTabbedActivity.this, "Please TURN ON Your Mobile's 'GPS' (Location Settings)", Toast.LENGTH_LONG).show();
+            final AlertDialog.Builder aldb = new AlertDialog.Builder(GiveAttendanceTabbedActivity.this);
             aldb.setTitle("Location Error!");
             aldb.setMessage("Please TURN ON Your Mobile's 'GPS' (Location Settings)");
             aldb.setCancelable(false);
-            aldb.setPositiveButton("OK",new DialogInterface.OnClickListener(){
+            aldb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     onBackPressed();
@@ -118,7 +118,7 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
 
     }//onCreate()
 
-    private void checkAllPermissions(){
+    private void checkAllPermissions() {
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(GiveAttendanceTabbedActivity.this,
                 android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -136,8 +136,8 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(GiveAttendanceTabbedActivity.this,
                         new String[]{android.Manifest.permission.CAMERA,
-                                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                     android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1991);
+                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1991);
 
                 // The callback method gets the result of the request.
             }
@@ -145,6 +145,7 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
         }//if
 
     }//checkAllPermissions()
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -173,12 +174,12 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
 
     }
 
-    public boolean isServiceRunning(String serviceClassName){
-        final ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+    public boolean isServiceRunning(String serviceClassName) {
+        final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         final List<ActivityManager.RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
 
         for (ActivityManager.RunningServiceInfo runningServiceInfo : services) {
-            if (runningServiceInfo.service.getClassName().equals(serviceClassName)){
+            if (runningServiceInfo.service.getClassName().equals(serviceClassName)) {
                 return true;
             }
         }
@@ -197,9 +198,9 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
         context.stopService(geolocationService);
     }
 
-    private void initAllViews(){
+    private void initAllViews() {
         //shared preference
-        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME,MODE_PRIVATE);
+        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME, MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         attendancetopbarbackImageViewID = (ImageView) findViewById(R.id.attendancetopbarbackImageViewID);
@@ -217,9 +218,9 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
         adapter.addFragment(new AttendanceOuttimeFragment(), "Out TIme");
         //adapter.addFragment(new AttendanceWeeklyoffFragment(), "Weekly Off");
         //adapter.addFragment(new AttendanceLeaveFragment(), "Leave");
-       // adapter.addFragment(new AttendanceWeeklyoffFragment(), "Weekly Off");
-      //  adapter.addFragment(new AttendanceMeetingFragment(), "OD");
-       // adapter.addFragment(new AttendanceLWPFragment(), "LWP");
+        // adapter.addFragment(new AttendanceWeeklyoffFragment(), "Weekly Off");
+        //  adapter.addFragment(new AttendanceMeetingFragment(), "OD");
+        // adapter.addFragment(new AttendanceLWPFragment(), "LWP");
         /*adapter.addFragment(new AttendanceBreakFragment(), "Break");*/
         viewPager.setAdapter(adapter);
     }
@@ -259,8 +260,7 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         stopGeolocationService(getApplicationContext());
         /*if(isServiceRunning("GeolocationService")){
             System.out.println("GeolocationService is running!");
@@ -274,13 +274,13 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
 
-    private void clearAllNotification(){
-        notificationManager = (NotificationManager)GiveAttendanceTabbedActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+    private void clearAllNotification() {
+        notificationManager = (NotificationManager) GiveAttendanceTabbedActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
         //Starting Geolocation Service
@@ -291,18 +291,17 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
         else{
             System.out.println("GeolocationService is already running!");
         }*/
-        if(ImageCapture.ATTENDANCE_TYPE.equalsIgnoreCase("in")){
+        if (ImageCapture.ATTENDANCE_TYPE.equalsIgnoreCase("in")) {
             //newCameraInterface.onClickPictureBack();
             int position = tabLayout.getSelectedTabPosition();
-            System.out.println("onResume(): Tab position: "+position);
+            System.out.println("onResume(): Tab position: " + position);
             Fragment fragment = adapter.getItem(tabLayout.getSelectedTabPosition());
             if (fragment != null) {
                 switch (position) {
                     case 0:
                         try {
                             ((AttendanceIntimeFragmet) fragment).onClickPictureBack2();
-                        }
-                        catch(NullPointerException e){
+                        } catch (NullPointerException e) {
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                             alertDialogBuilder.setMessage(e.getMessage());
                             alertDialogBuilder.setPositiveButton("Cancel",
@@ -315,7 +314,7 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
                             AlertDialog alertDialog = alertDialogBuilder.create();
                             alertDialog.show();
 
-                        } catch (Exception e){
+                        } catch (Exception e) {
 
                         }
                         break;
@@ -328,17 +327,17 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
         }//if
 
         System.out.println("onResume() is called inside GiveAttendanceTabbedActivity: ");
-        if(ImageCapture.ATTENDANCE_TYPE.equalsIgnoreCase("out")){
+        if (ImageCapture.ATTENDANCE_TYPE.equalsIgnoreCase("out")) {
             //newCameraInterface.onClickPictureBack();
             int position = tabLayout.getSelectedTabPosition();
-            System.out.println("onResume(): Tab position: "+position);
+            System.out.println("onResume(): Tab position: " + position);
             Fragment fragment = adapter.getItem(tabLayout.getSelectedTabPosition());
             if (fragment != null) {
                 switch (position) {
                     case 0:
                         break;
                     case 1:
-                        ((AttendanceOuttimeFragment)fragment).onClickPictureBack1();
+                        ((AttendanceOuttimeFragment) fragment).onClickPictureBack1();
                         break;
                 }
             }
@@ -378,20 +377,20 @@ public class GiveAttendanceTabbedActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(isServiceRunning("GeolocationService")){
+        if (isServiceRunning("GeolocationService")) {
             System.out.println("GeolocationService is running!");
             stopGeolocationService(getApplicationContext());
-        }
-        else{
+        } else {
             System.out.println("GeolocationService is already destroyed!");
         }
 
-        try{
-            if((progressDialog != null) && progressDialog.isShowing() ){
+        try {
+            if ((progressDialog != null) && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-        }catch (Exception e){e.printStackTrace();}
-        finally {
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             progressDialog = null;
         }
 

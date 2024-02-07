@@ -48,7 +48,7 @@ public class DateUtils {
     }
 
     /**
-     * @param time in milliseconds (Timestamp)
+     * @param time        in milliseconds (Timestamp)
      * @param mDateFormat SimpleDateFormat
      */
     public static String getDateTimeFromTimeStamp(Long time, String mDateFormat) {
@@ -61,7 +61,7 @@ public class DateUtils {
     /**
      * Get Timestamp from date and time
      *
-     * @param mDateTime datetime String
+     * @param mDateTime   datetime String
      * @param mDateFormat Date Format
      * @throws ParseException
      */
@@ -77,7 +77,7 @@ public class DateUtils {
      * Return  datetime String from date object
      *
      * @param mDateFormat format of date
-     * @param date date object that you want to parse
+     * @param date        date object that you want to parse
      */
     public static String formatDateTimeFromDate(String mDateFormat, Date date) {
         if (date == null) {
@@ -89,9 +89,9 @@ public class DateUtils {
     /**
      * Convert one date format string  to another date format string in android
      *
-     * @param inputDateFormat Input SimpleDateFormat
+     * @param inputDateFormat  Input SimpleDateFormat
      * @param outputDateFormat Output SimpleDateFormat
-     * @param inputDate input Date String
+     * @param inputDate        input Date String
      * @throws ParseException
      */
     public static String formatDateFromDateString(String inputDateFormat, String outputDateFormat,

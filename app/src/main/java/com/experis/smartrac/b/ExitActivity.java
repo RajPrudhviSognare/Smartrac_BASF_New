@@ -9,8 +9,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -47,8 +49,8 @@ public class ExitActivity extends AppCompatActivity {
     private SharedPreferences.Editor prefsEditor;
     private ProgressDialog progressDialog;
 
-    private ImageView viewAttendancetopbarbackImageViewID,viewAttendancetopbarusericonImageViewID;
-    private EditText emailidedt,noticeedt,reasonforleaveedt;
+    private ImageView viewAttendancetopbarbackImageViewID, viewAttendancetopbarusericonImageViewID;
+    private EditText emailidedt, noticeedt, reasonforleaveedt;
 
     private String baseURL;
     private String SOAPRequestXML;
@@ -75,13 +77,13 @@ public class ExitActivity extends AppCompatActivity {
     private List<String> OutTimeList = null;
     private List<String> HoursWorkedList = null;
     private ImageView attendancePageSubmitImageViewID3;
-    private EditText attendancepagetodateEditTextID1,regdt;
+    private EditText attendancepagetodateEditTextID1, regdt;
     private Calendar calendar;
     private int year, month, day;
 
-    private String date = null,todate=null;
-    String mDateTime = null,mDateTime1 = null;
-    private Date date1,date2;
+    private String date = null, todate = null;
+    String mDateTime = null, mDateTime1 = null;
+    private Date date1, date2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,9 +97,9 @@ public class ExitActivity extends AppCompatActivity {
 
 
         attendancepagetodateEditTextID1.setText(new StringBuilder().append(year).append("-")
-                .append(month+1).append("-").append(day+1));
+                .append(month + 1).append("-").append(day + 1));
         regdt.setText(new StringBuilder().append(year).append("-")
-                .append(month+1).append("-").append(day));
+                .append(month + 1).append("-").append(day));
 
         attendancepagetodateEditTextID1.setOnClickListener(new EditText.OnClickListener() {
             @Override
@@ -121,13 +123,8 @@ public class ExitActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
-
         //Back Button
-        viewAttendancetopbarbackImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        viewAttendancetopbarbackImageViewID.setOnClickListener(new ImageView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -137,7 +134,7 @@ public class ExitActivity extends AppCompatActivity {
         viewAttendancetopbarusericonImageViewID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(ExitActivity.this, ExitActivity.class);
+                Intent i = new Intent(ExitActivity.this, ExitActivity.class);
                 startActivity(i);
             }
         });
@@ -146,11 +143,10 @@ public class ExitActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if(CommonUtils.isInternelAvailable(ExitActivity.this)){
+                    if (CommonUtils.isInternelAvailable(ExitActivity.this)) {
 
-                            validateData();
-                    }
-                    else{
+                        validateData();
+                    } else {
                         Toast.makeText(ExitActivity.this, "No internet connection!", Toast.LENGTH_SHORT).show();
                     }
 
@@ -163,21 +159,20 @@ public class ExitActivity extends AppCompatActivity {
     }//onCreate()
 
 
-
     @Override
     protected Dialog onCreateDialog(int id) {
         // TODO Auto-generated method stub
 
         if (id == 999) {
-            DatePickerDialog datePickerDialog= new DatePickerDialog(this,
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                     myDateListener, year, month, day);
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DAY_OF_YEAR, 1);
             datePickerDialog.getDatePicker().setMinDate(cal.getTimeInMillis()); // where  DatePicker dp
 
 
-           // datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-            return  datePickerDialog;
+            // datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            return datePickerDialog;
         }
 
         return null;
@@ -199,18 +194,15 @@ public class ExitActivity extends AppCompatActivity {
     private void showDate(int year, int monthOfYear, int dayOfMonth) {
 
 
+        try {
 
-            try{
-
-                attendancepagetodateEditTextID1.setText(new StringBuilder().append(year).append("-")
-                        .append(monthOfYear + 1).append("-").append(dayOfMonth));
+            attendancepagetodateEditTextID1.setText(new StringBuilder().append(year).append("-")
+                    .append(monthOfYear + 1).append("-").append(dayOfMonth));
 
 
-            }
-            catch(Exception e){
+        } catch (Exception e) {
 
-            }
-
+        }
 
 
     }
@@ -221,20 +213,20 @@ public class ExitActivity extends AppCompatActivity {
     }
 
 
-    private void initAllViews(){
+    private void initAllViews() {
 
         //shared preference
-        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME,MODE_PRIVATE);
+        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME, MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
-        viewAttendancetopbarbackImageViewID = (ImageView)findViewById(R.id.viewAttendancetopbarbackImageViewID);
-        viewAttendancetopbarusericonImageViewID=(ImageView)findViewById(R.id.viewAttendancetopbarusericonImageViewID);
-        attendancePageSubmitImageViewID3=(ImageView)findViewById(R.id.attendancePageSubmitImageViewID3);
-        attendancepagetodateEditTextID1 = (EditText)findViewById(R.id.attendancepagetodateEditTextID1);
-        emailidedt=(EditText)findViewById(R.id.emailidedt);
-        noticeedt=(EditText)findViewById(R.id.noticeedt);
-        reasonforleaveedt=(EditText)findViewById(R.id.reasonforleaveedt);
-        regdt=(EditText)findViewById(R.id.regdt);
+        viewAttendancetopbarbackImageViewID = (ImageView) findViewById(R.id.viewAttendancetopbarbackImageViewID);
+        viewAttendancetopbarusericonImageViewID = (ImageView) findViewById(R.id.viewAttendancetopbarusericonImageViewID);
+        attendancePageSubmitImageViewID3 = (ImageView) findViewById(R.id.attendancePageSubmitImageViewID3);
+        attendancepagetodateEditTextID1 = (EditText) findViewById(R.id.attendancepagetodateEditTextID1);
+        emailidedt = (EditText) findViewById(R.id.emailidedt);
+        noticeedt = (EditText) findViewById(R.id.noticeedt);
+        reasonforleaveedt = (EditText) findViewById(R.id.reasonforleaveedt);
+        regdt = (EditText) findViewById(R.id.regdt);
 
         InDateList = new ArrayList<String>(0);
         InTimeList = new ArrayList<String>(0);
@@ -251,34 +243,34 @@ public class ExitActivity extends AppCompatActivity {
 
     }
 
-    private void getAttendanceDetails(){
+    private void getAttendanceDetails() {
         progressDialog.setMessage("Requesting... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        String EmpID = prefs.getString("USERISDCODE","");
-        System.out.println("EmpID: "+EmpID);
-        mDateTime1=attendancepagetodateEditTextID1.getText().toString();
+        String EmpID = prefs.getString("USERISDCODE", "");
+        System.out.println("EmpID: " + EmpID);
+        mDateTime1 = attendancepagetodateEditTextID1.getText().toString();
 
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:ExitRequest>"
+                + "<soapenv:Body>"
+                + "<tem:ExitRequest>"
                 //+"<tem:emp_code>"+100400985+"</tem:emp_code>"
-                +"<tem:emp_code>"+EmpID+"</tem:emp_code>"
-                +"<tem:notice_period>"+noticeedt.getText().toString()+"</tem:notice_period>"
-                +"<tem:last_working_day>"+mDateTime1+"</tem:last_working_day>"
-                +"<tem:personal_email_id>"+emailidedt.getText().toString()+"</tem:personal_email_id>"
-                +"<tem:reason_for_leaving>"+reasonforleaveedt.getText().toString()+"</tem:reason_for_leaving>"
-                +"</tem:ExitRequest>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "<tem:emp_code>" + EmpID + "</tem:emp_code>"
+                + "<tem:notice_period>" + noticeedt.getText().toString() + "</tem:notice_period>"
+                + "<tem:last_working_day>" + mDateTime1 + "</tem:last_working_day>"
+                + "<tem:personal_email_id>" + emailidedt.getText().toString() + "</tem:personal_email_id>"
+                + "<tem:reason_for_leaving>" + reasonforleaveedt.getText().toString() + "</tem:reason_for_leaving>"
+                + "</tem:ExitRequest>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -302,18 +294,17 @@ public class ExitActivity extends AppCompatActivity {
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.println("Server Response = "+Response);
+                    System.out.println("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
-                    System.out.println("Server status code = "+status.getStatusCode());
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + status.getStatusCode());
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForAttendanceDetails(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -326,7 +317,7 @@ public class ExitActivity extends AppCompatActivity {
     }
 
     //getParsingElementsForAttendanceDetails(xpp);
-    public void getParsingElementsForAttendanceDetails(XmlPullParser xpp){
+    public void getParsingElementsForAttendanceDetails(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -334,9 +325,8 @@ public class ExitActivity extends AppCompatActivity {
                 String tagname = xpp.getName();
                 switch (eventType) {
                     case XmlPullParser.START_TAG:
-                        tagname=xpp.getName();
-                        if(tagname.equalsIgnoreCase("ExitRequestResult")) {
-
+                        tagname = xpp.getName();
+                        if (tagname.equalsIgnoreCase("ExitRequestResult")) {
 
 
                             xpp.nextTag();
@@ -357,12 +347,11 @@ public class ExitActivity extends AppCompatActivity {
                         }
 
 
-
                         break;
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
@@ -407,20 +396,20 @@ public class ExitActivity extends AppCompatActivity {
         }//try
         catch (XmlPullParserException e) {
             e.printStackTrace();
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
     }//getParsingElementsForLogin(xpp);
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
@@ -447,7 +436,7 @@ public class ExitActivity extends AppCompatActivity {
     }*/
 
     //Show Payslip Status Dialog
-    private void showPayslipStatusDialog(String msg){
+    private void showPayslipStatusDialog(String msg) {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(ExitActivity.this);
         aldb.setMessage(msg);
@@ -457,10 +446,9 @@ public class ExitActivity extends AppCompatActivity {
 
 
     @Override
-    public void onBackPressed()
-    {
-       // super.onBackPressed();
-       ExitActivity.this.finish();
+    public void onBackPressed() {
+        // super.onBackPressed();
+        ExitActivity.this.finish();
         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
 
@@ -475,17 +463,17 @@ public class ExitActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
     }
 
     @Override
     public void onDestroy() {
         try {
-            if((progressDialog != null) && progressDialog.isShowing() ){
+            if ((progressDialog != null) && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-        }catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         } finally {
             progressDialog = null;
@@ -500,44 +488,40 @@ public class ExitActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if(TextUtils.isEmpty(reasonforleaveedt.getText().toString()))
-        {
+        if (TextUtils.isEmpty(reasonforleaveedt.getText().toString())) {
             reasonforleaveedt.setError("Required field!");
             focusView = reasonforleaveedt;
             cancel = true;
         }
-        if(TextUtils.isEmpty(attendancepagetodateEditTextID1.getText().toString()))
-        {
+        if (TextUtils.isEmpty(attendancepagetodateEditTextID1.getText().toString())) {
             attendancepagetodateEditTextID1.setError("Required field!");
             focusView = attendancepagetodateEditTextID1;
             cancel = true;
         }
-        if(TextUtils.isEmpty(noticeedt.getText().toString()))
-        {
+        if (TextUtils.isEmpty(noticeedt.getText().toString())) {
             noticeedt.setError("Required field!");
             focusView = noticeedt;
             cancel = true;
         }
 
 
-        if(cancel){
+        if (cancel) {
             focusView.requestFocus();
-        }
-        else
-        {
+        } else {
             getTextValues();
         }
 
     }//validateData
+
     private void getTextValues() {
 
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String DATE_INPUT_FORMAT = "yyyy-MM-dd";
 
         String DATE_OUTPUT_FORMAT = "dd/MMM/yyyy";
 
 
-            date = attendancepagetodateEditTextID1.getText().toString();
+        date = attendancepagetodateEditTextID1.getText().toString();
 
 
         try {
@@ -549,40 +533,35 @@ public class ExitActivity extends AppCompatActivity {
 
         try {
 
-            date2=sdf.parse(attendancepagetodateEditTextID1.getText().toString());
+            date2 = sdf.parse(attendancepagetodateEditTextID1.getText().toString());
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
 
+        if (!date.equalsIgnoreCase("")) {
 
 
-            if (!date.equalsIgnoreCase("") ) {
-
-
-                    if(CommonUtils.isInternelAvailable(ExitActivity.this)){
-                        getAttendanceDetails();
-                    }
-                    else{
-                        Toast.makeText(ExitActivity.this, "No internet connection!", Toast.LENGTH_SHORT).show();
-                    }
-
-
+            if (CommonUtils.isInternelAvailable(ExitActivity.this)) {
+                getAttendanceDetails();
             } else {
-                Toast.makeText(ExitActivity.this, "All Fields Are Mandatory!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ExitActivity.this, "No internet connection!", Toast.LENGTH_SHORT).show();
             }
 
 
+        } else {
+            Toast.makeText(ExitActivity.this, "All Fields Are Mandatory!", Toast.LENGTH_SHORT).show();
+        }
 
 
     }
 
     //Show Failure Dialog
-    private void showdateDialog(String msg){
+    private void showdateDialog(String msg) {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(ExitActivity.this);
         aldb.setTitle("Failed!");
-        aldb.setMessage("\n"+msg);
+        aldb.setMessage("\n" + msg);
         aldb.setPositiveButton("OK", null);
         aldb.show();
     }

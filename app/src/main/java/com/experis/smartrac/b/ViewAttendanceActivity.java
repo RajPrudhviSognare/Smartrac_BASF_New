@@ -7,8 +7,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +45,7 @@ public class ViewAttendanceActivity extends AppCompatActivity {
     private SharedPreferences.Editor prefsEditor;
     private ProgressDialog progressDialog;
 
-    private ImageView viewAttendancetopbarbackImageViewID,viewAttendancetopbarusericonImageViewID;
+    private ImageView viewAttendancetopbarbackImageViewID, viewAttendancetopbarusericonImageViewID;
 
     private ListView viewAttendanceDetailsListViewID;
     private TextView viewAttendanceDetailsNoDataTextViewID;
@@ -82,15 +84,14 @@ public class ViewAttendanceActivity extends AppCompatActivity {
 
         initAllViews();
 
-        if(CommonUtils.isInternelAvailable(ViewAttendanceActivity.this)){
+        if (CommonUtils.isInternelAvailable(ViewAttendanceActivity.this)) {
             getAttendanceDetails();
-        }
-        else{
+        } else {
             Toast.makeText(ViewAttendanceActivity.this, "No internet connection!", Toast.LENGTH_SHORT).show();
         }
 
         //Back Button
-        viewAttendancetopbarbackImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        viewAttendancetopbarbackImageViewID.setOnClickListener(new ImageView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -100,23 +101,23 @@ public class ViewAttendanceActivity extends AppCompatActivity {
         viewAttendancetopbarusericonImageViewID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(ViewAttendanceActivity.this,ViewAttendanceActivity1.class);
+                Intent i = new Intent(ViewAttendanceActivity.this, ViewAttendanceActivity1.class);
                 startActivity(i);
             }
         });
 
     }//onCreate()
 
-    private void initAllViews(){
+    private void initAllViews() {
 
         //shared preference
-        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME,MODE_PRIVATE);
+        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME, MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
-        viewAttendancetopbarbackImageViewID = (ImageView)findViewById(R.id.viewAttendancetopbarbackImageViewID);
-        viewAttendancetopbarusericonImageViewID=(ImageView)findViewById(R.id.viewAttendancetopbarusericonImageViewID);
-        viewAttendanceDetailsListViewID = (ListView)findViewById(R.id.viewAttendanceDetailsListViewID);
-        viewAttendanceDetailsNoDataTextViewID = (TextView)findViewById(R.id.viewAttendanceDetailsNoDataTextViewID);
+        viewAttendancetopbarbackImageViewID = (ImageView) findViewById(R.id.viewAttendancetopbarbackImageViewID);
+        viewAttendancetopbarusericonImageViewID = (ImageView) findViewById(R.id.viewAttendancetopbarusericonImageViewID);
+        viewAttendanceDetailsListViewID = (ListView) findViewById(R.id.viewAttendanceDetailsListViewID);
+        viewAttendanceDetailsNoDataTextViewID = (TextView) findViewById(R.id.viewAttendanceDetailsNoDataTextViewID);
 
         InDateList = new ArrayList<String>(0);
         InTimeList = new ArrayList<String>(0);
@@ -127,31 +128,31 @@ public class ViewAttendanceActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(ViewAttendanceActivity.this);
     }
 
-    private void getAttendanceDetails(){
+    private void getAttendanceDetails() {
         progressDialog.setMessage("Requesting... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        String EmpID = prefs.getString("USERISDCODE","");
-        System.out.println("EmpID: "+EmpID);
+        String EmpID = prefs.getString("USERISDCODE", "");
+        System.out.println("EmpID: " + EmpID);
 
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:GetMyAttendance>"
+                + "<soapenv:Body>"
+                + "<tem:GetMyAttendance>"
                 //+"<tem:emp_code>"+100400985+"</tem:emp_code>"
-                +"<tem:emp_code>"+EmpID+"</tem:emp_code>"
-                +"<tem:from_date>"+""+"</tem:from_date>"
-                +"<tem:to_date>"+""+"</tem:to_date>"
-                +"</tem:GetMyAttendance>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "<tem:emp_code>" + EmpID + "</tem:emp_code>"
+                + "<tem:from_date>" + "" + "</tem:from_date>"
+                + "<tem:to_date>" + "" + "</tem:to_date>"
+                + "</tem:GetMyAttendance>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -175,18 +176,17 @@ public class ViewAttendanceActivity extends AppCompatActivity {
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.println("Server Response = "+Response);
+                    System.out.println("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
-                    System.out.println("Server status code = "+status.getStatusCode());
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + status.getStatusCode());
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForAttendanceDetails(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -199,7 +199,7 @@ public class ViewAttendanceActivity extends AppCompatActivity {
     }
 
     //getParsingElementsForAttendanceDetails(xpp);
-    public void getParsingElementsForAttendanceDetails(XmlPullParser xpp){
+    public void getParsingElementsForAttendanceDetails(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -211,38 +211,34 @@ public class ViewAttendanceActivity extends AppCompatActivity {
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
 
-                        if(tagname.equalsIgnoreCase(TAG_EmpCode)){
+                        if (tagname.equalsIgnoreCase(TAG_EmpCode)) {
                             EmpCode = text;
                             text = "";
-                            System.out.println("EmpCode: "+EmpCode);
-                        }
-                        else if(tagname.equalsIgnoreCase(TAG_InDate)){
+                            System.out.println("EmpCode: " + EmpCode);
+                        } else if (tagname.equalsIgnoreCase(TAG_InDate)) {
                             InDate = text;
                             text = "";
-                            System.out.println("InDate: "+InDate);
+                            System.out.println("InDate: " + InDate);
                             InDateList.add(InDate);
-                        }
-                        else if(tagname.equalsIgnoreCase(TAG_InTime)){
+                        } else if (tagname.equalsIgnoreCase(TAG_InTime)) {
                             InTime = text;
                             text = "";
-                            System.out.println("InTime: "+InTime);
+                            System.out.println("InTime: " + InTime);
                             InTimeList.add(InTime);
-                        }
-                        else if(tagname.equalsIgnoreCase(TAG_OutTime)){
+                        } else if (tagname.equalsIgnoreCase(TAG_OutTime)) {
                             OutTime = text;
                             text = "";
-                            System.out.println("OutTime: "+OutTime);
+                            System.out.println("OutTime: " + OutTime);
                             OutTimeList.add(OutTime);
-                        }
-                        else if(tagname.equalsIgnoreCase(TAG_HoursWorked)){
+                        } else if (tagname.equalsIgnoreCase(TAG_HoursWorked)) {
                             HoursWorked = text;
                             text = "";
-                            System.out.println("HoursWorked: "+HoursWorked);
+                            System.out.println("HoursWorked: " + HoursWorked);
                             HoursWorkedList.add(HoursWorked);
                         }
 
@@ -260,33 +256,32 @@ public class ViewAttendanceActivity extends AppCompatActivity {
         }//try
         catch (XmlPullParserException e) {
             e.printStackTrace();
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
     }//getParsingElementsForLogin(xpp);
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("InDateList: "+InDateList.toString());
-            System.out.println("InTimeList: "+InTimeList.toString());
-            System.out.println("OutTimeList: "+OutTimeList.toString());
-            System.out.println("HoursWorkedList: "+HoursWorkedList.toString());
+            System.out.println("InDateList: " + InDateList.toString());
+            System.out.println("InTimeList: " + InTimeList.toString());
+            System.out.println("OutTimeList: " + OutTimeList.toString());
+            System.out.println("HoursWorkedList: " + HoursWorkedList.toString());
 
-            if(InDateList!=null){
-                if(InDateList.size()==0){
+            if (InDateList != null) {
+                if (InDateList.size() == 0) {
                     viewAttendanceDetailsListViewID.setVisibility(View.GONE);
                     viewAttendanceDetailsNoDataTextViewID.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     viewAttendanceDetailsListViewID.setVisibility(View.VISIBLE);
                     viewAttendanceDetailsNoDataTextViewID.setVisibility(View.GONE);
                     setAttendanceDetails();
@@ -297,18 +292,18 @@ public class ViewAttendanceActivity extends AppCompatActivity {
 
     };
 
-    private void setAttendanceDetails(){
+    private void setAttendanceDetails() {
         viewAttendanceDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(ViewAttendanceActivity.this));
     }
 
     /*
-    * CustomAdapterForAttendanceDetails
-    */
+     * CustomAdapterForAttendanceDetails
+     */
     public class CustomAdapterForAttendanceDetails extends BaseAdapter {
 
         public Context cntx;
 
-        public CustomAdapterForAttendanceDetails(Context context){
+        public CustomAdapterForAttendanceDetails(Context context) {
             cntx = context;
         }
 
@@ -316,27 +311,26 @@ public class ViewAttendanceActivity extends AppCompatActivity {
         public int getCount() {
 
 
-            if(InDateList!=null) {
-                if(InDateList.size()!=0) {
+            if (InDateList != null) {
+                if (InDateList.size() != 0) {
 
-                    int[] numbers = {InDateList.size(),InTimeList.size(),OutTimeList.size(),HoursWorkedList.size()};
+                    int[] numbers = {InDateList.size(), InTimeList.size(), OutTimeList.size(), HoursWorkedList.size()};
                     int smallest = Integer.MAX_VALUE;
-                    for(int i =0;i<numbers.length;i++) {
-                        if(smallest > numbers[i]) {
+                    for (int i = 0; i < numbers.length; i++) {
+                        if (smallest > numbers[i]) {
                             smallest = numbers[i];
                         }
                     }
-                    System.out.println("Smallest size is : " +smallest);
+                    System.out.println("Smallest size is : " + smallest);
                     return smallest;
 
                     ////return InDateList.size();
 
                 }//if
-                else{
+                else {
                     return 0;
                 }
-            }
-            else{
+            } else {
                 return 0;
             }
         }
@@ -374,18 +368,17 @@ public class ViewAttendanceActivity extends AppCompatActivity {
 
             View view;
 
-            if(convertView==null){
-                LayoutInflater inflater = (LayoutInflater)cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.customlayout_for_viewattendance, null);
-            }
-            else{
+            } else {
                 view = convertView;
             }
 
-            final TextView date = (TextView)view.findViewById(R.id.customlayout_IndateTextViewID);
-            final TextView intime = (TextView)view.findViewById(R.id.customlayout_InTimeTextViewID);
-            final TextView outtime = (TextView)view.findViewById(R.id.customlayout_OuttimeTextViewID);
-            final TextView hoursworked = (TextView)view.findViewById(R.id.customlayout_HoursWorkedTextViewID);
+            final TextView date = (TextView) view.findViewById(R.id.customlayout_IndateTextViewID);
+            final TextView intime = (TextView) view.findViewById(R.id.customlayout_InTimeTextViewID);
+            final TextView outtime = (TextView) view.findViewById(R.id.customlayout_OuttimeTextViewID);
+            final TextView hoursworked = (TextView) view.findViewById(R.id.customlayout_HoursWorkedTextViewID);
 
             date.setText(InDateList.get(position));
             intime.setText(InTimeList.get(position));
@@ -398,10 +391,9 @@ public class ViewAttendanceActivity extends AppCompatActivity {
     }//CustomAdapterForAttendanceDetails Class
 
     @Override
-    public void onBackPressed()
-    {
-       // super.onBackPressed();
-       ViewAttendanceActivity.this.finish();
+    public void onBackPressed() {
+        // super.onBackPressed();
+        ViewAttendanceActivity.this.finish();
         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
 
@@ -416,17 +408,17 @@ public class ViewAttendanceActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
     }
 
     @Override
     public void onDestroy() {
         try {
-            if((progressDialog != null) && progressDialog.isShowing() ){
+            if ((progressDialog != null) && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-        }catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         } finally {
             progressDialog = null;

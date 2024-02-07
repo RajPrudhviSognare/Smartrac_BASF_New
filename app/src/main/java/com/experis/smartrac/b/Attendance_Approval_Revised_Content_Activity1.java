@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PowerManager;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -52,9 +54,9 @@ public class Attendance_Approval_Revised_Content_Activity1 extends AppCompatActi
 
         intent = getIntent();
         type = intent.getStringExtra("TYPE");
-        System.out.println("TYPE: "+type);
+        System.out.println("TYPE: " + type);
 
-        if(type.equalsIgnoreCase("INTIME")){
+        if (type.equalsIgnoreCase("INTIME")) {
 
             mytextID.setText("");
             mytextID.setText("Intime - Attendance Approval");
@@ -62,20 +64,20 @@ public class Attendance_Approval_Revised_Content_Activity1 extends AppCompatActi
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction fmt = fm.beginTransaction();
             AttendanceApprovalIntimeFragment inTime = new AttendanceApprovalIntimeFragment();
-            fmt.replace(R.id.containerViewID,inTime,"IntimeFragment");
+            fmt.replace(R.id.containerViewID, inTime, "IntimeFragment");
             fmt.commit();
         }
-        if(type.equalsIgnoreCase("OUTTIME")){
+        if (type.equalsIgnoreCase("OUTTIME")) {
             mytextID.setText("");
             mytextID.setText("Outtime - Attendance Approval");
 
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction fmt = fm.beginTransaction();
             AttendanceApprovalOuttimeFragment inTime1 = new AttendanceApprovalOuttimeFragment();
-            fmt.replace(R.id.containerViewID,inTime1,"OuttimeFragment");
+            fmt.replace(R.id.containerViewID, inTime1, "OuttimeFragment");
             fmt.commit();
         }
-        if(type.equalsIgnoreCase("WEEKLYOFF")){
+        if (type.equalsIgnoreCase("WEEKLYOFF")) {
             mytextID.setText("");
             //mytextID.setText("Weeklyoff - Attendance Approval");
             mytextID.setText("Weekly off");
@@ -83,10 +85,10 @@ public class Attendance_Approval_Revised_Content_Activity1 extends AppCompatActi
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction fmt = fm.beginTransaction();
             AttendanceApprovalWeeklyOffFragment inTime2 = new AttendanceApprovalWeeklyOffFragment();
-            fmt.replace(R.id.containerViewID,inTime2,"WeeklyoffFragment");
+            fmt.replace(R.id.containerViewID, inTime2, "WeeklyoffFragment");
             fmt.commit();
         }
-        if(type.equalsIgnoreCase("LEAVE")){
+        if (type.equalsIgnoreCase("LEAVE")) {
             mytextID.setText("");
             //mytextID.setText("Leave - Attendance Approval");
             mytextID.setText("Leave");
@@ -94,10 +96,10 @@ public class Attendance_Approval_Revised_Content_Activity1 extends AppCompatActi
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction fmt = fm.beginTransaction();
             AttendanceApprovalLeaveFragment inTime3 = new AttendanceApprovalLeaveFragment();
-            fmt.replace(R.id.containerViewID,inTime3,"LeaveFragment");
+            fmt.replace(R.id.containerViewID, inTime3, "LeaveFragment");
             fmt.commit();
         }
-        if(type.equalsIgnoreCase("LWP")){
+        if (type.equalsIgnoreCase("LWP")) {
             mytextID.setText("");
             //mytextID.setText("Leave - Attendance Approval");
             mytextID.setText("LWP");
@@ -105,7 +107,7 @@ public class Attendance_Approval_Revised_Content_Activity1 extends AppCompatActi
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction fmt = fm.beginTransaction();
             AttendanceApprovalLWPFragment inTime3 = new AttendanceApprovalLWPFragment();
-            fmt.replace(R.id.containerViewID,inTime3,"LWPFragment");
+            fmt.replace(R.id.containerViewID, inTime3, "LWPFragment");
             fmt.commit();
         }
       /* if(type.equalsIgnoreCase("HL")){
@@ -119,7 +121,7 @@ public class Attendance_Approval_Revised_Content_Activity1 extends AppCompatActi
             fmt.replace(R.id.containerViewID,inTime7,"HalfLeaveFragment");
             fmt.commit();
         }*/
-        if(type.equalsIgnoreCase("OD")){
+        if (type.equalsIgnoreCase("OD")) {
             mytextID.setText("");
             //mytextID.setText("Meeting - Attendance Approval");
             mytextID.setText("OD");
@@ -127,7 +129,7 @@ public class Attendance_Approval_Revised_Content_Activity1 extends AppCompatActi
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction fmt = fm.beginTransaction();
             AttendanceApprovalMeetingFragment inTime4 = new AttendanceApprovalMeetingFragment();
-            fmt.replace(R.id.containerViewID,inTime4,"MeetingFragment");
+            fmt.replace(R.id.containerViewID, inTime4, "MeetingFragment");
             fmt.commit();
         }
 
@@ -177,8 +179,8 @@ public class Attendance_Approval_Revised_Content_Activity1 extends AppCompatActi
         prefsEditor = prefs.edit();
 
         containerViewID = (FrameLayout) findViewById(R.id.containerViewID);
-        attendanceapprovaltopbarbackImageViewID1 = (ImageView)findViewById(R.id.attendanceapprovaltopbarbackImageViewID1);
-        mytextID = (TextView)findViewById(R.id.mytextID);
+        attendanceapprovaltopbarbackImageViewID1 = (ImageView) findViewById(R.id.attendanceapprovaltopbarbackImageViewID1);
+        mytextID = (TextView) findViewById(R.id.mytextID);
 
         //Progress Dialog
         progressDialog = new ProgressDialog(Attendance_Approval_Revised_Content_Activity1.this);
@@ -186,26 +188,25 @@ public class Attendance_Approval_Revised_Content_Activity1 extends AppCompatActi
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         Attendance_Approval_Revised_Content_Activity1.this.finish();
         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
     }
-
 
 
 }//Main Class

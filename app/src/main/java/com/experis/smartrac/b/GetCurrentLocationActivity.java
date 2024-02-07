@@ -11,10 +11,12 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -118,26 +120,26 @@ public class GetCurrentLocationActivity extends AppCompatActivity {
 
                 Log.v("Network Provider ", "Network Provider");
                 if (locationManager != null) {
-                    try{
-                        if(Build.VERSION.SDK_INT >= 23 &&
-                                ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
-                                ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    try {
+                        if (Build.VERSION.SDK_INT >= 23 &&
+                                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                             Toast.makeText(getApplicationContext(), "You have denied these permissions, so this app won't work as expected.",
                                     Toast.LENGTH_LONG).show();
-                            return  ;
+                            return;
                         }
                         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    } catch (Exception e) {
                     }
-                    catch(Exception e){}
-                    }
-                    if (location != null) {
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-                        latLongTextViewID.setText("");
-                        latLongTextViewID.setText("Latitude: "+latitude+"\n\nLongitude: "+longitude);
+                }
+                if (location != null) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    latLongTextViewID.setText("");
+                    latLongTextViewID.setText("Latitude: " + latitude + "\n\nLongitude: " + longitude);
 
-                    }
-                }//if (isNetworkEnabled)
+                }
+            }//if (isNetworkEnabled)
 
 
             if (isGPSEnabled) {
@@ -148,7 +150,7 @@ public class GetCurrentLocationActivity extends AppCompatActivity {
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
                             latLongTextViewID.setText("");
-                            latLongTextViewID.setText("Latitude: "+latitude+"\n\nLongitude: "+longitude);
+                            latLongTextViewID.setText("Latitude: " + latitude + "\n\nLongitude: " + longitude);
                         }
 
                         @Override
@@ -169,26 +171,26 @@ public class GetCurrentLocationActivity extends AppCompatActivity {
 
                     Log.v("GPS Enabled", "GPS Enabled");
                     if (locationManager != null) {
-                        try{
-                            if(Build.VERSION.SDK_INT >= 23 &&
-                                    ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
-                                            ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        try {
+                            if (Build.VERSION.SDK_INT >= 23 &&
+                                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                 Toast.makeText(getApplicationContext(), "You have denied these permissions, so this app won't work as expected.",
                                         Toast.LENGTH_LONG).show();
-                                return  ;
+                                return;
                             }
 
                             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        }
-                        catch(Exception e){}
-                        }
-                        if (location != null) {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
-                            latLongTextViewID.setText("");
-                            latLongTextViewID.setText("Latitude: "+latitude+"\n\nLongitude: "+longitude);
+                        } catch (Exception e) {
                         }
                     }
+                    if (location != null) {
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
+                        latLongTextViewID.setText("");
+                        latLongTextViewID.setText("Latitude: " + latitude + "\n\nLongitude: " + longitude);
+                    }
+                }
 
             }//if (isGPSEnabled)
 
@@ -197,7 +199,7 @@ public class GetCurrentLocationActivity extends AppCompatActivity {
 
     }//onCreate()
 
-    private void showLocationSettings(){
+    private void showLocationSettings() {
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(GetCurrentLocationActivity.this);
         alertDialog.setTitle("GPS settings!");
@@ -218,10 +220,10 @@ public class GetCurrentLocationActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void checkAllPermissions(){
+    private void checkAllPermissions() {
         // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(GetCurrentLocationActivity.this,android.Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(GetCurrentLocationActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(GetCurrentLocationActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(GetCurrentLocationActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(GetCurrentLocationActivity.this,
@@ -261,7 +263,7 @@ public class GetCurrentLocationActivity extends AppCompatActivity {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     System.out.println("ACCESS_FINE_LOCATION & ACCESS_COARSE_LOCATION ARE REJECTED!");
-                    Toast.makeText(getApplicationContext(),"You have denied Location Access permissions, So Location feature might not work properly!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "You have denied Location Access permissions, So Location feature might not work properly!", Toast.LENGTH_LONG).show();
                 }
                 return;
             }
@@ -281,19 +283,18 @@ public class GetCurrentLocationActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         GetCurrentLocationActivity.this.finish();
         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
     }
 

@@ -19,10 +19,12 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +77,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private GridView dashBoardForAssociatesGridViewID;
     private GridView dashBoardForTLGridViewID;
-    private GridView dashBoardForSMGridViewID,dashBoardForSOOGridViewID;
+    private GridView dashBoardForSMGridViewID, dashBoardForSOOGridViewID;
 
     private ImageView dashboardtopbarusericonImageViewID;
     private ImageView dashboardtopbarLocationImageViewID;
@@ -89,7 +91,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private HttpResponse httpResponse = null;
 
     private String TAG_EmpName = "EmpName";
-    private String EmpName = "",ClientName="",Mobile1="",Mobile2="",UserTypeID="";
+    private String EmpName = "", ClientName = "", Mobile1 = "", Mobile2 = "", UserTypeID = "";
 
     private String TAG_ATTENDANCE_TYPE = "in"; //"In Time"
     private RestFullClient client;
@@ -109,7 +111,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private String ROLE_TYPE = "E"; //Associates
 
-    private int ROLE_ID=1; //1=>Associate, 2=>Teamlead, 3=>Admin, 4=>Manager,
+    private int ROLE_ID = 1; //1=>Associate, 2=>Teamlead, 3=>Admin, 4=>Manager,
     private String COMPANY_ADDRESS = "";
     private String COMPANY_OUTLETNAME = "";
     private String COMPANY_LOGO_PATH = "";
@@ -134,7 +136,7 @@ public class DashBoardActivity extends AppCompatActivity {
             R.drawable.associatereporticon,*/
             R.drawable.attendanceapprovalicon,
             R.drawable.exit_form
-           // R.drawable.hrmsicon,
+            // R.drawable.hrmsicon,
 
     };
 
@@ -145,7 +147,7 @@ public class DashBoardActivity extends AppCompatActivity {
             R.drawable.attendanceapprovalicon,
             R.drawable.hrmsicon,
             R.drawable.escalated_attendance
-              };
+    };
 
     private int dashIconsForSOO[] = {
             R.drawable.dashboardicon,
@@ -170,21 +172,18 @@ public class DashBoardActivity extends AppCompatActivity {
         getCurrentVersion();
 
 
-
-
     }//onCreate()
-
-
 
 
     String currentVersion, latestVersion;
     Dialog dialog;
-    private void getCurrentVersion(){
+
+    private void getCurrentVersion() {
         PackageManager pm = this.getPackageManager();
         PackageInfo pInfo = null;
 
         try {
-            pInfo =  pm.getPackageInfo(this.getPackageName(),0);
+            pInfo = pm.getPackageInfo(this.getPackageName(), 0);
 
         } catch (PackageManager.NameNotFoundException e1) {
             // TODO Auto-generated catch block
@@ -195,10 +194,11 @@ public class DashBoardActivity extends AppCompatActivity {
         new GetLatestVersion().execute();
 
     }
+
     private class GetLatestVersion extends AsyncTask<String, String, JSONObject> {
 
         //  private ProgressDialog progressDialog;
-        private String urlOfAppFromPlayStore="https://play.google.com/store/apps/details?id=com.experis.smartrac.gpil"+ "&hl=en";
+        private String urlOfAppFromPlayStore = "https://play.google.com/store/apps/details?id=com.experis.smartrac.gpil" + "&hl=en";
 
         @Override
         protected void onPreExecute() {
@@ -249,21 +249,19 @@ public class DashBoardActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
-            if(latestVersion!=null) {
-                if (!currentVersion.equalsIgnoreCase(latestVersion)){
-                    if(!isFinishing()){ //This would help to prevent Error : BinderProxy@45d459c0 is not valid; is your activity running? error
-                        if((progressDialog != null) && progressDialog.isShowing() ){
+            if (latestVersion != null) {
+                if (!currentVersion.equalsIgnoreCase(latestVersion)) {
+                    if (!isFinishing()) { //This would help to prevent Error : BinderProxy@45d459c0 is not valid; is your activity running? error
+                        if ((progressDialog != null) && progressDialog.isShowing()) {
                             progressDialog.dismiss();
                         }
                         showUpdateDialog();
                     }
-                }
-                else {
+                } else {
 
                     startbackground();
                 }
-            }
-            else {
+            } else {
 
                 startbackground();
             }
@@ -272,8 +270,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
 
-
-    private void showUpdateDialog(){
+    private void showUpdateDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Newer version is available in store\nPlease Update");
         builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
@@ -402,7 +399,6 @@ public class DashBoardActivity extends AppCompatActivity {
         }*/
 
 
-
         /***GridView Options Click Listener For Associates***/
         dashBoardForAssociatesGridViewID.setOnItemClickListener(new GridView.OnItemClickListener() {
             @Override
@@ -420,7 +416,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     }
                 }
                 //Associates Reports
-                if(pos==1){
+                if (pos == 1) {
                     Intent i = new Intent(DashBoardActivity.this, ViewAttendanceActivity.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
@@ -429,13 +425,13 @@ public class DashBoardActivity extends AppCompatActivity {
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);*/
                 }
                 //HRMS
-                if(pos==2){
-                    Intent i = new Intent(DashBoardActivity.this,HRMSTabbedActivity.class);
+                if (pos == 2) {
+                    Intent i = new Intent(DashBoardActivity.this, HRMSTabbedActivity.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                 }
 
-                if(pos==3){
+                if (pos == 3) {
                   /*  Intent i = new Intent(DashBoardActivity.this, LeavepolicyActivity.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);*/
@@ -447,17 +443,17 @@ public class DashBoardActivity extends AppCompatActivity {
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
 
                 }
-                if(pos==4){
+                if (pos == 4) {
                     Intent i = new Intent(DashBoardActivity.this, GiveAttendanceTabbedActivity2.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                 }
-                if(pos==5){
+                if (pos == 5) {
                     Intent i = new Intent(DashBoardActivity.this, ExitActivity.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                 }
-                if(pos==6){
+                if (pos == 6) {
                     Intent i = new Intent(DashBoardActivity.this, TrainingActivity.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
@@ -501,7 +497,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);*//*
                 }*/
-                if(pos==0){
+                if (pos == 0) {
                     Intent i = new Intent(DashBoardActivity.this, AttendanceApprovalRevisedActivity1.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
@@ -509,7 +505,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);*/
                 }
-                if(pos==1){
+                if (pos == 1) {
                     Intent i = new Intent(DashBoardActivity.this, ExitActivity1.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
@@ -532,7 +528,7 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
 
-                if(pos==0){
+                if (pos == 0) {
                     Intent i = new Intent(DashBoardActivity.this, DashboardAttendanceCountActivity.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
@@ -552,7 +548,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     }
                 }
                 //Associates Reports
-                if(pos==2){
+                if (pos == 2) {
                     Intent i = new Intent(DashBoardActivity.this, ViewAttendanceActivity.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
@@ -561,7 +557,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);*/
                 }
 
-                if(pos==3){
+                if (pos == 3) {
                     Intent i = new Intent(DashBoardActivity.this, AttendanceApprovalRevisedActivity1.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
@@ -570,12 +566,12 @@ public class DashBoardActivity extends AppCompatActivity {
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);*/
                 }
                 //HRMS
-                if(pos==4){
-                    Intent i = new Intent(DashBoardActivity.this,HRMSTabbedActivity.class);
+                if (pos == 4) {
+                    Intent i = new Intent(DashBoardActivity.this, HRMSTabbedActivity.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                 }
-                if(pos==5){
+                if (pos == 5) {
                     Intent i = new Intent(DashBoardActivity.this, AttendanceApprovalRevisedActivity2.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
@@ -594,7 +590,7 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
 
-                if(pos==0){
+                if (pos == 0) {
                     Intent i = new Intent(DashBoardActivity.this, DashboardAttendanceCountActivity.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
@@ -604,7 +600,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 }
 
 
-                if(pos==1){
+                if (pos == 1) {
                     Intent i = new Intent(DashBoardActivity.this, AttendanceApprovalRevisedActivity1.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
@@ -612,7 +608,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);*/
                 }
-                if(pos==2){
+                if (pos == 2) {
                     Intent i = new Intent(DashBoardActivity.this, AttendanceApprovalRevisedActivity2.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
@@ -691,7 +687,6 @@ public class DashBoardActivity extends AppCompatActivity {
         });
 
 
-
     }
 
 
@@ -707,7 +702,7 @@ public class DashBoardActivity extends AppCompatActivity {
         dashBoardForAssociatesGridViewID = (GridView) findViewById(R.id.dashBoardForAssociatesGridViewID);
         dashBoardForTLGridViewID = (GridView) findViewById(R.id.dashBoardForTLGridViewID);
         dashBoardForSMGridViewID = (GridView) findViewById(R.id.dashBoardForSMGridViewID);
-        dashBoardForSOOGridViewID=(GridView)findViewById(R.id.dashBoardForSOOGridViewID);
+        dashBoardForSOOGridViewID = (GridView) findViewById(R.id.dashBoardForSOOGridViewID);
 
         dashboardtopbarusericonImageViewID = (ImageView) findViewById(R.id.dashboardtopbarusericonImageViewID);
         dashboardtopbarLocationImageViewID = (ImageView) findViewById(R.id.dashboardtopbarLocationImageViewID);
@@ -725,7 +720,7 @@ public class DashBoardActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(DashBoardActivity.this);
 
         imageLoader = new ImageLoader(DashBoardActivity.this);
-       // setEmployeeDetails();
+        // setEmployeeDetails();
     }
 
     public boolean isServiceRunning(String serviceClassName) {
@@ -763,10 +758,10 @@ public class DashBoardActivity extends AppCompatActivity {
         Constants.CURRENT_LAT = Constants.UNIV_LAT;
         Constants.CURRENT_LONG = Constants.UNIV_LONG;
 
-        if(Constants.UNIV_LAT.equals("0.0")){
+        if (Constants.UNIV_LAT.equals("0.0")) {
             Constants.CURRENT_LAT = Constants.UNIV_LAT1;
         }
-        if(Constants.UNIV_LONG.equals("0.0")){
+        if (Constants.UNIV_LONG.equals("0.0")) {
             Constants.CURRENT_LONG = Constants.UNIV_LONG1;
         }
         Constants.ATTENDANCE_DATE = "";
@@ -978,7 +973,7 @@ public class DashBoardActivity extends AppCompatActivity {
         prefsEditor = prefs.edit();
         String EmpID = prefs.getString("USERISDCODE", "");
         System.out.println("EmpID: " + EmpID);
-        if (EmpID.equalsIgnoreCase("")){
+        if (EmpID.equalsIgnoreCase("")) {
             prefsEditor.putString("LOGGEDIN", "no");
             prefsEditor.commit();
 
@@ -991,7 +986,7 @@ public class DashBoardActivity extends AppCompatActivity {
             startActivity(i);
             overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
 
-        }else {
+        } else {
 
 
             baseURL = Constants.base_url_default;
@@ -1077,26 +1072,22 @@ public class DashBoardActivity extends AppCompatActivity {
                             EmpName = text;
                             text = "";
                             System.out.println("EmpName: " + EmpName);
-                        }
-                        else if(tagname.equalsIgnoreCase("ClientName")){
+                        } else if (tagname.equalsIgnoreCase("ClientName")) {
                             ClientName = text;
                             text = "";
                             System.out.println("EmpName: " + ClientName);
-                        }
-                        else if(tagname.equalsIgnoreCase("UserTypeID")){
+                        } else if (tagname.equalsIgnoreCase("UserTypeID")) {
                             UserTypeID = text;
                             text = "";
                             System.out.println("UserTypeID: " + UserTypeID);
-                        }
-                        else if(tagname.equalsIgnoreCase("Mobile1")){
+                        } else if (tagname.equalsIgnoreCase("Mobile1")) {
                             Mobile1 = text;
                             text = "";
-                            System.out.println("Mobile1: "+Mobile1);
-                        }
-                        else if(tagname.equalsIgnoreCase("Mobile2")){
+                            System.out.println("Mobile1: " + Mobile1);
+                        } else if (tagname.equalsIgnoreCase("Mobile2")) {
                             Mobile2 = text;
                             text = "";
-                            System.out.println("Mobile2: "+Mobile2);
+                            System.out.println("Mobile2: " + Mobile2);
                         }
                         break;
 
@@ -1188,7 +1179,7 @@ public class DashBoardActivity extends AppCompatActivity {
         COMPANY_LOGO_PATH = Constants.BASE_URL_CLIENT_LOGO + COMPANY_LOGO_NAME;
         System.out.println("COMPANY_LOGO_PATH IN DASHBOARD: " + COMPANY_LOGO_PATH);
 
-        imageLoader.DisplayImage(COMPANY_LOGO_PATH,dashboardTopbarCompanyLogoImageViewID);
+        imageLoader.DisplayImage(COMPANY_LOGO_PATH, dashboardTopbarCompanyLogoImageViewID);
 
         if (ROLE_TYPE.equalsIgnoreCase("E")) {
             dashBoardForAssociatesGridViewID.setVisibility(View.VISIBLE);
@@ -1197,8 +1188,7 @@ public class DashBoardActivity extends AppCompatActivity {
             dashBoardForSOOGridViewID.setVisibility(View.GONE);
             dashboardtopbarLocationImageViewID.setVisibility(View.VISIBLE);
             dashBoardForAssociatesGridViewID.setAdapter(new CustomAdapterForAssociates(DashBoardActivity.this));
-        }
-        else {
+        } else {
             dashBoardForAssociatesGridViewID.setVisibility(View.GONE);
             dashBoardForTLGridViewID.setVisibility(View.VISIBLE);
             dashBoardForSMGridViewID.setVisibility(View.GONE);
@@ -1295,7 +1285,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
     // Google play Store update 25-07-2022
 
-    public void UpdateApp(){
+    public void UpdateApp() {
         AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(this);
         Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
         // Checks that the platform will allow the specified type of update.
@@ -1303,7 +1293,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
             if (result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
 //                requestUpdate(result);
-                android.view.ContextThemeWrapper ctw = new android.view.ContextThemeWrapper(this,R.style.AppTheme);
+                android.view.ContextThemeWrapper ctw = new android.view.ContextThemeWrapper(this, R.style.AppTheme);
                 final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(ctw);
                 alertDialogBuilder.setTitle("Update Your Smartrac");
                 alertDialogBuilder.setCancelable(false);
@@ -1311,15 +1301,14 @@ public class DashBoardActivity extends AppCompatActivity {
                 alertDialogBuilder.setMessage("Smartrac recommends that you update to the latest version for a seamless & enhanced performance of the app.");
                 alertDialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        try{
-                            startActivity(new Intent("android.intent.action.VIEW", Uri.parse("market://details?id="+getPackageName())));
-                        }
-                        catch (ActivityNotFoundException e){
-                            startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName())));
+                        try {
+                            startActivity(new Intent("android.intent.action.VIEW", Uri.parse("market://details?id=" + getPackageName())));
+                        } catch (ActivityNotFoundException e) {
+                            startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
                         }
                     }
                 });
-                alertDialogBuilder.setNegativeButton("No Thanks",new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setNegativeButton("No Thanks", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
                     }
@@ -1470,7 +1459,7 @@ public class DashBoardActivity extends AppCompatActivity {
         @Override
         public int getViewTypeCount() {
 
-            if (getCount()!= 0)
+            if (getCount() != 0)
                 return getCount();
 
             //return 1;
@@ -1490,12 +1479,12 @@ public class DashBoardActivity extends AppCompatActivity {
             View view;
             ViewHolder viewHolder = new ViewHolder();
 
-            GridView grid = (GridView)parent;
+            GridView grid = (GridView) parent;
             //int sizeH = grid.getMinimumHeight();
             //int sizeW = grid.getMinimumWidth();
 
             if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater)cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.custom_layout_for_dashboard, null);
                 //view.setLayoutParams(new GridView.LayoutParams(sizeW, sizeH));
             } else {
@@ -1505,46 +1494,47 @@ public class DashBoardActivity extends AppCompatActivity {
             view.setTag(viewHolder);
             final int pos1 = pos;
 
-            LinearLayout layout = (LinearLayout)view.findViewById(R.id.customlayout_dashboard_LinearLayoutID);
-            if(pos1==0){
+            LinearLayout layout = (LinearLayout) view.findViewById(R.id.customlayout_dashboard_LinearLayoutID);
+            if (pos1 == 0) {
                 layout.setBackgroundResource(R.drawable.bg_1);
             }
-            if(pos1==1){
+            if (pos1 == 1) {
                 layout.setBackgroundResource(R.drawable.bg_2);
             }
-            if(pos1==2){
+            if (pos1 == 2) {
                 layout.setBackgroundResource(R.drawable.bg_3);
             }
-            if(pos1==3){
+            if (pos1 == 3) {
                 layout.setBackgroundResource(R.drawable.bg_4);
             }
-            if(pos1==4){
+            if (pos1 == 4) {
                 layout.setBackgroundResource(R.drawable.bg_1);
             }
-            if(pos1==5){
+            if (pos1 == 5) {
                 layout.setBackgroundResource(R.drawable.bg_2);
             }
-            if(pos1==6){
+            if (pos1 == 6) {
                 layout.setBackgroundResource(R.drawable.bg_3);
             }
-            if(pos1==7){
+            if (pos1 == 7) {
                 layout.setBackgroundResource(R.drawable.bg_4);
             }
-            if(pos1==8){
+            if (pos1 == 8) {
                 layout.setBackgroundResource(R.drawable.bg_1);
             }
-            if(pos1==9){
+            if (pos1 == 9) {
                 layout.setBackgroundResource(R.drawable.bg_2);
             }
-            if(pos1==10){
+            if (pos1 == 10) {
                 layout.setBackgroundResource(R.drawable.bg_3);
             }
 
-            viewHolder.imageView = (ImageView)view.findViewById(R.id.customlayout_dashboard_ImageViewID);
+            viewHolder.imageView = (ImageView) view.findViewById(R.id.customlayout_dashboard_ImageViewID);
             viewHolder.imageView.setImageResource(dashIconsForTL[pos]);
 
             return view;
         }
+
         class ViewHolder {
             ImageView imageView;
         }
@@ -1582,7 +1572,7 @@ public class DashBoardActivity extends AppCompatActivity {
         @Override
         public int getViewTypeCount() {
 
-            if (getCount()!= 0)
+            if (getCount() != 0)
                 return getCount();
 
             //return 1;
@@ -1602,12 +1592,12 @@ public class DashBoardActivity extends AppCompatActivity {
             View view;
             ViewHolder viewHolder = new ViewHolder();
 
-            GridView grid = (GridView)parent;
+            GridView grid = (GridView) parent;
             //int sizeH = grid.getMinimumHeight();
             //int sizeW = grid.getMinimumWidth();
 
             if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater)cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.custom_layout_for_dashboard, null);
                 //view.setLayoutParams(new GridView.LayoutParams(sizeW, sizeH));
             } else {
@@ -1617,43 +1607,44 @@ public class DashBoardActivity extends AppCompatActivity {
             view.setTag(viewHolder);
             final int pos1 = pos;
 
-            LinearLayout layout = (LinearLayout)view.findViewById(R.id.customlayout_dashboard_LinearLayoutID);
-            if(pos1==0){
+            LinearLayout layout = (LinearLayout) view.findViewById(R.id.customlayout_dashboard_LinearLayoutID);
+            if (pos1 == 0) {
                 layout.setBackgroundResource(R.drawable.bg_1);
             }
-            if(pos1==1){
+            if (pos1 == 1) {
                 layout.setBackgroundResource(R.drawable.bg_2);
             }
-            if(pos1==2){
+            if (pos1 == 2) {
                 layout.setBackgroundResource(R.drawable.bg_3);
             }
-            if(pos1==3){
+            if (pos1 == 3) {
                 layout.setBackgroundResource(R.drawable.bg_4);
             }
-            if(pos1==4){
+            if (pos1 == 4) {
                 layout.setBackgroundResource(R.drawable.bg_1);
             }
-            if(pos1==5){
+            if (pos1 == 5) {
                 layout.setBackgroundResource(R.drawable.bg_2);
             }
-            if(pos1==6){
+            if (pos1 == 6) {
                 layout.setBackgroundResource(R.drawable.bg_3);
             }
-            if(pos1==7){
+            if (pos1 == 7) {
                 layout.setBackgroundResource(R.drawable.bg_4);
             }
-            if(pos1==8){
+            if (pos1 == 8) {
                 layout.setBackgroundResource(R.drawable.bg_1);
             }
-            if(pos1==9){
+            if (pos1 == 9) {
                 layout.setBackgroundResource(R.drawable.bg_2);
             }
 
-            viewHolder.imageView = (ImageView)view.findViewById(R.id.customlayout_dashboard_ImageViewID);
+            viewHolder.imageView = (ImageView) view.findViewById(R.id.customlayout_dashboard_ImageViewID);
             viewHolder.imageView.setImageResource(dashIconsForSM[pos]);
 
             return view;
         }
+
         class ViewHolder {
             ImageView imageView;
         }
@@ -1691,7 +1682,7 @@ public class DashBoardActivity extends AppCompatActivity {
         @Override
         public int getViewTypeCount() {
 
-            if (getCount()!= 0)
+            if (getCount() != 0)
                 return getCount();
 
             //return 1;
@@ -1711,12 +1702,12 @@ public class DashBoardActivity extends AppCompatActivity {
             View view;
             ViewHolder viewHolder = new ViewHolder();
 
-            GridView grid = (GridView)parent;
+            GridView grid = (GridView) parent;
             //int sizeH = grid.getMinimumHeight();
             //int sizeW = grid.getMinimumWidth();
 
             if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater)cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.custom_layout_for_dashboard, null);
                 //view.setLayoutParams(new GridView.LayoutParams(sizeW, sizeH));
             } else {
@@ -1726,43 +1717,44 @@ public class DashBoardActivity extends AppCompatActivity {
             view.setTag(viewHolder);
             final int pos1 = pos;
 
-            LinearLayout layout = (LinearLayout)view.findViewById(R.id.customlayout_dashboard_LinearLayoutID);
-            if(pos1==0){
+            LinearLayout layout = (LinearLayout) view.findViewById(R.id.customlayout_dashboard_LinearLayoutID);
+            if (pos1 == 0) {
                 layout.setBackgroundResource(R.drawable.bg_1);
             }
-            if(pos1==1){
+            if (pos1 == 1) {
                 layout.setBackgroundResource(R.drawable.bg_2);
             }
-            if(pos1==2){
+            if (pos1 == 2) {
                 layout.setBackgroundResource(R.drawable.bg_3);
             }
-            if(pos1==3){
+            if (pos1 == 3) {
                 layout.setBackgroundResource(R.drawable.bg_4);
             }
-            if(pos1==4){
+            if (pos1 == 4) {
                 layout.setBackgroundResource(R.drawable.bg_1);
             }
-            if(pos1==5){
+            if (pos1 == 5) {
                 layout.setBackgroundResource(R.drawable.bg_2);
             }
-            if(pos1==6){
+            if (pos1 == 6) {
                 layout.setBackgroundResource(R.drawable.bg_3);
             }
-            if(pos1==7){
+            if (pos1 == 7) {
                 layout.setBackgroundResource(R.drawable.bg_4);
             }
-            if(pos1==8){
+            if (pos1 == 8) {
                 layout.setBackgroundResource(R.drawable.bg_1);
             }
-            if(pos1==9){
+            if (pos1 == 9) {
                 layout.setBackgroundResource(R.drawable.bg_2);
             }
 
-            viewHolder.imageView = (ImageView)view.findViewById(R.id.customlayout_dashboard_ImageViewID);
+            viewHolder.imageView = (ImageView) view.findViewById(R.id.customlayout_dashboard_ImageViewID);
             viewHolder.imageView.setImageResource(dashIconsForSOO[pos]);
 
             return view;
         }
+
         class ViewHolder {
             ImageView imageView;
         }
@@ -1899,7 +1891,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 || ContextCompat.checkSelfPermission(DashBoardActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(DashBoardActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(DashBoardActivity.this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-                ) {
+        ) {
             ActivityCompat.requestPermissions(DashBoardActivity.this,
                     new String[]{android.Manifest.permission.READ_PHONE_STATE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -1959,7 +1951,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
         super.onDestroy();
     }
-
 
 
 }//Main Class

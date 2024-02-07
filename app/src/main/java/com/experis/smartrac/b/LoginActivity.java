@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -97,8 +99,8 @@ public class LoginActivity extends AppCompatActivity {
     private String TAG_LoginAuthenticateResult = "LoginAuthenticateResult";
 
     //USER DETAILS
-    private String USERID = "",TLID="",DOB="";
-    private String USERISDCODE = "",USERFIRSTNAME="",USERLASTNAME="";
+    private String USERID = "", TLID = "", DOB = "";
+    private String USERISDCODE = "", USERFIRSTNAME = "", USERLASTNAME = "";
     private String USERNAME = "";
     private String USERDESIGNATION = "";
     private String USERDEPARTMENT = "";
@@ -113,11 +115,11 @@ public class LoginActivity extends AppCompatActivity {
     private String baseURL;
     private String SOAPRequestXML;
     private HttpResponse httpResponse = null;
-    private String TAG_MESSAGE_ID="MessageID";
-    private String TAG_MESSAGE_VALUE="";
-    private String TAG_DESCRIPTION_ID="Description";
-    private String TAG_DESCRIPTION_VALUE="";
-    private  int versioncode=1;
+    private String TAG_MESSAGE_ID = "MessageID";
+    private String TAG_MESSAGE_VALUE = "";
+    private String TAG_DESCRIPTION_ID = "Description";
+    private String TAG_DESCRIPTION_VALUE = "";
+    private int versioncode = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,32 +131,28 @@ public class LoginActivity extends AppCompatActivity {
 
         initAllViews();
 
-        if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             System.out.println("Inside Login Page checkAllPermissions() is called Above Lallipop: ");
-            try{
+            try {
                 checkAllPermissions();
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-        else{
-            try{
+        } else {
+            try {
                 IMEIID = CommonUtils.getIMEI(LoginActivity.this);
-                System.out.println("Inside Login Page 'IMEIID' below Lallipop: "+IMEIID);
-            }
-            catch (Exception e){
+                System.out.println("Inside Login Page 'IMEIID' below Lallipop: " + IMEIID);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        GCMRegdID = prefs.getString("GCMREGISTRATIONID","Push ID Not Found");
-        System.out.println("Inside Login Page 'GCM/FCM Token': "+GCMRegdID);
+        GCMRegdID = prefs.getString("GCMREGISTRATIONID", "Push ID Not Found");
+        System.out.println("Inside Login Page 'GCM/FCM Token': " + GCMRegdID);
 
         //Internet connection checker
-        if(CommonUtils.isInternelAvailable(this)){
-        }
-        else{
+        if (CommonUtils.isInternelAvailable(this)) {
+        } else {
             Toast.makeText(this, "No internet connection!", Toast.LENGTH_SHORT).show();
             showAlertDialog(LoginActivity.this, "Internet Connection Error!", "Please check your internet settings.\n", false);
         }
@@ -166,10 +164,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 try {
-                    if(CommonUtils.isInternelAvailable(LoginActivity.this)){
+                    if (CommonUtils.isInternelAvailable(LoginActivity.this)) {
                         validateData();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(LoginActivity.this, "No internet connection!", Toast.LENGTH_SHORT).show();
                     }
 
@@ -179,7 +176,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         //Forgot Password
-        forgotpasswdTextViewID.setOnClickListener(new TextView.OnClickListener(){
+        forgotpasswdTextViewID.setOnClickListener(new TextView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -191,37 +188,37 @@ public class LoginActivity extends AppCompatActivity {
 
     }//onCreate()
 
-    private void initAllViews(){
+    private void initAllViews() {
         //shared preference
-        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME,MODE_PRIVATE);
+        prefs = getSharedPreferences(CommonUtils.PREFERENCE_NAME, MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
-        loginpageUsernameEditTextID = (EditText)findViewById(R.id.loginpageUsernameEditTextID);
-        loginpagePasswordEditTextID = (EditText)findViewById(R.id.loginpagePasswordEditTextID);
-        loginpageLoginBtnID = (Button)findViewById(R.id.loginpageLoginBtnID);
+        loginpageUsernameEditTextID = (EditText) findViewById(R.id.loginpageUsernameEditTextID);
+        loginpagePasswordEditTextID = (EditText) findViewById(R.id.loginpagePasswordEditTextID);
+        loginpageLoginBtnID = (Button) findViewById(R.id.loginpageLoginBtnID);
 
-        forgotpasswdTextViewID = (TextView)findViewById(R.id.forgotpasswdTextViewID);
+        forgotpasswdTextViewID = (TextView) findViewById(R.id.forgotpasswdTextViewID);
 
         //Progress Dialog
         progressDialog = new ProgressDialog(LoginActivity.this);
     }
 
-    private void checkAllPermissions(){
-        if (ContextCompat.checkSelfPermission(LoginActivity.this,android.Manifest.permission.READ_PHONE_STATE)!= PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(LoginActivity.this,android.Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(LoginActivity.this,android.Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(LoginActivity.this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(LoginActivity.this,android.Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED
-                ) {
+    private void checkAllPermissions() {
+        if (ContextCompat.checkSelfPermission(LoginActivity.this, android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(LoginActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(LoginActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(LoginActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(LoginActivity.this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+        ) {
             ActivityCompat.requestPermissions(LoginActivity.this,
                     new String[]{android.Manifest.permission.READ_PHONE_STATE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.ACCESS_FINE_LOCATION,
-                            android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.CAMERA}, 1991);
+                            android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.CAMERA}, 1991);
 
         }//if
-        else{
+        else {
             IMEIID = CommonUtils.getIMEI(LoginActivity.this);
-            System.out.println("Inside Login Page 'Device_IMEI_ID': "+IMEIID);
+            System.out.println("Inside Login Page 'Device_IMEI_ID': " + IMEIID);
             System.out.println("READ_PHONE_STATE IS ALREADY GRANTED! ==> getIMEI() is called");
         }
 
@@ -241,14 +238,14 @@ public class LoginActivity extends AppCompatActivity {
                         && grantResults[5] == PackageManager.PERMISSION_GRANTED) {
 
                     IMEIID = CommonUtils.getIMEI(LoginActivity.this);
-                    System.out.println("Inside Login Page 'Device_IMEI_ID': "+IMEIID);
+                    System.out.println("Inside Login Page 'Device_IMEI_ID': " + IMEIID);
                     System.out.println("READ_PHONE_STATE IS GRANTED! ==> getIMEI() is called");
 
                 } else {
                     // permission denied! Disable the
                     // functionality that depends on these permissions.
                     IMEIID = "READ_PHONE_STATE IS REJECTED!";
-                    System.out.println("Inside Login Page 'Device_IMEI_ID': "+IMEIID);
+                    System.out.println("Inside Login Page 'Device_IMEI_ID': " + IMEIID);
                     System.out.println("READ_PHONE_STATE IS REJECTED!");
                 }
             }
@@ -276,24 +273,19 @@ public class LoginActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if(TextUtils.isEmpty(loginpageUsernameEditTextID.getText().toString()))
-        {
+        if (TextUtils.isEmpty(loginpageUsernameEditTextID.getText().toString())) {
             loginpageUsernameEditTextID.setError("Required field!");
             focusView = loginpageUsernameEditTextID;
             cancel = true;
-        }
-        else if(TextUtils.isEmpty(loginpagePasswordEditTextID.getText().toString()))
-        {
+        } else if (TextUtils.isEmpty(loginpagePasswordEditTextID.getText().toString())) {
             loginpagePasswordEditTextID.setError("Required field!");
             focusView = loginpagePasswordEditTextID;
             cancel = true;
         }
 
-        if(cancel){
+        if (cancel) {
             focusView.requestFocus();
-        }
-        else
-        {
+        } else {
             getTextValues();
         }
 
@@ -304,17 +296,16 @@ public class LoginActivity extends AppCompatActivity {
         username = loginpageUsernameEditTextID.getText().toString();
         passwd = loginpagePasswordEditTextID.getText().toString();
 
-        if(!username.equalsIgnoreCase("")&&!passwd.equalsIgnoreCase("")){
+        if (!username.equalsIgnoreCase("") && !passwd.equalsIgnoreCase("")) {
             //sendDataForLogin();
             sendDataForLogin1();
-        }
-        else{
+        } else {
             Toast.makeText(this, "Please Enter valid Credential!", Toast.LENGTH_SHORT).show();
         }
     }
 
 
-    private void sendDataForLogin1(){
+    private void sendDataForLogin1() {
 
         progressDialog.setMessage("Checking login credentials... Please wait!");
         progressDialog.setCancelable(false);
@@ -327,32 +318,32 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        System.out.println("device_id:"+IMEIID);
-        System.out.println("GCM registration_id:"+GCMRegdID);
-        System.out.println("password:"+ CommonUtils.md5(passwd));
+        System.out.println("device_id:" + IMEIID);
+        System.out.println("GCM registration_id:" + GCMRegdID);
+        System.out.println("password:" + CommonUtils.md5(passwd));
         System.out.println(modelNumber);
 
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:LoginAuthenticate_v2>"
-                +"<tem:login_id>"+username+"</tem:login_id>"
-               // +"<tem:password>"+CommonUtils.md5(passwd)+"</tem:password>"
-                +"<tem:password>"+passwd+"</tem:password>"
-                +"<tem:device_id>"+IMEIID+"</tem:device_id>"
-                +"<tem:device_type>"+"Android"+"</tem:device_type>"
-                +"<tem:registration_id>"+GCMRegdID+"</tem:registration_id>"
-                +"<tem:model_number>"+modelNumber+"</tem:model_number>"
-                +"<tem:version_check>"+versioncode+"</tem:version_check>"
-                +"</tem:LoginAuthenticate_v2>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "<soapenv:Body>"
+                + "<tem:LoginAuthenticate_v2>"
+                + "<tem:login_id>" + username + "</tem:login_id>"
+                // +"<tem:password>"+CommonUtils.md5(passwd)+"</tem:password>"
+                + "<tem:password>" + passwd + "</tem:password>"
+                + "<tem:device_id>" + IMEIID + "</tem:device_id>"
+                + "<tem:device_type>" + "Android" + "</tem:device_type>"
+                + "<tem:registration_id>" + GCMRegdID + "</tem:registration_id>"
+                + "<tem:model_number>" + modelNumber + "</tem:model_number>"
+                + "<tem:version_check>" + versioncode + "</tem:version_check>"
+                + "</tem:LoginAuthenticate_v2>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -375,19 +366,18 @@ public class LoginActivity extends AppCompatActivity {
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.print("Server Response = "+Response);
+                    System.out.print("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
                     STATUS_CODE = status.getStatusCode();
-                    System.out.println("Server status code = "+STATUS_CODE);
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + STATUS_CODE);
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForLoginDetails(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -401,7 +391,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //getParsingElementsForLoginDetails(xpp);
-    public void getParsingElementsForLoginDetails(XmlPullParser xpp){
+    public void getParsingElementsForLoginDetails(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -413,26 +403,26 @@ public class LoginActivity extends AppCompatActivity {
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
 
-                        if(tagname.equalsIgnoreCase(TAG_LoginAuthenticateResult)){
+                        if (tagname.equalsIgnoreCase(TAG_LoginAuthenticateResult)) {
                             STATUS = text;
                             text = "";
-                            System.out.println("STATUS: "+STATUS);
+                            System.out.println("STATUS: " + STATUS);
                         }
-                        if(tagname.equalsIgnoreCase(TAG_MESSAGE_ID)){
+                        if (tagname.equalsIgnoreCase(TAG_MESSAGE_ID)) {
                             TAG_MESSAGE_VALUE = text;
                             text = "";
-                            System.out.println("STATUS: "+TAG_MESSAGE_VALUE);
+                            System.out.println("STATUS: " + TAG_MESSAGE_VALUE);
                             // Toast.makeText(LoginActivity.this,"Successful",Toast.LENGTH_SHORT).show();
                         }
-                        if(tagname.equalsIgnoreCase(TAG_DESCRIPTION_ID)){
+                        if (tagname.equalsIgnoreCase(TAG_DESCRIPTION_ID)) {
                             TAG_DESCRIPTION_VALUE = text;
                             text = "";
-                            System.out.println("STATUS: "+TAG_MESSAGE_VALUE);
+                            System.out.println("STATUS: " + TAG_MESSAGE_VALUE);
                             // Toast.makeText(LoginActivity.this,"Successful",Toast.LENGTH_SHORT).show();
                         }
 
@@ -531,27 +521,25 @@ public class LoginActivity extends AppCompatActivity {
     }//getParsingElementsForLogin(xpp);
 
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
 
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
             //Success
-            if(STATUS_CODE==200){
+            if (STATUS_CODE == 200) {
                 //Login success
-                if(TAG_MESSAGE_VALUE.equalsIgnoreCase("1")){
+                if (TAG_MESSAGE_VALUE.equalsIgnoreCase("1")) {
                     //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
                     saveUserDetails();
-                }
-
-                else{
+                } else {
                     showFailureDialog();
 
                 }
@@ -563,7 +551,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             //Login failed
-            if(STATUS_CODE!=200){
+            if (STATUS_CODE != 200) {
                 //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
                 showFailureDialog();
 
@@ -573,7 +561,7 @@ public class LoginActivity extends AppCompatActivity {
 
     };
 
-    private void saveUserDetails(){
+    private void saveUserDetails() {
         //USER DETAILS
         prefsEditor.putString("USERID", USERID);
         //prefsEditor.putString("USERISDCODE", USERISDCODE);
@@ -592,7 +580,7 @@ public class LoginActivity extends AppCompatActivity {
         prefsEditor.putString("LOGGEDIN", "yes");
         prefsEditor.commit();
 
-        Intent i = new Intent(LoginActivity.this,DashBoardActivity.class);
+        Intent i = new Intent(LoginActivity.this, DashBoardActivity.class);
         LoginActivity.this.finish();
         startActivity(i);
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
@@ -773,23 +761,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 */
     //Show failure Dialog
-    private void showFailureDialog(){
+    private void showFailureDialog() {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(LoginActivity.this);
         aldb.setTitle("Login Failed!");
-        aldb.setMessage("\nReason: "+TAG_DESCRIPTION_VALUE);
+        aldb.setMessage("\nReason: " + TAG_DESCRIPTION_VALUE);
         aldb.setPositiveButton("OK", null);
         aldb.show();
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         showExitDialog();
     }
 
     //Exit Dialog
-    public void showExitDialog(){
+    public void showExitDialog() {
 
         final AlertDialog.Builder aldb = new AlertDialog.Builder(LoginActivity.this);
         aldb.setTitle("Smartrac");
@@ -819,10 +806,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         try {
-            if((progressDialog != null) && progressDialog.isShowing() ){
+            if ((progressDialog != null) && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-        }catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         } finally {
             progressDialog = null;

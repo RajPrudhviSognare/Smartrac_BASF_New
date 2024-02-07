@@ -8,8 +8,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
@@ -159,43 +161,42 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
 
         initAllViews();
 
-        if(CommonUtils.isInternelAvailable(InOutTime_ApprovalActivity.this)){
+        if (CommonUtils.isInternelAvailable(InOutTime_ApprovalActivity.this)) {
             System.out.println("requestAttendanceList() called inside InOutTime_ApprovalActivity");
             requestAttendanceList();
-        }
-        else{
+        } else {
             Toast.makeText(InOutTime_ApprovalActivity.this, "No internet connection!", Toast.LENGTH_LONG).show();
         }
 
         //Date Spinner Selection Logic
-        attendanceapproval_InOutTimeSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+        attendanceapproval_InOutTimeSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 selectedDateFromSpinner = parent.getItemAtPosition(position).toString();
-                System.out.println("selectedDateFromSpinner: "+ selectedDateFromSpinner.toString());
+                System.out.println("selectedDateFromSpinner: " + selectedDateFromSpinner.toString());
                 //Toast.makeText(getActivity(), "Selected Item: " + selectedDateFromSpinner, Toast.LENGTH_SHORT).show();
                 //Toast.makeText(getActivity(), "Selected Item Position: " + position, Toast.LENGTH_SHORT).show();
 
                 if (userSelect) {
-                    if(CommonUtils.isInternelAvailable(InOutTime_ApprovalActivity.this)){
-                        System.out.println("requestAttendanceList() called inside Spinner. userSelect = "+userSelect);
+                    if (CommonUtils.isInternelAvailable(InOutTime_ApprovalActivity.this)) {
+                        System.out.println("requestAttendanceList() called inside Spinner. userSelect = " + userSelect);
                         requestAttendanceList();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(InOutTime_ApprovalActivity.this, "No internet connection!", Toast.LENGTH_LONG).show();
                     }
                     userSelect = false;
                 }
 
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
 
         });
 
-        attendanceapproval_InOutTimeSpinner.setOnTouchListener(new View.OnTouchListener(){
+        attendanceapproval_InOutTimeSpinner.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -208,10 +209,10 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                if(isChecked){
-                    for(int i=0;i<attendanceidList.size();i++){
-                        if(disabled_CheckboxList.contains(String.valueOf(i))){
-                            System.out.println("disabled_CheckboxList.contains(String.valueOf(i)): "+ i);
+                if (isChecked) {
+                    for (int i = 0; i < attendanceidList.size(); i++) {
+                        if (disabled_CheckboxList.contains(String.valueOf(i))) {
+                            System.out.println("disabled_CheckboxList.contains(String.valueOf(i)): " + i);
                             continue;
                         }
                         checkedItems[i] = true;
@@ -221,21 +222,21 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
                     InOutTimeattendanceApprovalDetailsListViewID.setAdapter(null);
                     InOutTimeattendanceApprovalDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(InOutTime_ApprovalActivity.this));
 
-                    for(int j=0;j<attendanceidList.size();j++){
-                        if(disabled_CheckboxList.contains(String.valueOf(j))){
-                            System.out.println("disabled_CheckboxList.contains(String.valueOf(i)): "+ j);
+                    for (int j = 0; j < attendanceidList.size(); j++) {
+                        if (disabled_CheckboxList.contains(String.valueOf(j))) {
+                            System.out.println("disabled_CheckboxList.contains(String.valueOf(i)): " + j);
                             continue;
                         }
                         selectionSet.add(attendanceidList.get(j));
                     }
-                    System.out.println("Selection ID list: "+ selectionSet.toString());
-                    System.out.println("Selection ID list size: "+ selectionSet.size());
+                    System.out.println("Selection ID list: " + selectionSet.toString());
+                    System.out.println("Selection ID list size: " + selectionSet.size());
                 }
-                if(!isChecked){
+                if (!isChecked) {
                     selectionSet.clear();
                     isAllChecked = false;
-                    System.out.println("Selection ID list: "+ selectionSet.toString());
-                    System.out.println("Selection ID list size: "+ selectionSet.size());
+                    System.out.println("Selection ID list: " + selectionSet.toString());
+                    System.out.println("Selection ID list size: " + selectionSet.size());
                     InOutTimeattendanceApprovalDetailsListViewID.setAdapter(null);
                     InOutTimeattendanceApprovalDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(InOutTime_ApprovalActivity.this));
                 }
@@ -243,63 +244,63 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
         });
 
         //Approve Button Click
-        approveattendance_INOUT_headerApproveImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        approveattendance_INOUT_headerApproveImageViewID.setOnClickListener(new ImageView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if(selectionSet.size()==0){
+                if (selectionSet.size() == 0) {
                     Toast.makeText(InOutTime_ApprovalActivity.this, "No Associate is selected!", Toast.LENGTH_LONG).show();
                 }//if(selectionSet.size()==0)
 
-                if(selectionSet.size()!=0){
+                if (selectionSet.size() != 0) {
                     String value1[] = selectionSet.toArray(new String[selectionSet.size()]);
                     int size1 = value1.length;
-                    if(size1!=0){
-                        for(int i=0;i<value1.length;i++){
-                            System.out.println("Set to String: "+value1[i]);
+                    if (size1 != 0) {
+                        for (int i = 0; i < value1.length; i++) {
+                            System.out.println("Set to String: " + value1[i]);
                         }
-                        System.out.println("Set to String: "+value1);
+                        System.out.println("Set to String: " + value1);
 
                     }//if(size1!=0)
-                    if(value1.length!=0){
+                    if (value1.length != 0) {
                         JSONArray jsonArrayFriends = new JSONArray();
                         JSONArray jsonArrayFriends1 = new JSONArray();
 
-                        for(int i=0;i<value1.length;i++){
+                        for (int i = 0; i < value1.length; i++) {
                             jsonArrayFriends.put(String.valueOf(value1[i]));
                         }
 
-                        System.out.println("jsonArrayFriends: "+jsonArrayFriends);
-                        System.out.println("jsonArrayFriendsToString: "+jsonArrayFriends.toString());
-                        System.out.println("selectionSet: "+selectionSet.toString());
+                        System.out.println("jsonArrayFriends: " + jsonArrayFriends);
+                        System.out.println("jsonArrayFriendsToString: " + jsonArrayFriends.toString());
+                        System.out.println("selectionSet: " + selectionSet.toString());
 
                         //Added Later For TL_Comments
                         int pos1 = 0;
                         Iterator<String> iterator = selectionSet.iterator();
-                        while(iterator.hasNext()){
+                        while (iterator.hasNext()) {
                             String item = iterator.next().toString();
-                            if(attendanceidList.contains(item)){
+                            if (attendanceidList.contains(item)) {
                                 int pos = attendanceidList.indexOf(item);
-                                final_tl_remarksList.add(pos1,tl_remarksList.get(pos).toString());
+                                final_tl_remarksList.add(pos1, tl_remarksList.get(pos).toString());
                                 pos1++;
                             }
 
                         }//while
-                        System.out.println("selectionSet: "+selectionSet.toString());
-                        System.out.println("final_tl_remarksList: "+final_tl_remarksList.toString());
-                        if(final_tl_remarksList.size()!=0){
-                            for(int i=0;i<final_tl_remarksList.size();i++){
+                        System.out.println("selectionSet: " + selectionSet.toString());
+                        System.out.println("final_tl_remarksList: " + final_tl_remarksList.toString());
+                        if (final_tl_remarksList.size() != 0) {
+                            for (int i = 0; i < final_tl_remarksList.size(); i++) {
                                 jsonArrayFriends1.put(final_tl_remarksList.get(i).toString());
                             }
 
-                            System.out.println("jsonArrayFriends1: "+jsonArrayFriends1);
-                            System.out.println("jsonArrayFriends1ToString: "+jsonArrayFriends1.toString());
-                            System.out.println("final_tl_remarksList: "+final_tl_remarksList.toString());
+                            System.out.println("jsonArrayFriends1: " + jsonArrayFriends1);
+                            System.out.println("jsonArrayFriends1ToString: " + jsonArrayFriends1.toString());
+                            System.out.println("final_tl_remarksList: " + final_tl_remarksList.toString());
                         }//if
                         //Added Later For TL_Comments
 
-                        SendRequestForApproveOrReject(jsonArrayFriends,jsonArrayFriends1,"approved",selectedDateFromSpinner);
+                        SendRequestForApproveOrReject(jsonArrayFriends, jsonArrayFriends1, "approved", selectedDateFromSpinner);
 
                     }//if(value1.length!=0)
 
@@ -309,64 +310,64 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
         });
 
         //Reject Button Click
-        rejectattendance_INOUT_headerRejectImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        rejectattendance_INOUT_headerRejectImageViewID.setOnClickListener(new ImageView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if(selectionSet.size()==0){
+                if (selectionSet.size() == 0) {
                     Toast.makeText(InOutTime_ApprovalActivity.this, "No Associate is selected!", Toast.LENGTH_LONG).show();
                 }//if(selectionSet.size()==0)
 
-                if(selectionSet.size()!=0){
+                if (selectionSet.size() != 0) {
                     String value1[] = selectionSet.toArray(new String[selectionSet.size()]);
                     int size1 = value1.length;
-                    if(size1!=0){
-                        for(int i=0;i<value1.length;i++){
-                            System.out.println("Set to String: "+value1[i]);
+                    if (size1 != 0) {
+                        for (int i = 0; i < value1.length; i++) {
+                            System.out.println("Set to String: " + value1[i]);
                         }
-                        System.out.println("Set to String: "+value1);
+                        System.out.println("Set to String: " + value1);
 
                     }//if(size1!=0)
-                    if(value1.length!=0){
+                    if (value1.length != 0) {
                         JSONArray jsonArrayFriends = new JSONArray();
                         JSONArray jsonArrayFriends1 = new JSONArray();
 
-                        for(int i=0;i<value1.length;i++){
+                        for (int i = 0; i < value1.length; i++) {
                             jsonArrayFriends.put(String.valueOf(value1[i]));
                         }
 
-                        System.out.println("jsonArrayFriends: "+jsonArrayFriends);
-                        System.out.println("jsonArrayFriendsToString: "+jsonArrayFriends.toString());
+                        System.out.println("jsonArrayFriends: " + jsonArrayFriends);
+                        System.out.println("jsonArrayFriendsToString: " + jsonArrayFriends.toString());
 
-                        System.out.println("selectionSet: "+selectionSet.toString());
+                        System.out.println("selectionSet: " + selectionSet.toString());
 
                         //Added Later For TL_Comments
                         int pos1 = 0;
                         Iterator<String> iterator = selectionSet.iterator();
-                        while(iterator.hasNext()){
+                        while (iterator.hasNext()) {
                             String item = iterator.next().toString();
-                            if(attendanceidList.contains(item)){
+                            if (attendanceidList.contains(item)) {
                                 int pos = attendanceidList.indexOf(item);
-                                final_tl_remarksList.add(pos1,tl_remarksList.get(pos).toString());
+                                final_tl_remarksList.add(pos1, tl_remarksList.get(pos).toString());
                                 pos1++;
                             }
 
                         }//while
-                        System.out.println("selectionSet: "+selectionSet.toString());
-                        System.out.println("final_tl_remarksList: "+final_tl_remarksList.toString());
-                        if(final_tl_remarksList.size()!=0){
-                            for(int i=0;i<final_tl_remarksList.size();i++){
+                        System.out.println("selectionSet: " + selectionSet.toString());
+                        System.out.println("final_tl_remarksList: " + final_tl_remarksList.toString());
+                        if (final_tl_remarksList.size() != 0) {
+                            for (int i = 0; i < final_tl_remarksList.size(); i++) {
                                 jsonArrayFriends1.put(final_tl_remarksList.get(i).toString());
                             }
 
-                            System.out.println("jsonArrayFriends1: "+jsonArrayFriends1);
-                            System.out.println("jsonArrayFriends1ToString: "+jsonArrayFriends1.toString());
-                            System.out.println("final_tl_remarksList: "+final_tl_remarksList.toString());
+                            System.out.println("jsonArrayFriends1: " + jsonArrayFriends1);
+                            System.out.println("jsonArrayFriends1ToString: " + jsonArrayFriends1.toString());
+                            System.out.println("final_tl_remarksList: " + final_tl_remarksList.toString());
                         }//if
                         //Added Later For TL_Comments
 
-                        SendRequestForApproveOrReject(jsonArrayFriends,jsonArrayFriends1,"rejected",selectedDateFromSpinner);
+                        SendRequestForApproveOrReject(jsonArrayFriends, jsonArrayFriends1, "rejected", selectedDateFromSpinner);
 
                     }//if(value1.length!=0)
 
@@ -376,7 +377,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
         });
 
         //Top Back Button Click
-        inoutattendancetopbarbackImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        inoutattendancetopbarbackImageViewID.setOnClickListener(new ImageView.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -384,26 +385,25 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
         });
 
 
-
     }//onCreate()
 
-    private void initAllViews(){
+    private void initAllViews() {
 
         //shared preference
-        prefs = InOutTime_ApprovalActivity.this.getSharedPreferences(CommonUtils.PREFERENCE_NAME,MODE_PRIVATE);
+        prefs = InOutTime_ApprovalActivity.this.getSharedPreferences(CommonUtils.PREFERENCE_NAME, MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
-        attendanceapproval_InOutTimeSpinner = (Spinner)findViewById(R.id.attendanceapproval_InOutTimeSpinner);
-        listview_header_INOUT_RelativeLayoutID = (RelativeLayout)findViewById(R.id.listview_header_INOUT_RelativeLayoutID);
-        listview_header_InOutTime_for_table_LinearLayoutID = (LinearLayout)findViewById(R.id.listview_header_InOutTime_for_table_LinearLayoutID);
-        InOutTimeattendanceApprovalDetailsListViewID = (ListView)findViewById(R.id.InOutTimeattendanceApprovalDetailsListViewID);
-        InOutTimeattendanceApprovalNoDataTextViewID = (TextView)findViewById(R.id.InOutTimeattendanceApprovalNoDataTextViewID);
+        attendanceapproval_InOutTimeSpinner = (Spinner) findViewById(R.id.attendanceapproval_InOutTimeSpinner);
+        listview_header_INOUT_RelativeLayoutID = (RelativeLayout) findViewById(R.id.listview_header_INOUT_RelativeLayoutID);
+        listview_header_InOutTime_for_table_LinearLayoutID = (LinearLayout) findViewById(R.id.listview_header_InOutTime_for_table_LinearLayoutID);
+        InOutTimeattendanceApprovalDetailsListViewID = (ListView) findViewById(R.id.InOutTimeattendanceApprovalDetailsListViewID);
+        InOutTimeattendanceApprovalNoDataTextViewID = (TextView) findViewById(R.id.InOutTimeattendanceApprovalNoDataTextViewID);
 
-        approveattendance_INOUT_checkBox_header = (CheckBox)findViewById(R.id.approveattendance_INOUT_checkBox_header);
-        approveattendance_INOUT_headerApproveImageViewID = (ImageView)findViewById(R.id.approveattendance_INOUT_headerApproveImageViewID);
-        rejectattendance_INOUT_headerRejectImageViewID = (ImageView)findViewById(R.id.rejectattendance_INOUT_headerRejectImageViewID);
+        approveattendance_INOUT_checkBox_header = (CheckBox) findViewById(R.id.approveattendance_INOUT_checkBox_header);
+        approveattendance_INOUT_headerApproveImageViewID = (ImageView) findViewById(R.id.approveattendance_INOUT_headerApproveImageViewID);
+        rejectattendance_INOUT_headerRejectImageViewID = (ImageView) findViewById(R.id.rejectattendance_INOUT_headerRejectImageViewID);
 
-        inoutattendancetopbarbackImageViewID = (ImageView)findViewById(R.id.inoutattendancetopbarbackImageViewID);
+        inoutattendancetopbarbackImageViewID = (ImageView) findViewById(R.id.inoutattendancetopbarbackImageViewID);
 
         attendance_dateList = new ArrayList<String>(0);
         selectedList = new ArrayList<String>(0);
@@ -420,7 +420,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
         associate_remarksList = new ArrayList<String>(0);
         tl_remarksList = new ArrayList<String>(0);
         final_tl_remarksList = new ArrayList<String>(0);
-       // associate_distanceList = new ArrayList<String>(0);
+        // associate_distanceList = new ArrayList<String>(0);
 
         ////attendance_time1List = new ArrayList<String>(0);
         ////attendance_image1List = new ArrayList<String>(0);
@@ -436,7 +436,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(InOutTime_ApprovalActivity.this);
     }
 
-    private void SendRequestForApproveOrReject(JSONArray jsonArrayFriends,JSONArray jsonArrayFriends1,String actionType,String selectedDateFromSpinner){
+    private void SendRequestForApproveOrReject(JSONArray jsonArrayFriends, JSONArray jsonArrayFriends1, String actionType, String selectedDateFromSpinner) {
 
         actionType1 = actionType;
         JSONObject jObj = null;
@@ -445,28 +445,28 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
         jObj1 = new JSONObject();
 
         try {
-            jObj.put("ids",jsonArrayFriends);
+            jObj.put("ids", jsonArrayFriends);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         System.out.println("jObj: " + jObj);
         try {
-            jObj1.put("remarks",jsonArrayFriends1);
+            jObj1.put("remarks", jsonArrayFriends1);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         System.out.println("jObj1: " + jObj1);
 
-        if(actionType.equalsIgnoreCase("approved")){
+        if (actionType.equalsIgnoreCase("approved")) {
             //progressDialog.setTitle("InTime Attendance Approval");
         }
-        if(actionType.equalsIgnoreCase("rejected")){
+        if (actionType.equalsIgnoreCase("rejected")) {
             //progressDialog.setTitle("InTime Attendance Reject");
         }
         progressDialog.setMessage("Processing... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        client = new RestFullClient(Constants.BASE_URL+Constants.ATTENDANCE_APPROVALREJECTION_RELATIVE_URI);
+        client = new RestFullClient(Constants.BASE_URL + Constants.ATTENDANCE_APPROVALREJECTION_RELATIVE_URI);
         //client.AddParam("m_date", selectedDateFromSpinner);
         //client.AddParam("tl_id", prefs.getString("USERID",""));
         client.AddParam("action", actionType);
@@ -474,7 +474,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
         client.AddParam("attendance_ids", jObj.toString());
         client.AddParam("attendance_remarks", jObj1.toString());
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
@@ -492,6 +492,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
 
         }).start();
     }
+
     private void receiveDataForServerResponse1(JSONObject jobj) {
 
         try {
@@ -519,17 +520,18 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
         }
 
     }
-    Handler handler1 = new Handler(){
 
-        public void handleMessage(Message msg){
+    Handler handler1 = new Handler() {
+
+        public void handleMessage(Message msg) {
 
             progressDialog.dismiss();
 
             //Success
-            if(client.responseCode==200){
+            if (client.responseCode == 200) {
 
                 //Success
-                if(STATUS.equalsIgnoreCase("true")){
+                if (STATUS.equalsIgnoreCase("true")) {
                     showSuccessDialog();
                     selectionSet.clear();
                     final_tl_remarksList.clear();
@@ -538,13 +540,13 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
 
                 }
                 //Failed
-                if(STATUS.equalsIgnoreCase("false")){
+                if (STATUS.equalsIgnoreCase("false")) {
                     //showRetryDialog();
                     showFailureDialog();
                 }
             }
             //Failed
-            if(client.responseCode!=200){
+            if (client.responseCode != 200) {
                 //Toast.makeText(getActivity(), MESSAGE, Toast.LENGTH_SHORT).show();
                 //showRetryDialog();
                 showFailureDialog();
@@ -555,25 +557,24 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
     };
 
     //Show Success Dialog
-    private void showSuccessDialog(){
+    private void showSuccessDialog() {
         //Alert Dialog Builder
         android.app.AlertDialog.Builder aldb = new android.app.AlertDialog.Builder(InOutTime_ApprovalActivity.this);
         aldb.setTitle("Success!");
         aldb.setCancelable(false);
-        if(actionType1.equalsIgnoreCase("approved")){
+        if (actionType1.equalsIgnoreCase("approved")) {
             aldb.setMessage("You Have Successfully Approved Selected Associates In/out time. \n\nThank You");
         }
-        if(actionType1.equalsIgnoreCase("rejected")){
+        if (actionType1.equalsIgnoreCase("rejected")) {
             aldb.setMessage("You Have Successfully Rejected Selected Associates In/out time. \n\nThank You");
         }
         aldb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if(CommonUtils.isInternelAvailable(InOutTime_ApprovalActivity.this)){
+                if (CommonUtils.isInternelAvailable(InOutTime_ApprovalActivity.this)) {
                     requestAttendanceList();
-                }
-                else{
+                } else {
                     Toast.makeText(InOutTime_ApprovalActivity.this, "No internet connection!", Toast.LENGTH_LONG).show();
                 }
             }
@@ -595,7 +596,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
 
     }
 
-    private void requestAttendanceList(){
+    private void requestAttendanceList() {
 
         InOutTimeattendanceApprovalNoDataTextViewID.setVisibility(View.GONE);
         attendance_dateList.clear();
@@ -612,7 +613,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
         attendance_typeList.clear();
         associate_remarksList.clear();
         tl_remarksList.clear();
-       // associate_distanceList.clear();
+        // associate_distanceList.clear();
 
         //attendance_time1List.clear();
         //attendance_image1List.clear();
@@ -623,17 +624,16 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
         progressDialog.setMessage("Loading... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        client = new RestFullClient(Constants.BASE_URL+Constants.ATTENDANCE_APPROVAL_RELATIVE_URI);
-        if(selectedDateFromSpinner!=null){
+        client = new RestFullClient(Constants.BASE_URL + Constants.ATTENDANCE_APPROVAL_RELATIVE_URI);
+        if (selectedDateFromSpinner != null) {
             client.AddParam("m_date", selectedDateFromSpinner);
-        }
-        else{
+        } else {
             client.AddParam("m_date", "");
         }
         client.AddParam("type", TAG_ATTENDANCE_TYPE);
-        client.AddParam("tl_id", prefs.getString("USERID",""));
+        client.AddParam("tl_id", prefs.getString("USERID", ""));
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
@@ -653,19 +653,20 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
         }).start();
 
     }
-    private void receiveDataForServerResponse(JSONObject jobj){
 
-        try{
+    private void receiveDataForServerResponse(JSONObject jobj) {
 
-            if(client.responseCode==200){
+        try {
 
-                STATUS =  jobj.getString(TAG_STATUS);
-                MESSAGE =  jobj.getString(TAG_MESSAGE);
+            if (client.responseCode == 200) {
 
-                System.out.println("STATUS: responseCode==200: "+ STATUS);
-                System.out.println("MESSAGE: responseCode==200: "+ MESSAGE);
+                STATUS = jobj.getString(TAG_STATUS);
+                MESSAGE = jobj.getString(TAG_MESSAGE);
 
-                if(STATUS.equalsIgnoreCase("true")) {
+                System.out.println("STATUS: responseCode==200: " + STATUS);
+                System.out.println("MESSAGE: responseCode==200: " + MESSAGE);
+
+                if (STATUS.equalsIgnoreCase("true")) {
 
                     JOBJECT_DATA = jobj.getJSONObject(TAG_JOBJECT_DATA);
                     System.out.println("JOBJECT_DATA: " + JOBJECT_DATA.toString());
@@ -677,7 +678,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
                         System.out.println("Total Pending Date List: " + pendingDateArray.length());
 
                         PARTICULAR_DATE = JOBJECT_DATA.getString(TAG_PARTICULAR_DATE);
-                        System.out.println("PARTICULAR_DATE: "+ PARTICULAR_DATE);
+                        System.out.println("PARTICULAR_DATE: " + PARTICULAR_DATE);
 
                         JSONArray attendanceDataArray = JOBJECT_DATA.getJSONArray(TAG_JARRAY_ATTENDANCEDATALIST);
                         System.out.println("Attendance Data List: " + attendanceDataArray.toString());
@@ -710,13 +711,13 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
                         attendance_dateList.clear();
                         selectedList.clear();
 
-                        if(pendingDateArray.length()==0){
+                        if (pendingDateArray.length() == 0) {
                             //attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE);
-                            System.out.println("Inside 'if(pendingDateArray.length()==0)': InOutTimeattendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): "+InOutTimeattendanceApprovalNoDataTextViewID.getVisibility());
+                            System.out.println("Inside 'if(pendingDateArray.length()==0)': InOutTimeattendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): " + InOutTimeattendanceApprovalNoDataTextViewID.getVisibility());
                         }
-                        if(pendingDateArray.length()!=0){
+                        if (pendingDateArray.length() != 0) {
 
-                            for(int i = 0; i < pendingDateArray.length(); i++) {
+                            for (int i = 0; i < pendingDateArray.length(); i++) {
 
                                 try {
                                     c = pendingDateArray.getJSONObject(i);
@@ -730,7 +731,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
                                         selectedList.add(selected);
                                         //selectedList.add(String.valueOf(selected));
 
-                                        if(Integer.parseInt(selected)==1){
+                                        if (Integer.parseInt(selected) == 1) {
                                             //if(selected==1){
                                             attendanceSelectedDatePosition = i;
                                         }
@@ -761,18 +762,18 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
                         attendance_typeList.clear();
                         associate_remarksList.clear();
                         tl_remarksList.clear();
-                      //  associate_distanceList.clear();
+                        //  associate_distanceList.clear();
 
                         //attendance_time1List.clear();
                         //attendance_image1List.clear();
 
                         disabled_CheckboxList.clear();
 
-                        if(attendanceDataArray.length()==0){
+                        if (attendanceDataArray.length() == 0) {
                             //attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE);
-                            System.out.println("Inside 'if(attendanceDataArray.length()==0)': InOutTimeattendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): "+InOutTimeattendanceApprovalNoDataTextViewID.getVisibility());
+                            System.out.println("Inside 'if(attendanceDataArray.length()==0)': InOutTimeattendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): " + InOutTimeattendanceApprovalNoDataTextViewID.getVisibility());
                         }
-                        if(attendanceDataArray.length()!=0){
+                        if (attendanceDataArray.length() != 0) {
 
                             for (int i = 0; i < attendanceDataArray.length(); i++) {
 
@@ -790,7 +791,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
                                         associate_isd = c1.getString(TAG_ASSOCIATE_ISD);
                                         attendance_type = c1.getString(TAG_ATTENDANCE_TYPE_PARSING);
                                         associate_remarks = c1.getString(TAG_ATTENDANCE_REMARKS);
-                                     //   associate_distance = c1.getString(TAG_ASSOCIATE_DISTANCE);
+                                        //   associate_distance = c1.getString(TAG_ASSOCIATE_DISTANCE);
 
                                         //attendance_time1 = c1.getString(TAG_ATTENDANCE_TIME1);
                                         //attendance_image1 = c1.getString(TAG_ATTENDANCE_IMAGE1);
@@ -802,12 +803,12 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
                                         first_nameList.add(first_name);
                                         last_nameList.add(last_name);
                                         attendance_timeList.add(attendance_time);
-                                        attendance_imageList.add(Constants.BASE_URL_ATTENDANCE_LOGO+attendance_image);
+                                        attendance_imageList.add(Constants.BASE_URL_ATTENDANCE_LOGO + attendance_image);
                                         associate_isdList.add(associate_isd);
                                         attendance_typeList.add(attendance_type);
                                         associate_remarksList.add(associate_remarks);
                                         tl_remarksList.add("");
-                                      //  associate_distanceList.add(associate_distance);
+                                        //  associate_distanceList.add(associate_distance);
 
                                         //attendance_time1List.add(attendance_time1);
                                         //ttendance_image1List.add(Constants.BASE_URL_ATTENDANCE_LOGO+attendance_image1);
@@ -831,7 +832,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
                         System.out.println("Total attendance_typeList: " + attendance_typeList.size());
                         System.out.println("Total associate_remarksList: " + associate_remarksList.size());
                         System.out.println("Total tl_remarksList: " + tl_remarksList.size());
-                       // System.out.println("Total associate_distanceList: " + associate_distanceList.size());
+                        // System.out.println("Total associate_distanceList: " + associate_distanceList.size());
 
                         //System.out.println("Total attendance_time1List: " + attendance_time1List.size());
                         //System.out.println("Total attendance_image1List: " + attendance_image1List.size());
@@ -839,54 +840,55 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
                         System.out.println("##########End Of All Attendance Data List details###################");
 
                     }//if (JOBJECT_DATA != null)
-                    else{
+                    else {
                         System.out.println("JOBJECT_DATA is Null");
                     }
 
                 }//if(STATUS.equalsIgnoreCase("true")
 
             }//if(client.responseCode==200)
-            if(client.responseCode!=200){
+            if (client.responseCode != 200) {
 
-                STATUS =  jobj.getString(TAG_STATUS);
-                MESSAGE =  jobj.getString(TAG_MESSAGE);
+                STATUS = jobj.getString(TAG_STATUS);
+                MESSAGE = jobj.getString(TAG_MESSAGE);
 
-                System.out.println("STATUS: responseCode!=200: "+ STATUS);
-                System.out.println("MESSAGE: responseCode!=200: "+ MESSAGE);
+                System.out.println("STATUS: responseCode!=200: " + STATUS);
+                System.out.println("MESSAGE: responseCode!=200: " + MESSAGE);
 
             }//if(client.responseCode!=200)
 
+        } catch (Exception e) {
         }
-        catch(Exception e){}
 
     }
-    Handler handler = new Handler(){
 
-        public void handleMessage(Message msg){
+    Handler handler = new Handler() {
+
+        public void handleMessage(Message msg) {
 
             progressDialog.dismiss();
 
             //Success
-            if(client.responseCode==200){
+            if (client.responseCode == 200) {
 
                 //Toast.makeText(SignupActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
 
                 //Login success
-                if(STATUS.equalsIgnoreCase("true")){
+                if (STATUS.equalsIgnoreCase("true")) {
                     //showSuccessDialog();
                     //Toast.makeText(getActivity(), MESSAGE, Toast.LENGTH_SHORT).show();
                     showAttendanceDetails();
                 }
 
                 //Login failed
-                if(STATUS.equalsIgnoreCase("false")){
+                if (STATUS.equalsIgnoreCase("false")) {
                     showFailureDialog();
                 }
 
             }
 
             //Login failed
-            if(client.responseCode!=200){
+            if (client.responseCode != 200) {
                 //Toast.makeText(getActivity(), MESSAGE, Toast.LENGTH_SHORT).show();
                 showFailureDialog();
             }
@@ -896,56 +898,55 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
     };
 
     //Show failure Dialog
-    private void showFailureDialog(){
+    private void showFailureDialog() {
         //Alert Dialog Builder
         AlertDialog.Builder aldb = new AlertDialog.Builder(InOutTime_ApprovalActivity.this);
         aldb.setTitle("Failed!");
-        aldb.setMessage("\nReason: "+MESSAGE);
+        aldb.setMessage("\nReason: " + MESSAGE);
         aldb.setPositiveButton("OK", null);
         aldb.show();
     }
 
-    private void showAttendanceDetails(){
+    private void showAttendanceDetails() {
 
-        if(attendanceidList.size()!=0){
+        if (attendanceidList.size() != 0) {
             InOutTimeattendanceApprovalDetailsListViewID.setVisibility(View.VISIBLE);
             InOutTimeattendanceApprovalNoDataTextViewID.setVisibility(View.GONE);
             SetDropDownItems();
             setAttendanceListView();
         }
-        if(attendanceidList.size()==0){
+        if (attendanceidList.size() == 0) {
             InOutTimeattendanceApprovalDetailsListViewID.setVisibility(View.GONE);
             InOutTimeattendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE);
         }
     }
 
-    private void SetDropDownItems(){
-        if(attendance_dateList.size()!=0){
-            ArrayAdapter dataAdapter = new ArrayAdapter (InOutTime_ApprovalActivity.this, android.R.layout.simple_spinner_item, attendance_dateList);
+    private void SetDropDownItems() {
+        if (attendance_dateList.size() != 0) {
+            ArrayAdapter dataAdapter = new ArrayAdapter(InOutTime_ApprovalActivity.this, android.R.layout.simple_spinner_item, attendance_dateList);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             attendanceapproval_InOutTimeSpinner.setAdapter(dataAdapter);
-            System.out.println("Selected Spinner Item Position: "+ attendanceSelectedDatePosition);
+            System.out.println("Selected Spinner Item Position: " + attendanceSelectedDatePosition);
             attendanceapproval_InOutTimeSpinner.setSelection(attendanceSelectedDatePosition);
-        }
-        else{
-             InOutTimeattendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE);
-             System.out.println("Inside 'SetDropDownItems()': InOutTimeattendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): "+InOutTimeattendanceApprovalNoDataTextViewID.getVisibility());
+        } else {
+            InOutTimeattendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE);
+            System.out.println("Inside 'SetDropDownItems()': InOutTimeattendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): " + InOutTimeattendanceApprovalNoDataTextViewID.getVisibility());
         }
     }
 
-    private void setAttendanceListView(){
+    private void setAttendanceListView() {
         checkedItems = new boolean[attendanceidList.size()];
         InOutTimeattendanceApprovalDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(InOutTime_ApprovalActivity.this));
     }
 
     /*
-    * CustomAdapterForAttendanceDetails
-    */
+     * CustomAdapterForAttendanceDetails
+     */
     public class CustomAdapterForAttendanceDetails extends BaseAdapter {
 
         public Context cntx;
 
-        public CustomAdapterForAttendanceDetails(Context context){
+        public CustomAdapterForAttendanceDetails(Context context) {
             cntx = context;
         }
 
@@ -980,6 +981,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
             //return 1;
             return 2;
         }
+
         @Override
         public int getItemViewType(int position) {
             // TODO Auto-generated method stub
@@ -994,12 +996,11 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
             View view;
             ViewHolder viewHolder = new ViewHolder();
 
-            if(convertView==null){
+            if (convertView == null) {
 
-                LayoutInflater inflater = (LayoutInflater)cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.custom_layout_for_inout_attendance_approval, null);
-            }
-            else{
+            } else {
 
                 view = convertView;
             }
@@ -1007,34 +1008,34 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
             view.setTag(viewHolder);
             final int pos1 = position;
 
-            final TextView nameTextView = (TextView)view.findViewById(R.id.custom_approveattendance_INOUTNameTextViewID);
-            final TextView isdTextView = (TextView)view.findViewById(R.id.custom_approveattendance_INOUTISDTextViewID);
-            final TextView timeTextView = (TextView)view.findViewById(R.id.custom_approveattendance_INOUT_INTimeTextViewID);
+            final TextView nameTextView = (TextView) view.findViewById(R.id.custom_approveattendance_INOUTNameTextViewID);
+            final TextView isdTextView = (TextView) view.findViewById(R.id.custom_approveattendance_INOUTISDTextViewID);
+            final TextView timeTextView = (TextView) view.findViewById(R.id.custom_approveattendance_INOUT_INTimeTextViewID);
             //final TextView time1TextView = (TextView)view.findViewById(R.id.custom_approveattendance_INOUT_OUTTimeTextViewID);
-            final TextView distanceTextView = (TextView)view.findViewById(R.id.custom_approveattendance_DistanceTextViewID);
+            final TextView distanceTextView = (TextView) view.findViewById(R.id.custom_approveattendance_DistanceTextViewID);
 
-            viewHolder.checkbox = (CheckBox)view.findViewById(R.id.custom_approveattendance_INOUTcheckBoxID);
+            viewHolder.checkbox = (CheckBox) view.findViewById(R.id.custom_approveattendance_INOUTcheckBoxID);
 
-            viewHolder.selfieImage = (ImageView)view.findViewById(R.id.custom_approveattendance_INOUT_INSelfieImageViewID);
+            viewHolder.selfieImage = (ImageView) view.findViewById(R.id.custom_approveattendance_INOUT_INSelfieImageViewID);
             //viewHolder.selfieImage1 = (ImageView)view.findViewById(R.id.custom_approveattendance_INOUT_OUTSelfieImageViewID);
 
-            final TextView commentsAssociateTextView = (TextView)view.findViewById(R.id.custom_approveattendance_CommentsTextViewID);
-            viewHolder.editText = (EditText)view.findViewById(R.id.custom_approveattendance_CommentsTLEditTextID);
+            final TextView commentsAssociateTextView = (TextView) view.findViewById(R.id.custom_approveattendance_CommentsTextViewID);
+            viewHolder.editText = (EditText) view.findViewById(R.id.custom_approveattendance_CommentsTLEditTextID);
 
-            final ViewHolder holder = (ViewHolder)view.getTag();
+            final ViewHolder holder = (ViewHolder) view.getTag();
 
-            nameTextView.setText(first_nameList.get(position)+" "+last_nameList.get(position));
-            isdTextView.setText("("+associate_isdList.get(position)+")");
-            timeTextView.setText(attendance_typeList.get(position)+"   "+attendance_timeList.get(position));
+            nameTextView.setText(first_nameList.get(position) + " " + last_nameList.get(position));
+            isdTextView.setText("(" + associate_isdList.get(position) + ")");
+            timeTextView.setText(attendance_typeList.get(position) + "   " + attendance_timeList.get(position));
             //time1TextView.setText(attendance_time1List.get(position));
             imageLoader.DisplayImage(attendance_imageList.get(position), holder.selfieImage);
             //imageLoader1.DisplayImage(attendance_image1List.get(position), holder.selfieImage1);
             commentsAssociateTextView.setText(associate_remarksList.get(position));
-         //   distanceTextView.setText(associate_distanceList.get(position)+"");
+            //   distanceTextView.setText(associate_distanceList.get(position)+"");
 
 
             //if(attendance_timeList.get(pos1).toString().equalsIgnoreCase("null")||attendance_time1List.get(pos1).toString().equalsIgnoreCase("null")){
-            if(attendance_timeList.get(pos1).toString().equalsIgnoreCase("null")){
+            if (attendance_timeList.get(pos1).toString().equalsIgnoreCase("null")) {
                 holder.checkbox.setEnabled(false);
                 holder.checkbox.setChecked(false);
                 holder.checkbox.setClickable(false);
@@ -1044,12 +1045,12 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
 
                 disabled_CheckboxList.add(String.valueOf(pos1));
 
-                System.out.println("attendance_timeList.get(pos1) Value: "+attendance_timeList.get(pos1));
+                System.out.println("attendance_timeList.get(pos1) Value: " + attendance_timeList.get(pos1));
                 //System.out.println("attendance_time1List.get(pos1) Value: "+attendance_time1List.get(pos1));
-                System.out.println("holder.checkbox status at (pos1): "+holder.checkbox.getVisibility());
+                System.out.println("holder.checkbox status at (pos1): " + holder.checkbox.getVisibility());
             }
 
-            if(isAllChecked){
+            if (isAllChecked) {
                 holder.checkbox.setChecked(checkedItems[position]);
             }
 
@@ -1059,17 +1060,17 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     // TODO Auto-generated method stub
-                    if(isChecked){
+                    if (isChecked) {
                         //Toast.makeText(getActivity(), "Checked at "+String.valueOf(pos1), Toast.LENGTH_SHORT).show();
                         selectionSet.add(attendanceidList.get(pos1));
-                        System.out.println("Selection ID list: "+ selectionSet.toString());
-                        System.out.println("Total Set size(After Add): "+selectionSet.size());
+                        System.out.println("Selection ID list: " + selectionSet.toString());
+                        System.out.println("Total Set size(After Add): " + selectionSet.size());
                     }
-                    if(!isChecked){
+                    if (!isChecked) {
                         //Toast.makeText(getActivity(), "UnChecked at "+String.valueOf(pos1), Toast.LENGTH_SHORT).show();
                         selectionSet.remove(attendanceidList.get(pos1));
-                        System.out.println("Selection ID list: "+ selectionSet.toString());
-                        System.out.println("Total Set size(After Remove): "+selectionSet.size());
+                        System.out.println("Selection ID list: " + selectionSet.toString());
+                        System.out.println("Total Set size(After Remove): " + selectionSet.size());
 
                     }//if
 
@@ -1078,7 +1079,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
             });
 
             //Selfie image is clicked
-            holder.selfieImage.setOnClickListener(new ImageView.OnClickListener(){
+            holder.selfieImage.setOnClickListener(new ImageView.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
@@ -1101,15 +1102,17 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                 }
+
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 }
+
                 @Override
                 public void afterTextChanged(Editable s) {
                     //holder.editText.setText(s.toString());
                     System.out.println("afterTextChanged(Editable s): " + s.toString());
-                    tl_remarksList.set(pos1,s.toString()); //Updating with a new value
+                    tl_remarksList.set(pos1, s.toString()); //Updating with a new value
                 }
             });
 
@@ -1118,7 +1121,7 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
 
         }
 
-        class ViewHolder{
+        class ViewHolder {
             CheckBox checkbox;
             ImageView selfieImage;
             //ImageView selfieImage1;
@@ -1127,31 +1130,31 @@ public class InOutTime_ApprovalActivity extends AppCompatActivity {
 
     }//CustomAdapterForAttendanceDetails Class
 
-    private void displayLargeSelfie(String imageURL){
+    private void displayLargeSelfie(String imageURL) {
         final String url = imageURL;
-        Intent i = new Intent(InOutTime_ApprovalActivity.this,LargerSelfieImageDisplayActivity.class);
-        i.putExtra("IMAGEPATH",url);
+        Intent i = new Intent(InOutTime_ApprovalActivity.this, LargerSelfieImageDisplayActivity.class);
+        i.putExtra("IMAGEPATH", url);
         InOutTime_ApprovalActivity.this.startActivity(i);
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         InOutTime_ApprovalActivity.this.finish();
         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
     }
 

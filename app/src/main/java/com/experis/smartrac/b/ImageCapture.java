@@ -14,10 +14,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -33,9 +36,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
-public class ImageCapture extends AppCompatActivity implements Callback{
+public class ImageCapture extends AppCompatActivity implements Callback {
 
-	private SurfaceHolder surfaceHolder;
+    private SurfaceHolder surfaceHolder;
     private SurfaceView surfaceView;
     //private ZoomControls imageCapture_zoomControlsID;
     private FloatingActionButton fab_Camera;
@@ -46,52 +49,51 @@ public class ImageCapture extends AppCompatActivity implements Callback{
     private Camera mCamera = null;
     File imagePath;
     MediaPlayer mp;
-    
+
     private boolean hasFlash = false;
     private File finalImageFilePath = null;
 
-	public static boolean camera2_status = false;
-	public static String CAMERA2_IMAGEPATH = "";
-	public static String ATTENDANCE_TYPE = "";
-	
-	@SuppressWarnings("deprecation")
-	@Override
-	public void onCreate(Bundle savedInstanceState){		
-		   super.onCreate(savedInstanceState);
-		   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		   setContentView(R.layout.imagecapture);
+    public static boolean camera2_status = false;
+    public static String CAMERA2_IMAGEPATH = "";
+    public static String ATTENDANCE_TYPE = "";
 
-		   ATTENDANCE_TYPE = getIntent().getStringExtra("ATTENDANCE_TYPE");
-		   System.out.println("ATTENDANCE_TYPE: "+ATTENDANCE_TYPE);
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.imagecapture);
 
-		   int cameraCount = Camera.getNumberOfCameras();
-		   if(cameraCount<2){
-			   showNoFrontCameraDialog();
-		   }
-		   else{
-			   mCamera = getCameraInstance();
-		   }
-	       if(mCamera==null){
-	        	Toast.makeText(ImageCapture.this,"No Front Camera Found",Toast.LENGTH_LONG).show();
-	       }
+        ATTENDANCE_TYPE = getIntent().getStringExtra("ATTENDANCE_TYPE");
+        System.out.println("ATTENDANCE_TYPE: " + ATTENDANCE_TYPE);
 
-		   imageCapturetopbarBackImageID = (ImageView)findViewById(R.id.imageCapturetopbarBackImageID);
-		   fab_Camera = (FloatingActionButton)findViewById(R.id.fab_Camera);
-	       
-	       surfaceView = (SurfaceView)findViewById(R.id.imageCapture_surfaceview);
-	       surfaceHolder = surfaceView.getHolder();
-	       surfaceHolder.addCallback(this);
-	       surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-	       
-	       hasFlash = getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-	       
-	       //Image Capture Button Listener 
-		   fab_Camera.setOnClickListener(new View.OnClickListener(){
+        int cameraCount = Camera.getNumberOfCameras();
+        if (cameraCount < 2) {
+            showNoFrontCameraDialog();
+        } else {
+            mCamera = getCameraInstance();
+        }
+        if (mCamera == null) {
+            Toast.makeText(ImageCapture.this, "No Front Camera Found", Toast.LENGTH_LONG).show();
+        }
 
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
+        imageCapturetopbarBackImageID = (ImageView) findViewById(R.id.imageCapturetopbarBackImageID);
+        fab_Camera = (FloatingActionButton) findViewById(R.id.fab_Camera);
+
+        surfaceView = (SurfaceView) findViewById(R.id.imageCapture_surfaceview);
+        surfaceHolder = surfaceView.getHolder();
+        surfaceHolder.addCallback(this);
+        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
+        hasFlash = getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+
+        //Image Capture Button Listener
+        fab_Camera.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                // TODO Auto-generated method stub
 					        
 		    	/*
 		    	params = mCamera.getParameters();
@@ -117,175 +119,172 @@ public class ImageCapture extends AppCompatActivity implements Callback{
 		        //Finish of Added Later
 		        */
 
-		    	if(mCamera!=null){
+                if (mCamera != null) {
 		    		/*if(hasFlash){
 		    			params.setFlashMode(Parameters.FLASH_MODE_TORCH);
 	    				//mCamera.setParameters(params);	
 		    		}*/
-		    		 
-		    		////mCamera.setParameters(params);
 
-    				playSound();
-    				// get an image from the camera
-					try{
-						mCamera.takePicture(null, null, null, mPicture);
-					}
-					catch(Exception e){
-						e.printStackTrace();
-						Toast.makeText(ImageCapture.this,e.getMessage(),Toast.LENGTH_LONG).show();
-					}
+                    ////mCamera.setParameters(params);
 
-		    	}//if(mCamera!=null)
-		    					
-			}
-	    	   
-	       });
-	       	       
-	       //Exit Button Listener
-		   imageCapturetopbarBackImageID.setOnClickListener(new View.OnClickListener(){
+                    playSound();
+                    // get an image from the camera
+                    try {
+                        mCamera.takePicture(null, null, null, mPicture);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(ImageCapture.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
 
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				ImageCapture.this.finish();
-			 }
-	    	   
-	       });
+                }//if(mCamera!=null)
 
-		//Added Later//////////////////
-		if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP){
-			System.out.println("Inside ImageCapture Page checkAllPermissions() is called Above Lallipop: ");
-			try{
-				checkAllPermissions();
-			}
-			catch (Exception e){
-				e.printStackTrace();
-			}
-		}
-		//End Of Added Later//////////
-	       
-	       
-	}//onCreate()
+            }
 
-	private void checkAllPermissions(){
-		// Here, thisActivity is the current activity
-		if (ContextCompat.checkSelfPermission(ImageCapture.this,
-				android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        });
 
-			// Should we show an explanation?
-			if (ActivityCompat.shouldShowRequestPermissionRationale(ImageCapture.this,
-					android.Manifest.permission.CAMERA)) {
+        //Exit Button Listener
+        imageCapturetopbarBackImageID.setOnClickListener(new View.OnClickListener() {
 
-				// Show an expanation to the user *asynchronously* -- don't block
-				// this thread waiting for the user's response! After the user
-				// sees the explanation, try again to request the permission.
+            @Override
+            public void onClick(View arg0) {
+                // TODO Auto-generated method stub
+                ImageCapture.this.finish();
+            }
 
-			} else {
+        });
 
-				// No explanation needed, we can request the permission.
-				ActivityCompat.requestPermissions(ImageCapture.this,
-						new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1991);
+        //Added Later//////////////////
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            System.out.println("Inside ImageCapture Page checkAllPermissions() is called Above Lallipop: ");
+            try {
+                checkAllPermissions();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        //End Of Added Later//////////
 
-				// The callback method gets the result of the request.
-			}
 
-		}//if
+    }//onCreate()
 
-	}//checkAllPermissions()
+    private void checkAllPermissions() {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(ImageCapture.this,
+                android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
-	@Override
-	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-		switch (requestCode) {
-			case 1991: {
-				// If request is cancelled, the result arrays are empty.
-				if (grantResults.length > 0
-						&& grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED
-						&& grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(ImageCapture.this,
+                    android.Manifest.permission.CAMERA)) {
 
-					// permission was granted, yay! Do the
-					// tasks you need to do.
-					System.out.println("CAMERA, WRITE_EXTERNAL_STORAGE & READ_EXTERNAL_STORAGE ARE GRANTED!");
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
 
-				} else {
+            } else {
 
-					// permission denied, boo! Disable the
-					// functionality that depends on this permission.
-					System.out.println("CAMERA, WRITE_EXTERNAL_STORAGE & READ_EXTERNAL_STORAGE ARE REJECTED!");
-					ImageCapture.this.finish();
-				}
-				return;
-			}
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(ImageCapture.this,
+                        new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1991);
 
-		}
+                // The callback method gets the result of the request.
+            }
 
-	}
+        }//if
 
-	@SuppressWarnings("deprecation")
-	public PictureCallback mPicture = new PictureCallback(){
+    }//checkAllPermissions()
 
-		@Override
-		public void onPictureTaken(byte[] data, Camera camera) {
-			// TODO Auto-generated method stub
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1991: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // tasks you need to do.
+                    System.out.println("CAMERA, WRITE_EXTERNAL_STORAGE & READ_EXTERNAL_STORAGE ARE GRANTED!");
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    System.out.println("CAMERA, WRITE_EXTERNAL_STORAGE & READ_EXTERNAL_STORAGE ARE REJECTED!");
+                    ImageCapture.this.finish();
+                }
+                return;
+            }
+
+        }
+
+    }
+
+    @SuppressWarnings("deprecation")
+    public PictureCallback mPicture = new PictureCallback() {
+
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+            // TODO Auto-generated method stub
 			
 			/*if(hasFlash){
 				params.setFlashMode(Parameters.FLASH_MODE_OFF);
 				mCamera.setParameters(params);
 			}*/
 
-			Calendar cal = Calendar.getInstance();
+            Calendar cal = Calendar.getInstance();
 
-			releaseCamera();
+            releaseCamera();
 
-			finalImageFilePath = new File(Environment.getExternalStorageDirectory().toString()+"/Self_Pictures/Picture_"+cal.getTimeInMillis()+".jpg");
-			System.out.println("finalImageFilePath: "+finalImageFilePath);
+            finalImageFilePath = new File(Environment.getExternalStorageDirectory().toString() + "/Self_Pictures/Picture_" + cal.getTimeInMillis() + ".jpg");
+            System.out.println("finalImageFilePath: " + finalImageFilePath);
 
-			if(finalImageFilePath == null){
-				camera2_status = false;
-				CAMERA2_IMAGEPATH = "";
-				return;
-			}
-			else{
-				CAMERA2_IMAGEPATH = finalImageFilePath.getAbsolutePath().toString();
-				System.out.println("CAMERA2_IMAGEPATH: "+CAMERA2_IMAGEPATH);
-			}
+            if (finalImageFilePath == null) {
+                camera2_status = false;
+                CAMERA2_IMAGEPATH = "";
+                return;
+            } else {
+                CAMERA2_IMAGEPATH = finalImageFilePath.getAbsolutePath().toString();
+                System.out.println("CAMERA2_IMAGEPATH: " + CAMERA2_IMAGEPATH);
+            }
 
-			try {
-				FileOutputStream fos = new FileOutputStream(finalImageFilePath);
-				fos.write(data);
-				fos.close();
-				Toast.makeText(getApplicationContext(), "Selfie Taken Successfully", Toast.LENGTH_SHORT).show();
+            try {
+                FileOutputStream fos = new FileOutputStream(finalImageFilePath);
+                fos.write(data);
+                fos.close();
+                Toast.makeText(getApplicationContext(), "Selfie Taken Successfully", Toast.LENGTH_SHORT).show();
 
-				////showImagePreview(finalImageFilePath.toString());
+                ////showImagePreview(finalImageFilePath.toString());
 
-				//showImagePreview1(finalImageFilePath.toString());
+                //showImagePreview1(finalImageFilePath.toString());
 
-				camera2_status = true;
-				ImageCapture.this.finish();
-			} catch (FileNotFoundException e) {
-				Log.e("ImageCapture", "File not found: " + e.getMessage());
-			} catch (IOException e) {
-				Log.e("ImageCapture", "Error accessing file: " + e.getMessage());
-			}
+                camera2_status = true;
+                ImageCapture.this.finish();
+            } catch (FileNotFoundException e) {
+                Log.e("ImageCapture", "File not found: " + e.getMessage());
+            } catch (IOException e) {
+                Log.e("ImageCapture", "Error accessing file: " + e.getMessage());
+            }
 
-		}
+        }
 
-	};
-	
-	public void showImagePreview(String path){
-		
-		final String path1 = path;
-		AlertDialog.Builder aldb = new AlertDialog.Builder(ImageCapture.this);
-		aldb.setTitle("Preview");
-		final ImageView imgView = new ImageView(ImageCapture.this);
-		imgView.setImageURI(Uri.parse(path));
-		aldb.setView(imgView);
-		aldb.setCancelable(false);
+    };
 
-		aldb.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
+    public void showImagePreview(String path) {
+
+        final String path1 = path;
+        AlertDialog.Builder aldb = new AlertDialog.Builder(ImageCapture.this);
+        aldb.setTitle("Preview");
+        final ImageView imgView = new ImageView(ImageCapture.this);
+        imgView.setImageURI(Uri.parse(path));
+        aldb.setView(imgView);
+        aldb.setCancelable(false);
+
+        aldb.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
 				
 				/*Intent intent = new Intent(ImageCapture.this,ImageCapture.class);
 				overridePendingTransition(0, 0);
@@ -294,39 +293,39 @@ public class ImageCapture extends AppCompatActivity implements Callback{
 				finish();
 				startActivity(intent);*/
 
-				camera2_status = true;
-				ImageCapture.this.finish();
-				
-			}
-		});
-		
-		aldb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				
-				File file = new File(path1);
-				if(file.exists()){
-					file.delete();
+                camera2_status = true;
+                ImageCapture.this.finish();
 
-					camera2_status = false;
-					CAMERA2_IMAGEPATH = "";
+            }
+        });
 
-					Intent intent = new Intent(ImageCapture.this,ImageCapture.class);
-					intent.putExtra("ATTENDANCE_TYPE",ATTENDANCE_TYPE);
-					overridePendingTransition(0, 0);
-					//Toast.makeText(getApplicationContext(), "Picture is deleted", Toast.LENGTH_SHORT).show();
-					ImageCapture.this.finish();
-					startActivity(intent);
-				}
-				
-			}
-		});
+        aldb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
-		aldb.show();
-		
-	}
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+
+                File file = new File(path1);
+                if (file.exists()) {
+                    file.delete();
+
+                    camera2_status = false;
+                    CAMERA2_IMAGEPATH = "";
+
+                    Intent intent = new Intent(ImageCapture.this, ImageCapture.class);
+                    intent.putExtra("ATTENDANCE_TYPE", ATTENDANCE_TYPE);
+                    overridePendingTransition(0, 0);
+                    //Toast.makeText(getApplicationContext(), "Picture is deleted", Toast.LENGTH_SHORT).show();
+                    ImageCapture.this.finish();
+                    startActivity(intent);
+                }
+
+            }
+        });
+
+        aldb.show();
+
+    }
 
 
 	/*public void showImagePreview1(final String path){
@@ -367,38 +366,37 @@ public class ImageCapture extends AppCompatActivity implements Callback{
 
 	}*/
 
-	public Camera getCameraInstance(){
-		  // TODO Auto-generated method stub
-		       Camera c = null;
-		       int cameraCount = 0;
-		       Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-		       cameraCount = Camera.getNumberOfCameras();
-		       Log.e("ImageCapture - ", "cameraCount: " + cameraCount);
+    public Camera getCameraInstance() {
+        // TODO Auto-generated method stub
+        Camera c = null;
+        int cameraCount = 0;
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+        cameraCount = Camera.getNumberOfCameras();
+        Log.e("ImageCapture - ", "cameraCount: " + cameraCount);
 
-		       for (int camIdx = 0; camIdx < cameraCount; camIdx++) {
+        for (int camIdx = 0; camIdx < cameraCount; camIdx++) {
 
-				   Camera.getCameraInfo(camIdx, cameraInfo);
-				   Log.e("ImageCapture - ", "camIdx: " + camIdx);
-				   if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-					   try {
-						     c = Camera.open(camIdx);
-						    //break;
-					   } catch (RuntimeException e) {
-						   Log.e("ImageCapture - ", "camIdx: " + camIdx);
-						   Log.e("ImageCapture - ", "Camera failed to open: " + e.getMessage());
-					   }
-				   }//if
-				   else{
-					   try {
-						    //c = Camera.open(); // attempt to get a Camera instance  //0==Back; 1==Front
-					   }
-					   catch (Exception e){
-						   // Camera is not available (in use or does not exist)
-						   Log.e("Camera Failed to Open: ", e.getMessage());
-					   }
-				   }//else
+            Camera.getCameraInfo(camIdx, cameraInfo);
+            Log.e("ImageCapture - ", "camIdx: " + camIdx);
+            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                try {
+                    c = Camera.open(camIdx);
+                    //break;
+                } catch (RuntimeException e) {
+                    Log.e("ImageCapture - ", "camIdx: " + camIdx);
+                    Log.e("ImageCapture - ", "Camera failed to open: " + e.getMessage());
+                }
+            }//if
+            else {
+                try {
+                    //c = Camera.open(); // attempt to get a Camera instance  //0==Back; 1==Front
+                } catch (Exception e) {
+                    // Camera is not available (in use or does not exist)
+                    Log.e("Camera Failed to Open: ", e.getMessage());
+                }
+            }//else
 
-		       }//for
+        }//for
 
 		   /*//Added Later
 		   try {
@@ -427,117 +425,117 @@ public class ImageCapture extends AppCompatActivity implements Callback{
 		//End Of Added Later*/
 
 
-		return c; // returns null if camera is unavailable
+        return c; // returns null if camera is unavailable
 
     }
 
-	private void playSound(){
+    private void playSound() {
 
-		mp = MediaPlayer.create(ImageCapture.this, R.raw.light_switch_on);
+        mp = MediaPlayer.create(ImageCapture.this, R.raw.light_switch_on);
 
-		mp.setOnCompletionListener(new OnCompletionListener() {
+        mp.setOnCompletionListener(new OnCompletionListener() {
 
-			@Override
-			public void onCompletion(MediaPlayer mp) {
-				// TODO Auto-generated method stub
-				mp.release();
-			}
-		});
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                // TODO Auto-generated method stub
+                mp.release();
+            }
+        });
 
-		if(mp!=null){
-			mp.start();
-		}
-	}
+        if (mp != null) {
+            mp.start();
+        }
+    }
 
-	@Override  
+    @Override
     public void onPause() {
-    	releaseCamera();  // release the camera immediately on pause event
-		super.onPause();
-    	finish();
+        releaseCamera();  // release the camera immediately on pause event
+        super.onPause();
+        finish();
     }
-	
-	@SuppressWarnings("deprecation")
-	private void releaseCamera(){
-        if (mCamera != null){
+
+    @SuppressWarnings("deprecation")
+    private void releaseCamera() {
+        if (mCamera != null) {
             mCamera.release();  // release the camera for other applications
             mCamera = null;
         }
     }
-	
-public void onBackPressed(){
-	releaseCamera();
-	camera2_status = false;
-	CAMERA2_IMAGEPATH = "";
-	ImageCapture.this.finish();
-}
 
-@Override
-protected void onStart() {
-	super.onStart();
-	
-}
-
-@Override
-protected void onStop() {
-	super.onStop();
-	
-}
-
-@Override
-protected void onResume() {
-	super.onResume();
-	
-}
-	
-@Override
-protected void onRestart() {
-	super.onRestart();
-}
-
-@Override
-protected void onDestroy() {
-	 releaseCamera();
-     super.onDestroy();
-}
-
-@Override
-public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-	// TODO Auto-generated method stub
-	
-	if(surfaceHolder.getSurface() == null){
-        // preview surface does not exist
-        return;
-      }
-	
-	// stop preview before making changes
-    try {
-		if (mCamera != null) {
-			mCamera.stopPreview();
-		}
-    } catch (Exception e){
-		e.printStackTrace();
-	}
-    	
-    // start preview with new settings
-    try {
-		if (mCamera != null) {
-			mCamera.setPreviewDisplay(surfaceHolder);
-			mCamera.startPreview();
-		}
-    } catch (IOException e) {
-        Log.e("ImageCapture", "Error setting camera preview: " + e.getMessage());
+    public void onBackPressed() {
+        releaseCamera();
+        camera2_status = false;
+        CAMERA2_IMAGEPATH = "";
+        ImageCapture.this.finish();
     }
 
-}
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-@Override
-public void surfaceCreated(SurfaceHolder holder) {
-	// TODO Auto-generated method stub
-	
-	if (mCamera != null){
-		try {
+    }
 
-			//Added Later
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        releaseCamera();
+        super.onDestroy();
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        // TODO Auto-generated method stub
+
+        if (surfaceHolder.getSurface() == null) {
+            // preview surface does not exist
+            return;
+        }
+
+        // stop preview before making changes
+        try {
+            if (mCamera != null) {
+                mCamera.stopPreview();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // start preview with new settings
+        try {
+            if (mCamera != null) {
+                mCamera.setPreviewDisplay(surfaceHolder);
+                mCamera.startPreview();
+            }
+        } catch (IOException e) {
+            Log.e("ImageCapture", "Error setting camera preview: " + e.getMessage());
+        }
+
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        // TODO Auto-generated method stub
+
+        if (mCamera != null) {
+            try {
+
+                //Added Later
 			/*params = mCamera.getParameters();
 			params.setJpegQuality(CameraProfile.getJpegEncodingQualityParameter(0, CameraProfile.QUALITY_HIGH));
 			params.setAntibanding("auto");
@@ -558,42 +556,41 @@ public void surfaceCreated(SurfaceHolder holder) {
 			params.setPreviewSize(size.width, size.height); ////Added Later
 			params.setPictureSize(size.width, size.height);
 			mCamera.setParameters(params);*/
-			//Finish of Added Later
+                //Finish of Added Later
 
-            mCamera.setPreviewDisplay(holder);
-            mCamera.startPreview();
+                mCamera.setPreviewDisplay(holder);
+                mCamera.startPreview();
 
-        }//try
-		catch (IOException e) {
-            Log.e("ImageCapture", "Error setting camera preview: " + e.getMessage());
+            }//try
+            catch (IOException e) {
+                Log.e("ImageCapture", "Error setting camera preview: " + e.getMessage());
+            }
+        } else {
+            finish();
         }
-    }
-    else {
-          finish();
+
     }
 
-}
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        // TODO Auto-generated method stub
+        releaseCamera();
+    }
 
-@Override
-public void surfaceDestroyed(SurfaceHolder holder) {
-	// TODO Auto-generated method stub
-	releaseCamera();
-}
+    private void showNoFrontCameraDialog() {
+        final AlertDialog.Builder aldb = new AlertDialog.Builder(ImageCapture.this);
+        aldb.setTitle("Camera Error!");
+        aldb.setMessage("You need a front camera to take picture!");
+        aldb.setCancelable(false);
+        aldb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-private void showNoFrontCameraDialog(){
-	final AlertDialog.Builder aldb = new AlertDialog.Builder(ImageCapture.this);
-	aldb.setTitle("Camera Error!");
-	aldb.setMessage("You need a front camera to take picture!");
-	aldb.setCancelable(false);
-	aldb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                ImageCapture.this.finish();
+            }
+        });
+        aldb.show();
+    }
 
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			// TODO Auto-generated method stub
-			ImageCapture.this.finish();
-		}
-	});
-	aldb.show();
-}
-	
 }//Main Class

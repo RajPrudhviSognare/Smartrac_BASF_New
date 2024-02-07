@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+
 import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +42,8 @@ public class HRMSEmpLeaveBalanceFragment extends Fragment {
 
     private TextView employeeinfoPageLeaveBalanceTextViewID;
     private TextView employeeinfoPageLeaveBalanceTextViewID1;
-    private TextView employeeinfoPageLeaveBalanceTextViewID2,employeeinfoPageLeaveBalanceTextViewID3,
-            employeeinfoPageLeaveBalanceTextViewID4,employeeinfoPageLeaveBalanceTextViewID5;
+    private TextView employeeinfoPageLeaveBalanceTextViewID2, employeeinfoPageLeaveBalanceTextViewID3,
+            employeeinfoPageLeaveBalanceTextViewID4, employeeinfoPageLeaveBalanceTextViewID5;
 
     private String baseURL;
     private String SOAPRequestXML;
@@ -52,10 +54,10 @@ public class HRMSEmpLeaveBalanceFragment extends Fragment {
     private String OpeningLeaveBalance = "0";
     private String OpeningLeaveBalance1 = "0";
     private String OpeningLeaveBalance7 = "0";
-    private String OpeningLeaveBalance3="0";
-    private String OpeningLeaveBalance4="0";
-    private String OpeningLeaveBalance5="0";
-    private String OpeningLeaveBalance6="5";
+    private String OpeningLeaveBalance3 = "0";
+    private String OpeningLeaveBalance4 = "0";
+    private String OpeningLeaveBalance5 = "0";
+    private String OpeningLeaveBalance6 = "5";
 
     private String OpeningLeaveBalancetype = "";
     private LinearLayout paternitylayout;
@@ -78,13 +80,13 @@ public class HRMSEmpLeaveBalanceFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.hrms_leave_balance_fragment, container, false);
 
-        employeeinfoPageLeaveBalanceTextViewID = (TextView)view.findViewById(R.id.employeeinfoPageLeaveBalanceTextViewID);
-        employeeinfoPageLeaveBalanceTextViewID1 = (TextView)view.findViewById(R.id.employeeinfoPageLeaveBalanceTextViewID1);
-        employeeinfoPageLeaveBalanceTextViewID2 = (TextView)view.findViewById(R.id.employeeinfoPageLeaveBalanceTextViewID2);
-        employeeinfoPageLeaveBalanceTextViewID3 = (TextView)view.findViewById(R.id.employeeinfoPageLeaveBalanceTextViewID3);
-        employeeinfoPageLeaveBalanceTextViewID4 = (TextView)view.findViewById(R.id.employeeinfoPageLeaveBalanceTextViewID4);
-        employeeinfoPageLeaveBalanceTextViewID5 = (TextView)view.findViewById(R.id.employeeinfoPageLeaveBalanceTextViewID5);
-        paternitylayout=(LinearLayout)view.findViewById(R.id.paternitylayout);
+        employeeinfoPageLeaveBalanceTextViewID = (TextView) view.findViewById(R.id.employeeinfoPageLeaveBalanceTextViewID);
+        employeeinfoPageLeaveBalanceTextViewID1 = (TextView) view.findViewById(R.id.employeeinfoPageLeaveBalanceTextViewID1);
+        employeeinfoPageLeaveBalanceTextViewID2 = (TextView) view.findViewById(R.id.employeeinfoPageLeaveBalanceTextViewID2);
+        employeeinfoPageLeaveBalanceTextViewID3 = (TextView) view.findViewById(R.id.employeeinfoPageLeaveBalanceTextViewID3);
+        employeeinfoPageLeaveBalanceTextViewID4 = (TextView) view.findViewById(R.id.employeeinfoPageLeaveBalanceTextViewID4);
+        employeeinfoPageLeaveBalanceTextViewID5 = (TextView) view.findViewById(R.id.employeeinfoPageLeaveBalanceTextViewID5);
+        paternitylayout = (LinearLayout) view.findViewById(R.id.paternitylayout);
 
         return view;
     }
@@ -96,13 +98,13 @@ public class HRMSEmpLeaveBalanceFragment extends Fragment {
         getLeaveDetails();
     }
 
-    private void getLeaveDetails(){
+    private void getLeaveDetails() {
         progressDialog.setMessage("Requesting... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        String EmpID = prefs.getString("USERISDCODE","");
-        System.out.println("EmpID: "+EmpID);
+        String EmpID = prefs.getString("USERISDCODE", "");
+        System.out.println("EmpID: " + EmpID);
 
 
         /*if(prefs.getString("USERGENDER","").equalsIgnoreCase("Male")){
@@ -113,22 +115,21 @@ public class HRMSEmpLeaveBalanceFragment extends Fragment {
         }*/
 
 
-
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:GetMyLeaveBalance>"
+                + "<soapenv:Body>"
+                + "<tem:GetMyLeaveBalance>"
                 //+"<tem:emp_code>"+100172254+"</tem:emp_code>"
-                +"<tem:emp_code>"+EmpID+"</tem:emp_code>"
-                +"</tem:GetMyLeaveBalance>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "<tem:emp_code>" + EmpID + "</tem:emp_code>"
+                + "</tem:GetMyLeaveBalance>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -152,18 +153,17 @@ public class HRMSEmpLeaveBalanceFragment extends Fragment {
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.println("Server Response = "+Response);
+                    System.out.println("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
-                    System.out.println("Server status code = "+status.getStatusCode());
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + status.getStatusCode());
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForEmployeeDetails(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -177,7 +177,7 @@ public class HRMSEmpLeaveBalanceFragment extends Fragment {
     }
 
     //getParsingElementsForEmployeeDetails(xpp);
-    public void getParsingElementsForEmployeeDetails(XmlPullParser xpp){
+    public void getParsingElementsForEmployeeDetails(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -189,7 +189,7 @@ public class HRMSEmpLeaveBalanceFragment extends Fragment {
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
@@ -199,15 +199,15 @@ public class HRMSEmpLeaveBalanceFragment extends Fragment {
                             text = "";
                             System.out.println("OpeningLeaveBalance: "+OpeningLeaveBalancetype);
                         }*/
-                        if(tagname.equalsIgnoreCase("PLAvailed")){
+                        if (tagname.equalsIgnoreCase("PLAvailed")) {
                             OpeningLeaveBalance7 = text;
                             text = "";
-                            System.out.println("OpeningLeaveBalance: "+OpeningLeaveBalance7);
+                            System.out.println("OpeningLeaveBalance: " + OpeningLeaveBalance7);
                         }
-                        if(tagname.equalsIgnoreCase("PLClosing")){
+                        if (tagname.equalsIgnoreCase("PLClosing")) {
                             OpeningLeaveBalance1 = text;
                             text = "";
-                            System.out.println("OpeningLeaveBalance: "+OpeningLeaveBalance1);
+                            System.out.println("OpeningLeaveBalance: " + OpeningLeaveBalance1);
                         }
                        /* if(tagname.equalsIgnoreCase(TAG_OpeningLeaveBalance)){
                             if(OpeningLeaveBalancetype.equalsIgnoreCase("1"))
@@ -248,14 +248,14 @@ public class HRMSEmpLeaveBalanceFragment extends Fragment {
 
     }//getParsingElementsForLogin(xpp);
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
@@ -264,7 +264,7 @@ public class HRMSEmpLeaveBalanceFragment extends Fragment {
 
     };
 
-    private void setLeaveDetails(){
+    private void setLeaveDetails() {
         employeeinfoPageLeaveBalanceTextViewID.setText("");
         employeeinfoPageLeaveBalanceTextViewID.setText(OpeningLeaveBalance7);
         employeeinfoPageLeaveBalanceTextViewID1.setText("");
@@ -280,9 +280,9 @@ public class HRMSEmpLeaveBalanceFragment extends Fragment {
 
     }
 
-    private void initAllViews(){
+    private void initAllViews() {
         //shared preference
-        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME,getActivity().MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME, getActivity().MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         //Progress Dialog
@@ -292,10 +292,10 @@ public class HRMSEmpLeaveBalanceFragment extends Fragment {
     @Override
     public void onDestroy() {
         try {
-            if((progressDialog != null) && progressDialog.isShowing() ){
+            if ((progressDialog != null) && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-        }catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         } finally {
             progressDialog = null;

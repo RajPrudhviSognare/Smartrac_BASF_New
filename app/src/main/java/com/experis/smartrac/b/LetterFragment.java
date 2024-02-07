@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+
 import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,10 +59,10 @@ public class LetterFragment extends Fragment {
 
     private LinearLayout hrmsPayslipDownloadLinkLayoutID;
     private TextView hrmsPayslipDownloadLinkTagTextViewID;
-    private ImageView appointmentdownload,incrementdownload,incrementstructuredownload;
+    private ImageView appointmentdownload, incrementdownload, incrementstructuredownload;
 
-    private String MONTH[] = {"Select Month","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
-    String[] YEAR = { "2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026","2027"};
+    private String MONTH[] = {"Select Month", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    String[] YEAR = {"2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027"};
     String[] YEAR1 = new String[3];
 
     private String yearSelected = "";
@@ -82,8 +84,8 @@ public class LetterFragment extends Fragment {
 
     private Calendar calendar;
     private ArrayList<String> doc;
-    private TextView apoointletter,incrementletter,incrementstructure;
-    private String tag="0";
+    private TextView apoointletter, incrementletter, incrementstructure;
+    private String tag = "0";
 
     public LetterFragment() {
         // Required empty public constructor
@@ -102,9 +104,9 @@ public class LetterFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_letter, container, false);
 
-        apoointletter=(TextView)view.findViewById(R.id.apoointletter);
-        incrementletter=(TextView)view.findViewById(R.id.incrementletter);
-        incrementstructure=(TextView)view.findViewById(R.id.incrementstructure);
+        apoointletter = (TextView) view.findViewById(R.id.apoointletter);
+        incrementletter = (TextView) view.findViewById(R.id.incrementletter);
+        incrementstructure = (TextView) view.findViewById(R.id.incrementstructure);
       /*  hrmsPayslipMonthSelectionSpinnerID = (Spinner)view.findViewById(R.id.hrmsPayslipMonthSelectionSpinnerID);
         hrmsPayslipYearSelectionSpinnerID = (Spinner)view.findViewById(R.id.hrmsPayslipYearSelectionSpinnerID);
         hrmsPayslipYearSelectionAutoCompleteTextViewID = (AutoCompleteTextView)view.findViewById(R.id.hrmsPayslipYearSelectionAutoCompleteTextViewID);
@@ -114,9 +116,9 @@ public class LetterFragment extends Fragment {
         hrmsPayslipDownloadLinkLayoutID = (LinearLayout)view.findViewById(R.id.hrmsPayslipDownloadLinkLayoutID);
         hrmsPayslipDownloadLinkTagTextViewID = (TextView)view.findViewById(R.id.hrmsPayslipDownloadLinkTagTextViewID);
         hrmsPayslipOpenMessageTagTextViewID = (TextView)view.findViewById(R.id.hrmsPayslipOpenMessageTagTextViewID);*/
-        appointmentdownload = (ImageView)view.findViewById(R.id.appointmentdownload);
-        incrementdownload = (ImageView)view.findViewById(R.id.incrementdownload);
-        incrementstructuredownload = (ImageView)view.findViewById(R.id.incrementstructuredownload);
+        appointmentdownload = (ImageView) view.findViewById(R.id.appointmentdownload);
+        incrementdownload = (ImageView) view.findViewById(R.id.incrementdownload);
+        incrementstructuredownload = (ImageView) view.findViewById(R.id.incrementstructuredownload);
 
         return view;
     }
@@ -128,19 +130,15 @@ public class LetterFragment extends Fragment {
         getPaySlipLink();
 
 
-
-
-
         appointmentdownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(AppointmentLetter.toString().startsWith("http")){
+                if (AppointmentLetter.toString().startsWith("http")) {
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(AppointmentLetter.toString()));
                     getActivity().startActivity(i);
-                }
-                else{
-                    Toast.makeText(getActivity(),"Invalid Download Link!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Download Link!", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -149,13 +147,12 @@ public class LetterFragment extends Fragment {
         incrementdownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(IncrementLetterC.toString().startsWith("http")){
+                if (IncrementLetterC.toString().startsWith("http")) {
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(IncrementLetterC.toString()));
                     getActivity().startActivity(i);
-                }
-                else{
-                    Toast.makeText(getActivity(),"Invalid Download Link!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Download Link!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -163,45 +160,43 @@ public class LetterFragment extends Fragment {
         incrementstructuredownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(IncrementLetterD.toString().startsWith("http")){
+                if (IncrementLetterD.toString().startsWith("http")) {
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(IncrementLetterD.toString()));
                     getActivity().startActivity(i);
-                }
-                else{
-                    Toast.makeText(getActivity(),"Invalid Download Link!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Download Link!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
 
-
     }
 
-    private void getPaySlipLink(){
+    private void getPaySlipLink() {
         progressDialog.setMessage("Requesting... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        String EmpID = prefs.getString("USERISDCODE","");
-       /* String EmpID = "100407695";*/
-        System.out.println("EmpID: "+EmpID);
+        String EmpID = prefs.getString("USERISDCODE", "");
+        /* String EmpID = "100407695";*/
+        System.out.println("EmpID: " + EmpID);
 
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:GetLetter>"
+                + "<soapenv:Body>"
+                + "<tem:GetLetter>"
                 //+"<tem:emp_code>"+100172254+"</tem:emp_code>"
-                +"<tem:emp_code>"+EmpID+"</tem:emp_code>"
-                +"</tem:GetLetter>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "<tem:emp_code>" + EmpID + "</tem:emp_code>"
+                + "</tem:GetLetter>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -225,18 +220,17 @@ public class LetterFragment extends Fragment {
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.println("Server Response = "+Response);
+                    System.out.println("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
-                    System.out.println("Server status code = "+status.getStatusCode());
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + status.getStatusCode());
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForPaySlip(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -272,10 +266,10 @@ public class LetterFragment extends Fragment {
         xpp.close();
         return jokes;
     }*/
-    
-    
+
+
     //getParsingElementsForPaySlip(xpp);
-    public void getParsingElementsForPaySlip(XmlPullParser xpp){
+    public void getParsingElementsForPaySlip(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -285,8 +279,8 @@ public class LetterFragment extends Fragment {
                 // = xpp.getName()
                 switch (eventType) {
                     case XmlPullParser.START_TAG:
-                        tagname=xpp.getName();
-                        if(tagname.equalsIgnoreCase(TAG_PayslipResult)) {
+                        tagname = xpp.getName();
+                        if (tagname.equalsIgnoreCase(TAG_PayslipResult)) {
 
            /*to handle nested tags.
            "xpp.nextTag()" goes to the next starting tag  immediately following "ItemArray",
@@ -348,14 +342,14 @@ public class LetterFragment extends Fragment {
 
     }//getParsingElementsForLogin(xpp);
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
@@ -363,9 +357,10 @@ public class LetterFragment extends Fragment {
         }//handleMessage(Message msg)
 
     };
-    private void setPaySlipLink(){
 
-        if(AppointmentLetter.startsWith("http")){
+    private void setPaySlipLink() {
+
+        if (AppointmentLetter.startsWith("http")) {
             //hrmsPayslipDownloadLinkTagTextViewID.setVisibility(View.VISIBLE); //Used Earlier with Textview link
             //hrmsPayslipPagePaySlipLinkTextViewID.setPaintFlags(hrmsPayslipPagePaySlipLinkTextViewID.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);//Adds Underline;//Used Earlier with Textview link
             //hrmsPayslipPagePaySlipLinkTextViewID.setText(PayslipResult);//Used Earlier with Textview link
@@ -376,15 +371,13 @@ public class LetterFragment extends Fragment {
             appointmentdownload.setClickable(true);
             appointmentdownload.setVisibility(View.VISIBLE);
 
-        }
-        else{
+        } else {
             appointmentdownload.setClickable(false);
             appointmentdownload.setVisibility(View.GONE);
-            if(!AppointmentLetter.equalsIgnoreCase("")){
+            if (!AppointmentLetter.equalsIgnoreCase("")) {
 
                 showPayslipStatusDialog(AppointmentLetter);
-            }
-            else{
+            } else {
 
                 showPayslipStatusDialog("Document is not available!");
             }
@@ -393,7 +386,7 @@ public class LetterFragment extends Fragment {
 
 
 //increment
-        if(IncrementLetterC.startsWith("http")){
+        if (IncrementLetterC.startsWith("http")) {
             //hrmsPayslipDownloadLinkTagTextViewID.setVisibility(View.VISIBLE); //Used Earlier with Textview link
             //hrmsPayslipPagePaySlipLinkTextViewID.setPaintFlags(hrmsPayslipPagePaySlipLinkTextViewID.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);//Adds Underline;//Used Earlier with Textview link
             //hrmsPayslipPagePaySlipLinkTextViewID.setText(PayslipResult);//Used Earlier with Textview link
@@ -404,15 +397,13 @@ public class LetterFragment extends Fragment {
             incrementdownload.setClickable(true);
             incrementdownload.setVisibility(View.VISIBLE);
 
-        }
-        else{
+        } else {
             incrementdownload.setClickable(false);
             incrementdownload.setVisibility(View.GONE);
-            if(!IncrementLetterC.equalsIgnoreCase("")){
+            if (!IncrementLetterC.equalsIgnoreCase("")) {
 
                 showPayslipStatusDialog(IncrementLetterC);
-            }
-            else{
+            } else {
 
                 showPayslipStatusDialog("Document is not available!");
             }
@@ -421,7 +412,7 @@ public class LetterFragment extends Fragment {
 
 
         ///structure
-        if(IncrementLetterD.startsWith("http")){
+        if (IncrementLetterD.startsWith("http")) {
             //hrmsPayslipDownloadLinkTagTextViewID.setVisibility(View.VISIBLE); //Used Earlier with Textview link
             //hrmsPayslipPagePaySlipLinkTextViewID.setPaintFlags(hrmsPayslipPagePaySlipLinkTextViewID.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);//Adds Underline;//Used Earlier with Textview link
             //hrmsPayslipPagePaySlipLinkTextViewID.setText(PayslipResult);//Used Earlier with Textview link
@@ -432,15 +423,13 @@ public class LetterFragment extends Fragment {
             incrementstructuredownload.setClickable(true);
             incrementstructuredownload.setVisibility(View.VISIBLE);
 
-        }
-        else{
+        } else {
             incrementstructuredownload.setClickable(false);
             incrementstructuredownload.setVisibility(View.GONE);
-            if(!IncrementLetterD.equalsIgnoreCase("")){
+            if (!IncrementLetterD.equalsIgnoreCase("")) {
 
                 showPayslipStatusDialog(IncrementLetterD);
-            }
-            else{
+            } else {
 
                 showPayslipStatusDialog("Document is not available!");
             }
@@ -456,13 +445,11 @@ public class LetterFragment extends Fragment {
         doc.add(IncrementLetterD);*/
 
 
-
-
     }
 
-    private void initAllViews(){
+    private void initAllViews() {
         //shared preference
-        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME,getActivity().MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME, getActivity().MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         //Progress Dialog
@@ -472,7 +459,7 @@ public class LetterFragment extends Fragment {
     }
 
     //Show Payslip Status Dialog
-    private void showPayslipStatusDialog(String msg){
+    private void showPayslipStatusDialog(String msg) {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(getActivity());
         aldb.setMessage(msg);
@@ -483,10 +470,10 @@ public class LetterFragment extends Fragment {
     @Override
     public void onDestroy() {
         try {
-            if((progressDialog != null) && progressDialog.isShowing() ){
+            if ((progressDialog != null) && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-        }catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         } finally {
             progressDialog = null;

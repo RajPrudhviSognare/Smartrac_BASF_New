@@ -18,8 +18,10 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
+
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,7 +73,7 @@ public class AttendanceIntimeFragmet extends Fragment {
     //private static String realpath = null;
     private Uri capturedImageUri = null;
     private String realpath = null;
-    private int CAMERA_REQUEST  = 1111;
+    private int CAMERA_REQUEST = 1111;
     private Bitmap bitmap = null;
 
     private String encodedImageIntoString = null;
@@ -81,31 +83,27 @@ public class AttendanceIntimeFragmet extends Fragment {
     private String TAG_MESSAGE = "message";
     private String TAG_LEAVESTATUS = "leave_status";
 
-    private String STATUS = "",STATUS1 = "",STATUS2 = "";
+    private String STATUS = "", STATUS1 = "", STATUS2 = "";
     private String ERROR = "";
     private String MESSAGE = "";
     private String LEAVESTATUS = "false";
 
     private String remarks = "";
     private EditText attendancePageReasonValueEditTextID;
-    private String Locationname="",LocationCity="",LocationAddress="";
-
-
-
+    private String Locationname = "", LocationCity = "", LocationAddress = "";
 
 
     private int STATUS_CODE = 0;
     private String username = "";
 
 
-
     private String baseURL;
     private String SOAPRequestXML;
     private HttpResponse httpResponse = null;
-    private String TAG_MESSAGE_ID="MessageID";
-    private String TAG_MESSAGE_VALUE="",TAG_MESSAGE_VALUE2="";
-    private String TAG_DESCRIPTION_ID="Description";
-    private String TAG_DESCRIPTION_VALUE="";
+    private String TAG_MESSAGE_ID = "MessageID";
+    private String TAG_MESSAGE_VALUE = "", TAG_MESSAGE_VALUE2 = "";
+    private String TAG_DESCRIPTION_ID = "Description";
+    private String TAG_DESCRIPTION_VALUE = "";
     private String TAG_ChangepasswordResult = "CheckFirstPunchedRecordResult";
 
     public AttendanceIntimeFragmet() {
@@ -125,20 +123,20 @@ public class AttendanceIntimeFragmet extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.attendance_intime_fragment, container, false);
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-        attendancePageTakePicturePlusIconImageViewID = (ImageView)view.findViewById(R.id.attendancePageTakePicturePlusIconImageViewID);
-        attendancePagePhotoPreviewAreaImageViewID = (ImageView)view.findViewById(R.id.attendancePagePhotoPreviewAreaImageViewID);
-        attendancePageSubmitImageViewID = (ImageView)view.findViewById(R.id.attendancePageSubmitImageViewID);
+        attendancePageTakePicturePlusIconImageViewID = (ImageView) view.findViewById(R.id.attendancePageTakePicturePlusIconImageViewID);
+        attendancePagePhotoPreviewAreaImageViewID = (ImageView) view.findViewById(R.id.attendancePagePhotoPreviewAreaImageViewID);
+        attendancePageSubmitImageViewID = (ImageView) view.findViewById(R.id.attendancePageSubmitImageViewID);
 
         btnSubmitAttendance = view.findViewById(R.id.btnSubmitAttendance);
 
-        attendancePageReasonValueEditTextID = (EditText)view.findViewById(R.id.attendancePageReasonValueEditTextID);
+        attendancePageReasonValueEditTextID = (EditText) view.findViewById(R.id.attendancePageReasonValueEditTextID);
 
         return view;
     }
 
-    private void initAllViews(){
+    private void initAllViews() {
         //shared preference
-        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME,getActivity().MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME, getActivity().MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         //Progress Dialog
@@ -166,10 +164,9 @@ public class AttendanceIntimeFragmet extends Fragment {
 
 
                 try {
-                    if(CommonUtils.isInternelAvailable(getActivity())){
+                    if (CommonUtils.isInternelAvailable(getActivity())) {
                         CheckAttendance1();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_SHORT).show();
                     }
 
@@ -265,14 +262,14 @@ public class AttendanceIntimeFragmet extends Fragment {
         }*/
 
         new GeocodeAsyncTask().execute();
-       /* sendDataForIntime();*/
+        /* sendDataForIntime();*/
 
     }//validateData
 
     //For InTime
-    private void sendDataForIntime(){
+    private void sendDataForIntime() {
 
-        Constants.ASSOCIATE_ID = prefs.getString("USERISDCODE","");
+        Constants.ASSOCIATE_ID = prefs.getString("USERISDCODE", "");
         Constants.TL_ID = prefs.getString("TLID", "");
         Constants.ATTENDANCE_TYPE = TAG_ATTENDANCE_TYPE;
         Constants.ATTENDANCE_DATE = "0000-00-00";
@@ -281,30 +278,30 @@ public class AttendanceIntimeFragmet extends Fragment {
         Constants.REASON = "";
         Constants.REMARKS = remarks;
         Constants.LEAVE_TYPE = "";
-       // Constants.ATTENDANCE_IMAGE = encodedImageIntoString;
-        Constants.od_from_time="";
-        Constants.od_to_time="";
-        Constants.client_name="";
-        Constants.client_address="";
-        Constants.CURRENT_LOC=Locationname;
-        Constants.CURRENT_LOCCITY=LocationCity;
-        Constants.CURRENT_LOCADD=LocationAddress;
+        // Constants.ATTENDANCE_IMAGE = encodedImageIntoString;
+        Constants.od_from_time = "";
+        Constants.od_to_time = "";
+        Constants.client_name = "";
+        Constants.client_address = "";
+        Constants.CURRENT_LOC = Locationname;
+        Constants.CURRENT_LOCCITY = LocationCity;
+        Constants.CURRENT_LOCADD = LocationAddress;
 
         //Added Later
         encodedImageIntoString = null;
         attendancePagePhotoPreviewAreaImageViewID.setImageBitmap(null);
-        System.out.println("Constants.ATTENDANCE_IMAGE:Intime "+Constants.ATTENDANCE_IMAGE);
+        System.out.println("Constants.ATTENDANCE_IMAGE:Intime " + Constants.ATTENDANCE_IMAGE);
         ////////////
 
         //progressDialog.setTitle("Attendance");
         progressDialog.setMessage("Submitting Your Intime... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        client = new RestFullClient(Constants.BASE_URL+Constants.ATTENDANCE_RELATIVE_URI);
+        client = new RestFullClient(Constants.BASE_URL + Constants.ATTENDANCE_RELATIVE_URI);
 
         //client.AddParam("associate_code", Constants.ASSOCIATE_ID);
         client.AddParam("associate_code", Constants.ASSOCIATE_ID);
-        System.out.println("associate_code: "+Constants.ASSOCIATE_ID);
+        System.out.println("associate_code: " + Constants.ASSOCIATE_ID);
 
       /*  client.AddParam("attendance_type", Constants.ATTENDANCE_TYPE);
         System.out.println("attendance_type: "+Constants.ATTENDANCE_TYPE);
@@ -313,21 +310,21 @@ public class AttendanceIntimeFragmet extends Fragment {
         System.out.println("attendance_date: "+Constants.ATTENDANCE_DATE);*/
 
         client.AddParam("latitude", Constants.CURRENT_LAT);
-        System.out.println("latitude: "+Constants.CURRENT_LAT);
+        System.out.println("latitude: " + Constants.CURRENT_LAT);
 
         client.AddParam("longitude", Constants.CURRENT_LONG);
-        System.out.println("longitude: "+Constants.CURRENT_LONG);
+        System.out.println("longitude: " + Constants.CURRENT_LONG);
         client.AddParam("location_name", Constants.CURRENT_LOC);
         client.AddParam("location_city", Constants.CURRENT_LOCCITY);
         client.AddParam("location_address", Constants.CURRENT_LOCADD);
         client.AddParam("punched_type", "I");
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
                 try {
-                     client.Execute(1); //POST Request
+                    client.Execute(1); //POST Request
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -350,15 +347,15 @@ public class AttendanceIntimeFragmet extends Fragment {
         //Constants.ATTENDANCE_DATE = "yyyy-mm-dd";
         Constants.CURRENT_LAT = Constants.UNIV_LAT;
         Constants.CURRENT_LONG = Constants.UNIV_LONG;
-        Constants.od_from_time="";
-        Constants.od_to_time="";
-        Constants.client_name="";
-        Constants.client_address="";
+        Constants.od_from_time = "";
+        Constants.od_to_time = "";
+        Constants.client_name = "";
+        Constants.client_address = "";
 
-        if(Constants.UNIV_LAT.equals("0.0")){
+        if (Constants.UNIV_LAT.equals("0.0")) {
             Constants.CURRENT_LAT = Constants.UNIV_LAT1;
         }
-        if(Constants.UNIV_LONG.equals("0.0")){
+        if (Constants.UNIV_LONG.equals("0.0")) {
             Constants.CURRENT_LONG = Constants.UNIV_LONG1;
         }
         Constants.ATTENDANCE_DATE = "";
@@ -372,12 +369,12 @@ public class AttendanceIntimeFragmet extends Fragment {
         client = new RestFullClient(Constants.BASE_URL + Constants.ATTENDANCE_RELATIVE_URI);
         client.AddParam("associate_id", Constants.ASSOCIATE_ID);
         client.AddParam("tl_id", Constants.TL_ID);
-       // client.AddParam("outlet_id", Constants.OUTLET_ID);
+        // client.AddParam("outlet_id", Constants.OUTLET_ID);
         client.AddParam("attendance_type", Constants.ATTENDANCE_TYPE);
         client.AddParam("attendance_image", Constants.ATTENDANCE_IMAGE);
-       // client.AddParam("attendance_time", "");
-       // client.AddParam("attendance_date_sub", "");
-       /* client.AddParam("latitude", "17.24026200"*//*Constants.CURRENT_LAT*//*);
+        // client.AddParam("attendance_time", "");
+        // client.AddParam("attendance_date_sub", "");
+        /* client.AddParam("latitude", "17.24026200"*//*Constants.CURRENT_LAT*//*);
         client.AddParam("longitude", "78.42938100"*//*Constants.CURRENT_LONG*//*);*/
         client.AddParam("latitude", Constants.CURRENT_LAT/*"17.24026200"*/);
         client.AddParam("longitude", Constants.CURRENT_LONG/*"78.42938100"*/);
@@ -390,16 +387,16 @@ public class AttendanceIntimeFragmet extends Fragment {
         client.AddParam("leave_type", Constants.LEAVE_TYPE);
 
         client.AddParam("od_from_time", Constants.od_from_time);
-        System.out.println("od_from_time: "+Constants.od_from_time);
+        System.out.println("od_from_time: " + Constants.od_from_time);
 
         client.AddParam("od_to_time", Constants.od_to_time);
-        System.out.println("od_to_time: "+Constants.od_to_time);
+        System.out.println("od_to_time: " + Constants.od_to_time);
 
         client.AddParam("client_name", Constants.client_name);
-        System.out.println("client_name: "+Constants.client_name);
+        System.out.println("client_name: " + Constants.client_name);
 
         client.AddParam("client_address", Constants.client_address);
-        System.out.println("client_address: "+Constants.client_address);
+        System.out.println("client_address: " + Constants.client_address);
 
         new Thread(new Runnable() {
 
@@ -454,28 +451,28 @@ public class AttendanceIntimeFragmet extends Fragment {
 
     }
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
             attendancePagePhotoPreviewAreaImageViewID.setImageDrawable(null);
             attendancePageReasonValueEditTextID.setText("");
             //Success
-            if(client.responseCode==200){
+            if (client.responseCode == 200) {
 
                 //Success
-                if(STATUS.equalsIgnoreCase("true")){
+                if (STATUS.equalsIgnoreCase("true")) {
                     Constants.ASSOCIATE_ID = "";
                     Constants.ATTENDANCE_TYPE = "";
                     Constants.ATTENDANCE_IMAGE = "";
-                   // Constants.CURRENT_LAT = "0.0";
+                    // Constants.CURRENT_LAT = "0.0";
                     //Constants.CURRENT_LONG = "0.0";
                     Constants.ATTENDANCE_DATE = "0000-00-00";
                     Constants.REASON = "";
@@ -492,7 +489,7 @@ public class AttendanceIntimeFragmet extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                           // CheckAttendance();
+                            // CheckAttendance();
                             getActivity().finish();
                             getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                         }
@@ -523,13 +520,13 @@ public class AttendanceIntimeFragmet extends Fragment {
                 }
 
                 //Failed
-                if(STATUS.equalsIgnoreCase("false")){
+                if (STATUS.equalsIgnoreCase("false")) {
                     //showRetryDialog();
                     showFailureDialog();
                 }
             }
             //Failed
-            if(client.responseCode!=200){
+            if (client.responseCode != 200) {
                 //Toast.makeText(getActivity(), MESSAGE, Toast.LENGTH_LONG).show();
                 //showRetryDialog();
                 showFailureDialog();
@@ -540,11 +537,11 @@ public class AttendanceIntimeFragmet extends Fragment {
     };
 
     //Show failure Dialog
-    private void showFailureDialog(){
+    private void showFailureDialog() {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(getActivity());
         aldb.setTitle("Attendance Failed!");
-        aldb.setMessage("\nReason: "+MESSAGE);
+        aldb.setMessage("\nReason: " + MESSAGE);
         aldb.setNegativeButton("OK", new DialogInterface.OnClickListener() {
 
             @Override
@@ -554,7 +551,7 @@ public class AttendanceIntimeFragmet extends Fragment {
                 Constants.ASSOCIATE_ID = "";
                 Constants.ATTENDANCE_TYPE = "";
                 Constants.ATTENDANCE_IMAGE = "";
-               // Constants.CURRENT_LAT = "0.0";
+                // Constants.CURRENT_LAT = "0.0";
                 //Constants.CURRENT_LONG = "0.0";
                 Constants.ATTENDANCE_DATE = "0000-00-00";
                 Constants.REASON = "";
@@ -602,7 +599,7 @@ public class AttendanceIntimeFragmet extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(resultCode == getActivity().RESULT_OK){
+        if (resultCode == getActivity().RESULT_OK) {
 
           /*  if (requestCode == CAMERA_REQUEST) {
                 try {
@@ -657,56 +654,56 @@ public class AttendanceIntimeFragmet extends Fragment {
             attendancePagePhotoPreviewAreaImageViewID.setImageBitmap(imageBitmap);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream .toByteArray();
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
             encodedImageIntoString = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
         }
-        if(resultCode == getActivity().RESULT_CANCELED){
+        if (resultCode == getActivity().RESULT_CANCELED) {
 
             if (requestCode == CAMERA_REQUEST) {
                 capturedImageUri = null;
                 realpath = null;
-                System.out.println("capturedImageUri: "+capturedImageUri);
-                System.out.println("realpath: "+realpath);
+                System.out.println("capturedImageUri: " + capturedImageUri);
+                System.out.println("realpath: " + realpath);
             }
 
         }
 
     }
 
-    private void callCamera1(){
+    private void callCamera1() {
 
         //Camera 1 Logic
         Calendar cal = Calendar.getInstance();
         File file = null;
-        try{
-            file = new File(Environment.getExternalStorageDirectory()+"/Self_Pictures", (cal.getTimeInMillis() + ".jpg"));
-        }catch (Exception e) {
-            System.out.println("e.printStackTrace():file: "+e.toString());
+        try {
+            file = new File(Environment.getExternalStorageDirectory() + "/Self_Pictures", (cal.getTimeInMillis() + ".jpg"));
+        } catch (Exception e) {
+            System.out.println("e.printStackTrace():file: " + e.toString());
         }
 
-        if(!file.exists()){
-            try{
+        if (!file.exists()) {
+            try {
                 file.createNewFile();
-            }catch (IOException e) {
+            } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                System.out.println("e.printStackTrace(): "+e.toString());
+                System.out.println("e.printStackTrace(): " + e.toString());
             }
-        }else{
+        } else {
             file.delete();
-            try{
+            try {
                 file.createNewFile();
-            }catch (IOException e) {
+            } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                System.out.println("e.printStackTrace(): "+e.toString());
+                System.out.println("e.printStackTrace(): " + e.toString());
             }
         }
         capturedImageUri = Uri.fromFile(file);
-        System.out.println("capturedImageUri: "+capturedImageUri);
+        System.out.println("capturedImageUri: " + capturedImageUri);
         realpath = file.getAbsolutePath().toString();
-        System.out.println("realpath: "+realpath);
+        System.out.println("realpath: " + realpath);
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         i.putExtra(MediaStore.EXTRA_OUTPUT, capturedImageUri);
         i.putExtra("android.intent.extras.CAMERA_FACING", 1);
@@ -714,7 +711,7 @@ public class AttendanceIntimeFragmet extends Fragment {
         //End Of Camera 1 Logic
     }
 
-    private void callCamera2(){
+    private void callCamera2() {
       /*  Intent intent = new Intent(getActivity(), ImageCapture.class);
         intent.putExtra("ATTENDANCE_TYPE","in");
         getActivity().startActivity(intent);*/
@@ -758,17 +755,17 @@ public class AttendanceIntimeFragmet extends Fragment {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
-        if(ImageCapture.camera2_status){
+        if (ImageCapture.camera2_status) {
             ImageCapture.camera2_status = false;
 
-            if(ImageCapture.ATTENDANCE_TYPE.equalsIgnoreCase("in")){
+            if (ImageCapture.ATTENDANCE_TYPE.equalsIgnoreCase("in")) {
 
                 realpath = ImageCapture.CAMERA2_IMAGEPATH;
-                System.out.println("realpath: "+realpath);
-                if(realpath!=null){
+                System.out.println("realpath: " + realpath);
+                if (realpath != null) {
                     attendancePagePhotoPreviewAreaImageViewID.setImageURI(Uri.parse(realpath));
                 }
                 ImageCapture.ATTENDANCE_TYPE = "";
@@ -782,14 +779,14 @@ public class AttendanceIntimeFragmet extends Fragment {
 
     public void onClickPictureBack2() {
 
-        if(ImageCapture.camera2_status){
+        if (ImageCapture.camera2_status) {
             ImageCapture.camera2_status = false;
 
-            if(ImageCapture.ATTENDANCE_TYPE.equalsIgnoreCase("in")){
+            if (ImageCapture.ATTENDANCE_TYPE.equalsIgnoreCase("in")) {
 
                 realpath = ImageCapture.CAMERA2_IMAGEPATH;
-                System.out.println("realpath: "+realpath);
-                if(realpath!=null){
+                System.out.println("realpath: " + realpath);
+                if (realpath != null) {
                     attendancePagePhotoPreviewAreaImageViewID.setImageURI(Uri.parse(realpath));
                 }
                 ImageCapture.ATTENDANCE_TYPE = "";
@@ -801,17 +798,16 @@ public class AttendanceIntimeFragmet extends Fragment {
     }
 
     //For Checking attendance
-    private void CheckAttendance(){
+    private void CheckAttendance() {
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy");
-       String cur_date = dateFormat.format(calendar.getTime());
+        String cur_date = dateFormat.format(calendar.getTime());
 
 
         progressDialog.setMessage("Checking attendance... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
-
 
 
         baseURL = Constants.base_url_default;
@@ -828,21 +824,21 @@ public class AttendanceIntimeFragmet extends Fragment {
                 +"</soapenv:Body>"
                 +"</soapenv:Envelope>";*/
 
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:CheckIO_Attendance>"
-                +"<tem:emp_code>"+ prefs.getString("USERISDCODE","")+"</tem:emp_code>"
-                +"<tem:punched_type>"+"I"+"</tem:punched_type>"
-                +"</tem:CheckIO_Attendance>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
+                + "<soapenv:Body>"
+                + "<tem:CheckIO_Attendance>"
+                + "<tem:emp_code>" + prefs.getString("USERISDCODE", "") + "</tem:emp_code>"
+                + "<tem:punched_type>" + "I" + "</tem:punched_type>"
+                + "</tem:CheckIO_Attendance>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -865,19 +861,18 @@ public class AttendanceIntimeFragmet extends Fragment {
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.print("Server Response = "+Response);
+                    System.out.print("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
                     STATUS_CODE = status.getStatusCode();
-                    System.out.println("Server status code = "+STATUS_CODE);
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + STATUS_CODE);
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForLoginDetails(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -889,8 +884,9 @@ public class AttendanceIntimeFragmet extends Fragment {
         }).start();
 
     }
+
     //getParsingElementsForLoginDetails(xpp);
-    public void getParsingElementsForLoginDetails(XmlPullParser xpp){
+    public void getParsingElementsForLoginDetails(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -899,8 +895,8 @@ public class AttendanceIntimeFragmet extends Fragment {
                 switch (eventType) {
                     case XmlPullParser.START_TAG:
 
-                        tagname=xpp.getName();
-                        if(tagname.equalsIgnoreCase("CheckIO_AttendanceResult")) {
+                        tagname = xpp.getName();
+                        if (tagname.equalsIgnoreCase("CheckIO_AttendanceResult")) {
 
            /*to handle nested tags.
            "xpp.nextTag()" goes to the next starting tag  immediately following "ItemArray",
@@ -927,7 +923,7 @@ public class AttendanceIntimeFragmet extends Fragment {
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
@@ -1045,36 +1041,33 @@ public class AttendanceIntimeFragmet extends Fragment {
     }//getParsingElementsForLogin(xpp);
 
 
-    Handler handler5 = new Handler(){
+    Handler handler5 = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
 
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
             //Success
-            if(STATUS_CODE==200){
+            if (STATUS_CODE == 200) {
                 //Login success
-                if(STATUS1.equalsIgnoreCase("0")){
-                    //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
-                  //  MESSAGE=                // 0: Not Punched | 1: First Punched (IN Time) | 2: Second Punched (OUT Time);
-                   // showSuccessDialog();
-                }
-
-                else if(STATUS1.equalsIgnoreCase("1")){
+                if (STATUS1.equalsIgnoreCase("0")) {
                     //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
                     //  MESSAGE=                // 0: Not Punched | 1: First Punched (IN Time) | 2: Second Punched (OUT Time);
-                   // showSuccessDialog();
-                }
-                else if(STATUS1.equalsIgnoreCase("2")){
+                    // showSuccessDialog();
+                } else if (STATUS1.equalsIgnoreCase("1")) {
                     //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
                     //  MESSAGE=                // 0: Not Punched | 1: First Punched (IN Time) | 2: Second Punched (OUT Time);
-                   // showSuccessDialog();
+                    // showSuccessDialog();
+                } else if (STATUS1.equalsIgnoreCase("2")) {
+                    //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
+                    //  MESSAGE=                // 0: Not Punched | 1: First Punched (IN Time) | 2: Second Punched (OUT Time);
+                    // showSuccessDialog();
                 }
                 //Login failed
                 /*if(STATUS.equalsIgnoreCase("0")){
@@ -1082,13 +1075,12 @@ public class AttendanceIntimeFragmet extends Fragment {
                 }*/
 
 
-
             }
 
             //Login failed
-            if(STATUS_CODE!=200){
+            if (STATUS_CODE != 200) {
                 //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
-              //  MESSAGE="Please provide correct information";
+                //  MESSAGE="Please provide correct information";
                 showFailureDialog1("Something went wrong. Please try again later");
 
             }
@@ -1101,8 +1093,7 @@ public class AttendanceIntimeFragmet extends Fragment {
     //////////////////////////////////////for checking holiday\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     //For Checking attendance
-    private void CheckAttendance1(){
-
+    private void CheckAttendance1() {
 
 
         progressDialog.setMessage("Checking attendance... Please wait!");
@@ -1110,23 +1101,21 @@ public class AttendanceIntimeFragmet extends Fragment {
         progressDialog.show();
 
 
-
         baseURL = Constants.base_url_default;
-        SOAPRequestXML = Constants.soapRequestHeader+
+        SOAPRequestXML = Constants.soapRequestHeader +
                 "<soapenv:Header/>"
-                +"<soapenv:Body>"
-                +"<tem:IsDisabled>"
-                +"<tem:emp_code>"+ prefs.getString("USERISDCODE","")+"</tem:emp_code>"
-                +"</tem:IsDisabled>"
-                +"</soapenv:Body>"
-                +"</soapenv:Envelope>";
-
+                + "<soapenv:Body>"
+                + "<tem:IsDisabled>"
+                + "<tem:emp_code>" + prefs.getString("USERISDCODE", "") + "</tem:emp_code>"
+                + "</tem:IsDisabled>"
+                + "</soapenv:Body>"
+                + "</soapenv:Envelope>";
 
 
         //String msgLength = String.format("%1$d", SOAPRequestXML.length());
-        System.out.println("Request== "+SOAPRequestXML);
+        System.out.println("Request== " + SOAPRequestXML);
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -1149,19 +1138,18 @@ public class AttendanceIntimeFragmet extends Fragment {
                     xpp.setInput(new StringReader(Response));
                     //int eventType = xpp.getEventType();
 
-                    System.out.print("Server Response = "+Response);
+                    System.out.print("Server Response = " + Response);
                     StatusLine status = httpResponse.getStatusLine();
                     STATUS_CODE = status.getStatusCode();
-                    System.out.println("Server status code = "+STATUS_CODE);
-                    System.out.println("Server httpResponse.getStatusLine() = "+httpResponse.getStatusLine().toString());
-                    System.out.println("Server Staus = "+httpResponse.getEntity().toString());
+                    System.out.println("Server status code = " + STATUS_CODE);
+                    System.out.println("Server httpResponse.getStatusLine() = " + httpResponse.getStatusLine().toString());
+                    System.out.println("Server Staus = " + httpResponse.getEntity().toString());
 
                     getParsingElementsForLoginDetails1(xpp);
 
                 } catch (HttpResponseException e) {
                     Log.i("httpResponse Error = ", e.getMessage());
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -1173,8 +1161,9 @@ public class AttendanceIntimeFragmet extends Fragment {
         }).start();
 
     }
+
     //getParsingElementsForLoginDetails(xpp);
-    public void getParsingElementsForLoginDetails1(XmlPullParser xpp){
+    public void getParsingElementsForLoginDetails1(XmlPullParser xpp) {
         String text = "";
         try {
             int eventType = xpp.getEventType();
@@ -1184,20 +1173,19 @@ public class AttendanceIntimeFragmet extends Fragment {
                     case XmlPullParser.START_TAG:
 
 
-
                         break;
 
                     case XmlPullParser.TEXT:
                         text = xpp.getText().trim().toString();
-                        System.out.println("Text data: "+text);
+                        System.out.println("Text data: " + text);
                         break;
 
                     case XmlPullParser.END_TAG:
 
-                       if(tagname.equalsIgnoreCase("IsDisabledResult")){
+                        if (tagname.equalsIgnoreCase("IsDisabledResult")) {
                             STATUS2 = text;
                             text = "";
-                            System.out.println("STATUS: "+STATUS2);
+                            System.out.println("STATUS: " + STATUS2);
                         }
                       /*   if(tagname.equalsIgnoreCase(TAG_MESSAGE_ID)){
                             TAG_MESSAGE_VALUE = text;
@@ -1307,39 +1295,36 @@ public class AttendanceIntimeFragmet extends Fragment {
     }//getParsingElementsForLogin(xpp);
 
 
-    Handler handler7 = new Handler(){
+    Handler handler7 = new Handler() {
 
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
 
             try {
-                if((progressDialog != null) && progressDialog.isShowing() ){
+                if ((progressDialog != null) && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-            }catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
 
             //Success
-            if(STATUS_CODE==200){
+            if (STATUS_CODE == 200) {
                 //Login success
-                if(STATUS2.equalsIgnoreCase("0")){
+                if (STATUS2.equalsIgnoreCase("0")) {
                     //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
                     //  MESSAGE=                // 0: Not Punched | 1: First Punched (IN Time) | 2: Second Punched (OUT Time);
-                     showDialog("You are not allowed to punch attendance today");
+                    showDialog("You are not allowed to punch attendance today");
                     //showDialog(TAG_MESSAGE_VALUE2);
 
-                }
-
-                else if(STATUS2.equalsIgnoreCase("1")){
+                } else if (STATUS2.equalsIgnoreCase("1")) {
                     //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
                     //  MESSAGE=                // 0: Not Punched | 1: First Punched (IN Time) | 2: Second Punched (OUT Time);
                     // showSuccessDialog();
-                    if(CommonUtils.locationServicesEnabled(getActivity())){
+                    if (CommonUtils.locationServicesEnabled(getActivity())) {
                         try {
-                            if(CommonUtils.isInternelAvailable(getActivity())){
+                            if (CommonUtils.isInternelAvailable(getActivity())) {
                                 validateData();
-                            }
-                            else{
+                            } else {
                                 Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_SHORT).show();
                             }
 
@@ -1348,7 +1333,7 @@ public class AttendanceIntimeFragmet extends Fragment {
                         }
 
                     }//if
-                    else{
+                    else {
                         Toast.makeText(getActivity(), "'GPS' is OFF! Please TURN ON Your Mobile's 'GPS' (Location Settings)", Toast.LENGTH_LONG).show();
                     }
 
@@ -1358,7 +1343,7 @@ public class AttendanceIntimeFragmet extends Fragment {
             }
 
             //Login failed
-            if(STATUS_CODE!=200){
+            if (STATUS_CODE != 200) {
                 //Toast.makeText(LoginActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
                 //  MESSAGE="Please provide correct information";
                 showFailureDialog1("Something went wrong. Please try again later");
@@ -1370,12 +1355,11 @@ public class AttendanceIntimeFragmet extends Fragment {
     };
 
 
-
     /////////////////////////////////////////for checking holiday\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
     //Show Success Dialog
-    private void showDialog(String msg){
+    private void showDialog(String msg) {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(getActivity());
         aldb.setTitle("Alert!");
@@ -1391,7 +1375,7 @@ public class AttendanceIntimeFragmet extends Fragment {
     }
 
     //Show Success Dialog
-    private void showSuccessDialog(){
+    private void showSuccessDialog() {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(getActivity());
         aldb.setTitle("Success!");
@@ -1405,12 +1389,13 @@ public class AttendanceIntimeFragmet extends Fragment {
         });
         aldb.show();
     }
+
     //Show failure Dialog
-    private void showFailureDialog1(String msg){
+    private void showFailureDialog1(String msg) {
         //Alert Dialog Builder
         final AlertDialog.Builder aldb = new AlertDialog.Builder(getActivity());
         aldb.setTitle("Failed!");
-        aldb.setMessage("\nReason: "+msg);
+        aldb.setMessage("\nReason: " + msg);
         aldb.setPositiveButton("OK", null);
         aldb.show();
     }
@@ -1421,12 +1406,12 @@ public class AttendanceIntimeFragmet extends Fragment {
 
         @Override
         protected void onPreExecute() {
-          //  infoText.setVisibility(View.INVISIBLE);
+            //  infoText.setVisibility(View.INVISIBLE);
             //progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
-        protected Address doInBackground(Void ... none) {
+        protected Address doInBackground(Void... none) {
             Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
             List<Address> addresses = null;
 
@@ -1442,45 +1427,46 @@ public class AttendanceIntimeFragmet extends Fragment {
             else if(fetchType == USE_ADDRESS_LOCATION) {*/
             Constants.CURRENT_LAT = Constants.UNIV_LAT;
             Constants.CURRENT_LONG = Constants.UNIV_LONG;
-                double latitude = Double.parseDouble(Constants.CURRENT_LAT);
-                double longitude = Double.parseDouble(Constants.CURRENT_LONG);
+            double latitude = Double.parseDouble(Constants.CURRENT_LAT);
+            double longitude = Double.parseDouble(Constants.CURRENT_LONG);
 
-                try {
-                    addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                } catch (IOException ioException) {
-                    errorMessage = "Service Not Available";
-                    Log.e("TAG", errorMessage, ioException);
-                } catch (IllegalArgumentException illegalArgumentException) {
-                    errorMessage = "Invalid Latitude or Longitude Used";
-                    Log.e("TAG", errorMessage + ". " +
-                            "Latitude = " + latitude + ", Longitude = " +
-                            longitude, illegalArgumentException);
-                }
+            try {
+                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            } catch (IOException ioException) {
+                errorMessage = "Service Not Available";
+                Log.e("TAG", errorMessage, ioException);
+            } catch (IllegalArgumentException illegalArgumentException) {
+                errorMessage = "Invalid Latitude or Longitude Used";
+                Log.e("TAG", errorMessage + ". " +
+                        "Latitude = " + latitude + ", Longitude = " +
+                        longitude, illegalArgumentException);
+            }
            /* }
             else {
                 errorMessage = "Unknown Type";
                 Log.e(TAG, errorMessage);
             }*/
 
-            if(addresses != null && addresses.size() > 0)
+            if (addresses != null && addresses.size() > 0)
                 return addresses.get(0);
 
             return null;
         }
 
         protected void onPostExecute(Address address) {
-            if(address == null) {
+            if (address == null) {
                /* progressBar.setVisibility(View.INVISIBLE);
                 infoText.setVisibility(View.VISIBLE);
                 infoText.setText(errorMessage);*/
-            }
-            else {
-               int p= address.getMaxAddressLineIndex()+1;
+            } else {
+                int p = address.getMaxAddressLineIndex() + 1;
                 String addressName = "";
-                for(int i = 0; i < p; i++) {
-                    addressName =   address.getAddressLine(i);
-                    Locationname=address.getSubAdminArea();LocationCity=address.getLocality();LocationAddress=address.getAddressLine(i);
-                //  String  addressName1 = " --- " + address.getAddressLine(0).toString();
+                for (int i = 0; i < p; i++) {
+                    addressName = address.getAddressLine(i);
+                    Locationname = address.getSubAdminArea();
+                    LocationCity = address.getLocality();
+                    LocationAddress = address.getAddressLine(i);
+                    //  String  addressName1 = " --- " + address.getAddressLine(0).toString();
                 }
                 /*progressBar.setVisibility(View.INVISIBLE);
                 infoText.setVisibility(View.VISIBLE);
@@ -1488,7 +1474,7 @@ public class AttendanceIntimeFragmet extends Fragment {
                         "Longitude: " + address.getLongitude() + "\n" +
                         "Address: " + addressName);*/
 
-               // Locationname=addressName; LocationCity=addressName; LocationAddress=addressName;
+                // Locationname=addressName; LocationCity=addressName; LocationAddress=addressName;
             }
            /* if(STATUS1.equalsIgnoreCase("0"))
             sendDataForIntime();
@@ -1497,12 +1483,10 @@ public class AttendanceIntimeFragmet extends Fragment {
             else if(STATUS1.equalsIgnoreCase("2"))
                 showFailureDialog1("Already Applied Attendance for today");*/
 // sendDataForIntime();
-            if(STATUS1.equalsIgnoreCase("1"))
+            if (STATUS1.equalsIgnoreCase("1"))
                 sendDataForIntime();
             else
                 showFailureDialog1(TAG_MESSAGE_VALUE2);
-
-
 
 
         }

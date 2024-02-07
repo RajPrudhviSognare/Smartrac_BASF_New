@@ -8,8 +8,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AlertDialog;
+
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -146,24 +148,24 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
         //Toast.makeText(getActivity(),"In Time Fragment",Toast.LENGTH_LONG).show();
         // Inflate the layout for this fragment
 
-        if(view==null){
+        if (view == null) {
 
             view = inflater.inflate(R.layout.attendance_approval_weeklyoff_fragment, container, false);
 
-            attendanceapprovalIntimeSpinner = (Spinner)view.findViewById(R.id.attendanceapprovalIntimeSpinner1);
-            attendanceApprovalDetailsListViewID = (ListView)view.findViewById(R.id.attendanceApprovalDetailsListViewID1);
+            attendanceapprovalIntimeSpinner = (Spinner) view.findViewById(R.id.attendanceapprovalIntimeSpinner1);
+            attendanceApprovalDetailsListViewID = (ListView) view.findViewById(R.id.attendanceApprovalDetailsListViewID1);
 
-            approveattendance_checkBox_header = (CheckBox)view.findViewById(R.id.approveattendance_checkBox_header1);
-            approveattendance_headerApproveImageViewID = (ImageView)view.findViewById(R.id.approveattendance_headerApproveImageViewID1);
-            rejectattendance_headerRejectImageViewID = (ImageView)view.findViewById(R.id.rejectattendance_headerRejectImageViewID1);
+            approveattendance_checkBox_header = (CheckBox) view.findViewById(R.id.approveattendance_checkBox_header1);
+            approveattendance_headerApproveImageViewID = (ImageView) view.findViewById(R.id.approveattendance_headerApproveImageViewID1);
+            rejectattendance_headerRejectImageViewID = (ImageView) view.findViewById(R.id.rejectattendance_headerRejectImageViewID1);
 
-            attendanceApprovalNoDataTextViewID = (TextView)view.findViewById(R.id.attendanceApprovalNoDataTextViewID1);
+            attendanceApprovalNoDataTextViewID = (TextView) view.findViewById(R.id.attendanceApprovalNoDataTextViewID1);
 
-            attendanceapprovalIntimeGetDetailsBtnID = (Button)view.findViewById(R.id.attendanceapprovalIntimeGetDetailsBtnID1);
+            attendanceapprovalIntimeGetDetailsBtnID = (Button) view.findViewById(R.id.attendanceapprovalIntimeGetDetailsBtnID1);
             attendanceapprovalIntimeLayoutID = (LinearLayout) view.findViewById(R.id.attendanceapprovalIntimeLayoutID1);
 
         }//if(view==null)
-        else{
+        else {
             //((ViewGroup) view.getParent()).removeView(view);
         }
 
@@ -180,10 +182,10 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
 
     }
 
-    private void initAllViews(){
+    private void initAllViews() {
 
         //shared preference
-        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME,getActivity().MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(CommonUtils.PREFERENCE_NAME, getActivity().MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         attendance_dateList = new ArrayList<String>(0);
@@ -208,14 +210,13 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState){
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(CommonUtils.isInternelAvailable(getActivity())){
+        if (CommonUtils.isInternelAvailable(getActivity())) {
             System.out.println("requestAttendanceList() called inside onActivityCreated() of AttendanceApprovalWeeklyOffFragment");
             requestAttendanceList();
-        }
-        else{
+        } else {
             Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_SHORT).show();
         }
 
@@ -234,33 +235,33 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
             }
         });*/
 
-        attendanceapprovalIntimeSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+        attendanceapprovalIntimeSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 selectedDateFromSpinner = parent.getItemAtPosition(position).toString();
-                System.out.println("selectedDateFromSpinner: "+ selectedDateFromSpinner.toString());
+                System.out.println("selectedDateFromSpinner: " + selectedDateFromSpinner.toString());
                 //Toast.makeText(getActivity(), "Selected Item: " + selectedDateFromSpinner, Toast.LENGTH_SHORT).show();
                 //Toast.makeText(getActivity(), "Selected Item Position: " + position, Toast.LENGTH_SHORT).show();
 
                 if (userSelect) {
-                    if(CommonUtils.isInternelAvailable(getActivity())){
+                    if (CommonUtils.isInternelAvailable(getActivity())) {
                         requestAttendanceList();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_SHORT).show();
                     }
                     userSelect = false;
                 }
 
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
 
         });
 
-        attendanceapprovalIntimeSpinner.setOnTouchListener(new View.OnTouchListener(){
+        attendanceapprovalIntimeSpinner.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -273,8 +274,8 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                if(isChecked){
-                    for(int i=0;i<attendanceidList.size();i++){
+                if (isChecked) {
+                    for (int i = 0; i < attendanceidList.size(); i++) {
                         checkedItems[i] = true;
                     }
                     selectionSet.clear();
@@ -282,17 +283,17 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
                     attendanceApprovalDetailsListViewID.setAdapter(null);
                     attendanceApprovalDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(getActivity()));
 
-                    for(int j=0;j<attendanceidList.size();j++){
+                    for (int j = 0; j < attendanceidList.size(); j++) {
                         selectionSet.add(attendanceidList.get(j));
                     }
-                    System.out.println("Selection ID list: "+ selectionSet.toString());
-                    System.out.println("Selection ID list size: "+ selectionSet.size());
+                    System.out.println("Selection ID list: " + selectionSet.toString());
+                    System.out.println("Selection ID list size: " + selectionSet.size());
                 }
-                if(!isChecked){
+                if (!isChecked) {
                     selectionSet.clear();
                     isAllChecked = false;
-                    System.out.println("Selection ID list: "+ selectionSet.toString());
-                    System.out.println("Selection ID list size: "+ selectionSet.size());
+                    System.out.println("Selection ID list: " + selectionSet.toString());
+                    System.out.println("Selection ID list size: " + selectionSet.size());
                     attendanceApprovalDetailsListViewID.setAdapter(null);
                     attendanceApprovalDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(getActivity()));
                 }
@@ -301,35 +302,35 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
         });
 
         //Approve Button Click
-        approveattendance_headerApproveImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        approveattendance_headerApproveImageViewID.setOnClickListener(new ImageView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if(selectionSet.size()==0){
+                if (selectionSet.size() == 0) {
                     Toast.makeText(getActivity(), "No Associate is selected!", Toast.LENGTH_SHORT).show();
                 }//if(selectionSet.size()==0)
 
-                if(selectionSet.size()!=0){
+                if (selectionSet.size() != 0) {
                     String value1[] = selectionSet.toArray(new String[selectionSet.size()]);
                     int size1 = value1.length;
-                    if(size1!=0){
-                        for(int i=0;i<value1.length;i++){
-                            System.out.println("Set to String: "+value1[i]);
+                    if (size1 != 0) {
+                        for (int i = 0; i < value1.length; i++) {
+                            System.out.println("Set to String: " + value1[i]);
                         }
-                        System.out.println("Set to String: "+value1);
+                        System.out.println("Set to String: " + value1);
 
                     }//if(size1!=0)
-                    if(value1.length!=0){
+                    if (value1.length != 0) {
                         JSONArray jsonArrayFriends = new JSONArray();
-                        for(int i=0;i<value1.length;i++){
+                        for (int i = 0; i < value1.length; i++) {
                             jsonArrayFriends.put(Integer.valueOf(value1[i]));
                         }
 
-                        System.out.println("jsonArrayFriends: "+jsonArrayFriends);
-                        System.out.println("jsonArrayFriendsToString: "+jsonArrayFriends.toString());
+                        System.out.println("jsonArrayFriends: " + jsonArrayFriends);
+                        System.out.println("jsonArrayFriendsToString: " + jsonArrayFriends.toString());
 
-                        SendRequestForApproveOrReject(jsonArrayFriends,"approved",selectedDateFromSpinner);
+                        SendRequestForApproveOrReject(jsonArrayFriends, "approved", selectedDateFromSpinner);
 
                     }//if(value1.length!=0)
 
@@ -339,35 +340,35 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
         });
 
         //Reject Button Click
-        rejectattendance_headerRejectImageViewID.setOnClickListener(new ImageView.OnClickListener(){
+        rejectattendance_headerRejectImageViewID.setOnClickListener(new ImageView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if(selectionSet.size()==0){
+                if (selectionSet.size() == 0) {
                     Toast.makeText(getActivity(), "No Associate is selected!", Toast.LENGTH_SHORT).show();
                 }//if(selectionSet.size()==0)
 
-                if(selectionSet.size()!=0){
+                if (selectionSet.size() != 0) {
                     String value1[] = selectionSet.toArray(new String[selectionSet.size()]);
                     int size1 = value1.length;
-                    if(size1!=0){
-                        for(int i=0;i<value1.length;i++){
-                            System.out.println("Set to String: "+value1[i]);
+                    if (size1 != 0) {
+                        for (int i = 0; i < value1.length; i++) {
+                            System.out.println("Set to String: " + value1[i]);
                         }
-                        System.out.println("Set to String: "+value1);
+                        System.out.println("Set to String: " + value1);
 
                     }//if(size1!=0)
-                    if(value1.length!=0){
+                    if (value1.length != 0) {
                         JSONArray jsonArrayFriends = new JSONArray();
-                        for(int i=0;i<value1.length;i++){
+                        for (int i = 0; i < value1.length; i++) {
                             jsonArrayFriends.put(Integer.valueOf(value1[i]));
                         }
 
-                        System.out.println("jsonArrayFriends: "+jsonArrayFriends);
-                        System.out.println("jsonArrayFriendsToString: "+jsonArrayFriends.toString());
+                        System.out.println("jsonArrayFriends: " + jsonArrayFriends);
+                        System.out.println("jsonArrayFriendsToString: " + jsonArrayFriends.toString());
 
-                        SendRequestForApproveOrReject(jsonArrayFriends,"rejected",selectedDateFromSpinner);
+                        SendRequestForApproveOrReject(jsonArrayFriends, "rejected", selectedDateFromSpinner);
 
                     }//if(value1.length!=0)
 
@@ -377,36 +378,35 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
         });
 
 
-
     }//onActivityCreated(Bundle savedInstanceState)
 
-    private void SendRequestForApproveOrReject(JSONArray jsonArrayFriends,String actionType,String selectedDateFromSpinner){
+    private void SendRequestForApproveOrReject(JSONArray jsonArrayFriends, String actionType, String selectedDateFromSpinner) {
 
         actionType1 = actionType;
         JSONObject jObj = null;
         jObj = new JSONObject();
         try {
-            jObj.put("ids",jsonArrayFriends);
+            jObj.put("ids", jsonArrayFriends);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         System.out.println("jObj: " + jObj);
-        if(actionType.equalsIgnoreCase("approved")){
+        if (actionType.equalsIgnoreCase("approved")) {
             //progressDialog.setTitle("Weekly Off Attendance Approval");
         }
-        if(actionType.equalsIgnoreCase("rejected")){
+        if (actionType.equalsIgnoreCase("rejected")) {
             //progressDialog.setTitle("Weekly Off Attendance Reject");
         }
         progressDialog.setMessage("Processing... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        client = new RestFullClient(Constants.BASE_URL+Constants.ATTENDANCE_APPROVALREJECTION_RELATIVE_URI);
+        client = new RestFullClient(Constants.BASE_URL + Constants.ATTENDANCE_APPROVALREJECTION_RELATIVE_URI);
         //client.AddParam("m_date", selectedDateFromSpinner);
         //client.AddParam("tl_id", prefs.getString("USERID",""));
         client.AddParam("action", actionType);
         //client.AddParam("type", TAG_ATTENDANCE_TYPE);
         client.AddParam("attendance_ids", jObj.toString());
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
@@ -425,7 +425,8 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
 
         }).start();
     }
-    private void receiveDataForServerResponse1(JSONObject jobj){
+
+    private void receiveDataForServerResponse1(JSONObject jobj) {
 
         try {
 
@@ -452,17 +453,18 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
         }
 
     }
-    Handler handler1 = new Handler(){
 
-        public void handleMessage(Message msg){
+    Handler handler1 = new Handler() {
+
+        public void handleMessage(Message msg) {
 
             progressDialog.dismiss();
 
             //Success
-            if(client.responseCode==200){
+            if (client.responseCode == 200) {
 
                 //Success
-                if(STATUS.equalsIgnoreCase("true")){
+                if (STATUS.equalsIgnoreCase("true")) {
                     showSuccessDialog();
                     selectionSet.clear();
                     approveattendance_checkBox_header.setChecked(false);
@@ -470,13 +472,13 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
 
                 }
                 //Failed
-                if(STATUS.equalsIgnoreCase("false")){
+                if (STATUS.equalsIgnoreCase("false")) {
                     //showRetryDialog();
                     showFailureDialog();
                 }
             }
             //Failed
-            if(client.responseCode!=200){
+            if (client.responseCode != 200) {
                 //Toast.makeText(getActivity(), MESSAGE, Toast.LENGTH_SHORT).show();
                 //showRetryDialog();
                 showFailureDialog();
@@ -485,26 +487,26 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
         }//handleMessage(Message msg)
 
     };
+
     //Show Success Dialog
-    private void showSuccessDialog(){
+    private void showSuccessDialog() {
         //Alert Dialog Builder
         android.app.AlertDialog.Builder aldb = new android.app.AlertDialog.Builder(getActivity());
         aldb.setTitle("Success!");
         aldb.setCancelable(false);
-        if(actionType1.equalsIgnoreCase("approved")){
+        if (actionType1.equalsIgnoreCase("approved")) {
             aldb.setMessage("You Have Successfully Approved Selected Associates' Weekly Off. \n\nThank You");
         }
-        if(actionType1.equalsIgnoreCase("rejected")){
+        if (actionType1.equalsIgnoreCase("rejected")) {
             aldb.setMessage("You Have Successfully Rejected Selected Associates' Weekly Off. \n\nThank You");
         }
         aldb.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if(CommonUtils.isInternelAvailable(getActivity())){
+                if (CommonUtils.isInternelAvailable(getActivity())) {
                     requestAttendanceList();
-                }
-                else{
+                } else {
                     Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -527,7 +529,7 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
     }
 
 
-    private void requestAttendanceList(){
+    private void requestAttendanceList() {
 
         attendanceApprovalNoDataTextViewID.setVisibility(View.GONE);
         attendance_dateList.clear();
@@ -548,17 +550,16 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
         progressDialog.setMessage("Loading... Please wait!");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        client = new RestFullClient(Constants.BASE_URL+Constants.ATTENDANCE_APPROVAL_RELATIVE_URI);
-        if(selectedDateFromSpinner!=null){
+        client = new RestFullClient(Constants.BASE_URL + Constants.ATTENDANCE_APPROVAL_RELATIVE_URI);
+        if (selectedDateFromSpinner != null) {
             client.AddParam("m_date", selectedDateFromSpinner);
-        }
-        else{
+        } else {
             client.AddParam("m_date", "");
         }
         client.AddParam("type", TAG_ATTENDANCE_TYPE);
-        client.AddParam("tl_id", prefs.getString("USERID",""));
+        client.AddParam("tl_id", prefs.getString("USERID", ""));
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
@@ -578,19 +579,20 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
         }).start();
 
     }
-    private void receiveDataForServerResponse(JSONObject jobj){
 
-        try{
+    private void receiveDataForServerResponse(JSONObject jobj) {
 
-            if(client.responseCode==200){
+        try {
 
-                STATUS =  jobj.getString(TAG_STATUS);
-                MESSAGE =  jobj.getString(TAG_MESSAGE);
+            if (client.responseCode == 200) {
 
-                System.out.println("STATUS: responseCode==200: "+ STATUS);
-                System.out.println("MESSAGE: responseCode==200: "+ MESSAGE);
+                STATUS = jobj.getString(TAG_STATUS);
+                MESSAGE = jobj.getString(TAG_MESSAGE);
 
-                if(STATUS.equalsIgnoreCase("true")) {
+                System.out.println("STATUS: responseCode==200: " + STATUS);
+                System.out.println("MESSAGE: responseCode==200: " + MESSAGE);
+
+                if (STATUS.equalsIgnoreCase("true")) {
 
                     JOBJECT_DATA = jobj.getJSONObject(TAG_JOBJECT_DATA);
                     System.out.println("JOBJECT_DATA: " + JOBJECT_DATA.toString());
@@ -602,7 +604,7 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
                         System.out.println("Total Pending Date List: " + pendingDateArray.length());
 
                         PARTICULAR_DATE = JOBJECT_DATA.getString(TAG_PARTICULAR_DATE);
-                        System.out.println("PARTICULAR_DATE: "+ PARTICULAR_DATE);
+                        System.out.println("PARTICULAR_DATE: " + PARTICULAR_DATE);
 
                         JSONArray attendanceDataArray = JOBJECT_DATA.getJSONArray(TAG_JARRAY_ATTENDANCEDATALIST);
                         System.out.println("Attendance Data List: " + attendanceDataArray.toString());
@@ -630,13 +632,13 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
                         attendance_dateList.clear();
                         selectedList.clear();
 
-                        if(pendingDateArray.length()==0){
+                        if (pendingDateArray.length() == 0) {
                             //attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE);
-                            System.out.println("Inside 'if(pendingDateArray.length()==0)': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): "+attendanceApprovalNoDataTextViewID.getVisibility());
+                            System.out.println("Inside 'if(pendingDateArray.length()==0)': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): " + attendanceApprovalNoDataTextViewID.getVisibility());
                         }
-                        if(pendingDateArray.length()!=0){
+                        if (pendingDateArray.length() != 0) {
 
-                            for(int i = 0; i < pendingDateArray.length(); i++) {
+                            for (int i = 0; i < pendingDateArray.length(); i++) {
 
                                 try {
                                     c = pendingDateArray.getJSONObject(i);
@@ -650,7 +652,7 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
                                         selectedList.add(selected);
                                         //selectedList.add(String.valueOf(selected));
 
-                                        if(Integer.parseInt(selected)==1){
+                                        if (Integer.parseInt(selected) == 1) {
                                             //if(selected==1){
                                             attendanceSelectedDatePosition = i;
                                         }
@@ -681,11 +683,11 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
                         attendance_leavereasonList.clear();
                         associate_isdList.clear();
 
-                        if(attendanceDataArray.length()==0){
+                        if (attendanceDataArray.length() == 0) {
                             //attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE);
-                            System.out.println("Inside 'if(pendingDateArray.length()==0)': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): "+attendanceApprovalNoDataTextViewID.getVisibility());
+                            System.out.println("Inside 'if(pendingDateArray.length()==0)': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): " + attendanceApprovalNoDataTextViewID.getVisibility());
                         }
-                        if(attendanceDataArray.length()!=0){
+                        if (attendanceDataArray.length() != 0) {
 
                             for (int i = 0; i < attendanceDataArray.length(); i++) {
 
@@ -710,7 +712,7 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
                                         first_nameList.add(first_name);
                                         last_nameList.add(last_name);
                                         attendance_timeList.add(attendance_time);
-                                        attendance_imageList.add(Constants.BASE_URL_ATTENDANCE_LOGO+attendance_image);
+                                        attendance_imageList.add(Constants.BASE_URL_ATTENDANCE_LOGO + attendance_image);
                                         attendance_leavedateList.add(attendance_leavedate);
                                         attendance_leavereasonList.add(attendance_leavereason);
                                         associate_isdList.add(associate_isd);
@@ -735,56 +737,56 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
                         System.out.println("##########End Of All Attendance Data List details###################");
 
 
-
                     }//if (JOBJECT_DATA != null)
-                    else{
+                    else {
                         System.out.println("JOBJECT_DATA is Null");
                     }
 
                 }//if(STATUS.equalsIgnoreCase("true")
 
             }//if(client.responseCode==200)
-            if(client.responseCode!=200){
+            if (client.responseCode != 200) {
 
-                STATUS =  jobj.getString(TAG_STATUS);
-                MESSAGE =  jobj.getString(TAG_MESSAGE);
+                STATUS = jobj.getString(TAG_STATUS);
+                MESSAGE = jobj.getString(TAG_MESSAGE);
 
-                System.out.println("STATUS: responseCode!=200: "+ STATUS);
-                System.out.println("MESSAGE: responseCode!=200: "+ MESSAGE);
+                System.out.println("STATUS: responseCode!=200: " + STATUS);
+                System.out.println("MESSAGE: responseCode!=200: " + MESSAGE);
 
             }//if(client.responseCode!=200)
 
+        } catch (Exception e) {
         }
-        catch(Exception e){}
 
     }
-    Handler handler = new Handler(){
 
-        public void handleMessage(Message msg){
+    Handler handler = new Handler() {
+
+        public void handleMessage(Message msg) {
 
             progressDialog.dismiss();
 
             //Success
-            if(client.responseCode==200){
+            if (client.responseCode == 200) {
 
                 //Toast.makeText(SignupActivity.this, MESSAGE, Toast.LENGTH_SHORT).show();
 
                 //success
-                if(STATUS.equalsIgnoreCase("true")){
+                if (STATUS.equalsIgnoreCase("true")) {
                     //showSuccessDialog();
                     //Toast.makeText(getActivity(), MESSAGE, Toast.LENGTH_SHORT).show();
                     showAttendanceDetails();
                 }
 
                 //failed
-                if(STATUS.equalsIgnoreCase("false")){
+                if (STATUS.equalsIgnoreCase("false")) {
                     showFailureDialog();
                 }
 
             }
 
             //failed
-            if(client.responseCode!=200){
+            if (client.responseCode != 200) {
                 //Toast.makeText(getActivity(), MESSAGE, Toast.LENGTH_SHORT).show();
                 showFailureDialog();
             }
@@ -792,164 +794,166 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
         }//handleMessage(Message msg)
 
     };
+
     //Show failure Dialog
-    private void showFailureDialog(){
+    private void showFailureDialog() {
         //Alert Dialog Builder
         AlertDialog.Builder aldb = new AlertDialog.Builder(getActivity());
         aldb.setTitle("Failed!");
-        aldb.setMessage("\nReason: "+MESSAGE);
+        aldb.setMessage("\nReason: " + MESSAGE);
         aldb.setPositiveButton("OK", null);
         aldb.show();
     }
 
-    private void showAttendanceDetails(){
+    private void showAttendanceDetails() {
 
         SetDropDownItems();
         setAttendanceListView();
     }
-    private void SetDropDownItems(){
-        if(attendance_dateList.size()!=0){
-            ArrayAdapter dataAdapter = new ArrayAdapter (getActivity(), android.R.layout.simple_spinner_item, attendance_dateList);
+
+    private void SetDropDownItems() {
+        if (attendance_dateList.size() != 0) {
+            ArrayAdapter dataAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, attendance_dateList);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             attendanceapprovalIntimeSpinner.setAdapter(dataAdapter);
-            System.out.println("Selected Spinner Item Position: "+ attendanceSelectedDatePosition);
+            System.out.println("Selected Spinner Item Position: " + attendanceSelectedDatePosition);
             attendanceapprovalIntimeSpinner.setSelection(attendanceSelectedDatePosition);
-        }
-        else{
+        } else {
             attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE);
-            System.out.println("Inside 'SetDropDownItems()': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): "+attendanceApprovalNoDataTextViewID.getVisibility());
+            System.out.println("Inside 'SetDropDownItems()': attendanceApprovalNoDataTextViewID.setVisibility(View.VISIBLE): " + attendanceApprovalNoDataTextViewID.getVisibility());
         }
     }
-    private void setAttendanceListView(){
+
+    private void setAttendanceListView() {
 
         checkedItems = new boolean[attendanceidList.size()];
         attendanceApprovalDetailsListViewID.setAdapter(new CustomAdapterForAttendanceDetails(getActivity()));
     }
 
     /*
-    * CustomAdapterForAttendanceDetails
-    */
+     * CustomAdapterForAttendanceDetails
+     */
     public class CustomAdapterForAttendanceDetails extends BaseAdapter {
 
-    public Context cntx;
+        public Context cntx;
 
-    public CustomAdapterForAttendanceDetails(Context context){
-        cntx = context;
-    }
-
-    public void updateAdapter(Context context) { //Does Not Work
-        cntx = context;
-        //and call notifyDataSetChanged
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public int getCount() {
-        count = attendanceidList.size();
-        return count;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return position;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-
-        if (getCount() != 0)
-            return getCount();
-
-        //return 1;
-        return 2;
-    }
-    @Override
-    public int getItemViewType(int position) {
-        // TODO Auto-generated method stub
-
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
-
-        View view;
-        ViewHolder viewHolder = new ViewHolder();
-
-        if(convertView==null){
-
-            LayoutInflater inflater = (LayoutInflater)cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.custom_layout_for_attendance_approval_allleavetypes, null);
-        }
-        else{
-
-            view = convertView;
+        public CustomAdapterForAttendanceDetails(Context context) {
+            cntx = context;
         }
 
-        view.setTag(viewHolder);
-        final int pos1 = position;
-
-        final TextView nameTextView = (TextView)view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_NameTextViewID);
-        final TextView idTextView = (TextView)view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_IDTextViewID);
-        //final ImageView selfieImage = (ImageView)view.findViewById(R.id.custom_approveattendance_SelfieImageViewID);
-        //final TextView timeTextView = (TextView)view.findViewById(R.id.custom_approveattendance_TimeTextViewID);
-        final TextView dateTextView = (TextView)view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_DateTextViewID);
-        final TextView reasonTextView = (TextView)view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_ReasonTextViewID);
-
-        viewHolder.checkbox = (CheckBox)view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_checkBoxID);
-        //viewHolder.selfieImage = (ImageView)view.findViewById(R.id.custom_approveattendance_SelfieImageViewID);
-
-        final ViewHolder holder = (ViewHolder)view.getTag();
-
-        nameTextView.setText(first_nameList.get(position)+" "+last_nameList.get(position));
-        idTextView.setText("ISD: "+associate_isdList.get(position));
-        dateTextView.setText("Date: "+attendance_leavedateList.get(position));
-        reasonTextView.setText("Reason: "+attendance_leavereasonList.get(position));
-        //timeTextView.setText(attendance_timeList.get(position));
-        //imageLoader.DisplayImage(attendance_imageList.get(position), holder.selfieImage);
-
-
-        //viewHolder.checkbox.setTag(pos1); // This line is important.
-        //holder.checkbox.setChecked(checkedItems[pos1]);
-        //view.setSelected(checkedItems[pos1]);
-
-        if(isAllChecked){
-            holder.checkbox.setChecked(checkedItems[position]);
+        public void updateAdapter(Context context) { //Does Not Work
+            cntx = context;
+            //and call notifyDataSetChanged
+            notifyDataSetChanged();
         }
-        //Checkbox is checked
-        holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // TODO Auto-generated method stub
+        @Override
+        public int getCount() {
+            count = attendanceidList.size();
+            return count;
+        }
 
-                if(isChecked){
+        @Override
+        public Object getItem(int position) {
+            return position;
+        }
 
-                    //Toast.makeText(getActivity(), "Checked at "+String.valueOf(pos1), Toast.LENGTH_SHORT).show();
-                    selectionSet.add(attendanceidList.get(pos1));
-                    System.out.println("Selection ID list: "+ selectionSet.toString());
-                    System.out.println("Total Set size(After Add): "+selectionSet.size());
-                }
-                if(!isChecked){
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
 
-                    //Toast.makeText(getActivity(), "UnChecked at "+String.valueOf(pos1), Toast.LENGTH_SHORT).show();
-                    selectionSet.remove(attendanceidList.get(pos1));
-                    System.out.println("Selection ID list: "+ selectionSet.toString());
-                    System.out.println("Total Set size(After Remove): "+selectionSet.size());
+        @Override
+        public int getViewTypeCount() {
 
-                }//if
+            if (getCount() != 0)
+                return getCount();
 
+            //return 1;
+            return 2;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            // TODO Auto-generated method stub
+
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // TODO Auto-generated method stub
+
+            View view;
+            ViewHolder viewHolder = new ViewHolder();
+
+            if (convertView == null) {
+
+                LayoutInflater inflater = (LayoutInflater) cntx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.custom_layout_for_attendance_approval_allleavetypes, null);
+            } else {
+
+                view = convertView;
             }
 
-        });
+            view.setTag(viewHolder);
+            final int pos1 = position;
 
-        //Selfie image is clicked
+            final TextView nameTextView = (TextView) view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_NameTextViewID);
+            final TextView idTextView = (TextView) view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_IDTextViewID);
+            //final ImageView selfieImage = (ImageView)view.findViewById(R.id.custom_approveattendance_SelfieImageViewID);
+            //final TextView timeTextView = (TextView)view.findViewById(R.id.custom_approveattendance_TimeTextViewID);
+            final TextView dateTextView = (TextView) view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_DateTextViewID);
+            final TextView reasonTextView = (TextView) view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_ReasonTextViewID);
+
+            viewHolder.checkbox = (CheckBox) view.findViewById(R.id.custom_approveattendance_AllLeaveTypes_checkBoxID);
+            //viewHolder.selfieImage = (ImageView)view.findViewById(R.id.custom_approveattendance_SelfieImageViewID);
+
+            final ViewHolder holder = (ViewHolder) view.getTag();
+
+            nameTextView.setText(first_nameList.get(position) + " " + last_nameList.get(position));
+            idTextView.setText("ISD: " + associate_isdList.get(position));
+            dateTextView.setText("Date: " + attendance_leavedateList.get(position));
+            reasonTextView.setText("Reason: " + attendance_leavereasonList.get(position));
+            //timeTextView.setText(attendance_timeList.get(position));
+            //imageLoader.DisplayImage(attendance_imageList.get(position), holder.selfieImage);
+
+
+            //viewHolder.checkbox.setTag(pos1); // This line is important.
+            //holder.checkbox.setChecked(checkedItems[pos1]);
+            //view.setSelected(checkedItems[pos1]);
+
+            if (isAllChecked) {
+                holder.checkbox.setChecked(checkedItems[position]);
+            }
+            //Checkbox is checked
+            holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    // TODO Auto-generated method stub
+
+                    if (isChecked) {
+
+                        //Toast.makeText(getActivity(), "Checked at "+String.valueOf(pos1), Toast.LENGTH_SHORT).show();
+                        selectionSet.add(attendanceidList.get(pos1));
+                        System.out.println("Selection ID list: " + selectionSet.toString());
+                        System.out.println("Total Set size(After Add): " + selectionSet.size());
+                    }
+                    if (!isChecked) {
+
+                        //Toast.makeText(getActivity(), "UnChecked at "+String.valueOf(pos1), Toast.LENGTH_SHORT).show();
+                        selectionSet.remove(attendanceidList.get(pos1));
+                        System.out.println("Selection ID list: " + selectionSet.toString());
+                        System.out.println("Total Set size(After Remove): " + selectionSet.size());
+
+                    }//if
+
+                }
+
+            });
+
+            //Selfie image is clicked
         /*holder.selfieImage.setOnClickListener(new ImageView.OnClickListener(){
 
             @Override
@@ -960,21 +964,21 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
         });*/
 
 
-        return view;
+            return view;
 
-    }
+        }
 
-    class ViewHolder{
-        CheckBox checkbox;
-        //ImageView selfieImage;
-    }
+        class ViewHolder {
+            CheckBox checkbox;
+            //ImageView selfieImage;
+        }
 
-}//CustomAdapterForAttendanceDetails Class
+    }//CustomAdapterForAttendanceDetails Class
 
-    private void displayLargeSelfie(String imageURL){
+    private void displayLargeSelfie(String imageURL) {
         final String url = imageURL;
         Intent i = new Intent(getActivity(), LargerSelfieImageDisplayActivity.class);
-        i.putExtra("IMAGEPATH",url);
+        i.putExtra("IMAGEPATH", url);
         getActivity().startActivity(i);
     }
 
@@ -983,12 +987,14 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         /*if(CommonUtils.isInternelAvailable(getActivity())){
             System.out.println("requestAttendanceList() called inside onResume()");
@@ -998,13 +1004,14 @@ public class AttendanceApprovalWeeklyOffFragment extends Fragment {
             Toast.makeText(getActivity(), "No internet connection!", Toast.LENGTH_SHORT).show();
         }*/
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
 
     @Override
-    public void onDestroyView(){
+    public void onDestroyView() {
         super.onDestroyView();
     }
 
