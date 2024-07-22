@@ -66,9 +66,9 @@ public class Constants {
 
     //http://smtrac.pairserver.com/basf/index.php/api/attendanceapi/attendanceEntryTest
 
-    public static String BASE_URL = "http://smtrac.pairserver.com/basf/index.php/api";
-    public static String BASE_URL_CLIENT_LOGO = "http://smtrac.pairserver.com/basf/uploads/client_logo/";
-    public static String BASE_URL_ATTENDANCE_LOGO = "http://smtrac.pairserver.com/basf/uploads/locations/";
+    public static String BASE_URL = "https://basf.smartrac.manpoweronline.in/index.php/api";
+    public static String BASE_URL_CLIENT_LOGO = "https://basf.smartrac.manpoweronline.in/uploads/client_logo/";
+    public static String BASE_URL_ATTENDANCE_LOGO = "https://basf.smartrac.manpoweronline.in/uploads/locations/";
 
 
     public static String LOGIN_RELATIVE_URI = "/api/login";
